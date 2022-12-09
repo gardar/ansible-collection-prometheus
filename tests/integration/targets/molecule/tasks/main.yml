@@ -13,11 +13,11 @@
 
 - name: "Print all vars"
   ansible.builtin.debug:
-    msg: "{{ vars | to_nice_json }}"
+    msg: "{{ (vars | to_nice_json).split('\n') }}"
 
 - name: "Print all vars"
   ansible.builtin.debug:
-    msg: "{{ hostvars | to_nice_json }}"
+    msg: "{{ (hostvars | to_nice_json).split('\n') }}"
 
 - name: "Molecule test"
   ansible.builtin.command:

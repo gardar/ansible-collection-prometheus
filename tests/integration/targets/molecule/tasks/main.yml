@@ -11,6 +11,14 @@
   ansible.builtin.debug:
     msg: "{{ lookup('ansible.builtin.pipe', 'ls -lah') }}"
 
+- name: "Print all vars"
+  ansible.builtin.debug:
+    msg: "{{ vars | to_nice_json }}"
+
+- name: "Print all vars"
+  ansible.builtin.debug:
+    msg: "{{ hostvars | to_nice_json }}"
+
 - name: "Molecule test"
   ansible.builtin.command:
     cmd: molecule test

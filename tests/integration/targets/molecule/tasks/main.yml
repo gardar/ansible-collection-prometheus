@@ -1,4 +1,16 @@
 ---
+- name: "Print env"
+  ansible.builtin.debug:
+    msg: "{{ lookup('ansible.builtin.pipe', 'env') }}"
+
+- name: "Print pwd"
+  ansible.builtin.debug:
+    msg: "{{ lookup('ansible.builtin.pipe', 'pwd') }}"
+
+- name: "Print dir"
+  ansible.builtin.debug:
+    msg: "{{ lookup('ansible.builtin.pipe', 'ls -lah') }}"
+
 - name: "Molecule test"
   ansible.builtin.command:
     cmd: molecule test

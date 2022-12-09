@@ -1,0 +1,28 @@
+---
+name: Ansible Test
+on: [push, pull_request]
+
+env:
+  ANSIBLE_FORCE_COLOR: true
+
+jobs:
+  ansible-test:
+    name: ansible-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Perform sanity testing with ansible-test
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: stable-2.14
+          testing-type: sanity
+
+      - name: Perform integration testing with ansible-test
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: stable-2.14
+          target-python-version: 3.9
+          controller-python-version: auto
+          testing-type: integration

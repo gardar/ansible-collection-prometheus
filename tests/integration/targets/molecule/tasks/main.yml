@@ -1,0 +1,6 @@
+---
+- name: "Molecule test"
+  ansible.builtin.command:
+    cmd: molecule test
+    chdir: "roles/node_exporter"
+  changed_when: false

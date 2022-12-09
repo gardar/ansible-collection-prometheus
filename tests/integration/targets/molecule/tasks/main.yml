@@ -1,15 +1,15 @@
 ---
 - name: "Print env"
   ansible.builtin.debug:
-    msg: "{{ lookup('ansible.builtin.pipe', 'env') }}"
+    msg: "{{ lookup('ansible.builtin.pipe', 'env').split('\n') }}"
 
 - name: "Print pwd"
   ansible.builtin.debug:
-    msg: "{{ lookup('ansible.builtin.pipe', 'pwd') }}"
+    msg: "{{ lookup('ansible.builtin.pipe', 'pwd').split('\n') }}"
 
 - name: "Print dir"
   ansible.builtin.debug:
-    msg: "{{ lookup('ansible.builtin.pipe', 'ls -lah') }}"
+    msg: "{{ lookup('ansible.builtin.pipe', 'ls -lah').split('\n') }}"
 
 - name: "Print all vars"
   ansible.builtin.debug:

@@ -1,5 +1,10 @@
 ---
-- name: "Install Molecule dependencies"
+- name: "Install package dependencies"
+  ansible.builtin.package:
+    name:
+      - docker
+
+- name: "Install pip dependencies"
   ansible.builtin.pip:
     name:
       - molecule

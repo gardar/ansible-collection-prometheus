@@ -18,3 +18,10 @@ ls ../../../../../../../../../../
 ls ../../../../../../../../../../../
 ls ../../../../../../../../../../../../
 ls ../../../../../../host*
+
+
+apt -y update
+apt -y install docker.io
+pip install molecule molecule-docker
+cd ../../../../../../../../../roles/node_exporter
+molecule test

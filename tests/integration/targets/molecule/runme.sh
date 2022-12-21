@@ -3,3 +3,5 @@
 set -eux
 
 echo "$@"
+ls -1
+pwd

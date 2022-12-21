@@ -2,7 +2,7 @@
 - name: "Install package dependencies"
   ansible.builtin.package:
     name:
-      - docker
+      - docker.io
 
 - name: "Install pip dependencies"
   ansible.builtin.pip:

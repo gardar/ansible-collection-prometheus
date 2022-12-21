@@ -10,6 +10,10 @@
       - molecule
       - molecule-docker
 
+- name: "Check location of docker"
+  ansible.builtin.debug:
+    msg: "{{ lookup('ansible.builtin.pipe', 'command -v docker').split('\n') }}"
+
 - name: "Molecule test"
   ansible.builtin.command:
     cmd: molecule test

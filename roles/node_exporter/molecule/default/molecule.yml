@@ -49,7 +49,7 @@ provisioner:
     prepare: prepare.yml
     converge: playbook.yml
   env:
-    ANSIBLE_VERBOSITY: 3
+    ANSIBLE_VERBOSITY: 1
   inventory:
     group_vars:
       python3:

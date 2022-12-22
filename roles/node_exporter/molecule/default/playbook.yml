@@ -1,12 +1,8 @@
 ---
 - name: Converge
   hosts: all
-  gather_facts: false
   any_errors_fatal: true
-  tasks:
-    - name: Test raw
-      ansible.builtin.raw: ls
-  #  roles:
-  #    - node_exporter
+  roles:
+    - node_exporter
   vars:
     node_exporter_web_listen_address: "127.0.0.1:9100"

@@ -25,10 +25,10 @@ pip install molecule molecule-docker
 cd ../../../../../../../../../roles/node_exporter
 ansible --version
 #ansible-doc --list -j
-#ansible-config dump | cat
+ansible-config dump --only-changed | cat
 ls /root/ansible/lib/ansible
 ls /root
 ls /root/ansible
 ls /root/ansible/lib/ansible/executor
 
-#ANSIBLE_PYTHON_INTERPRETER=auto molecule test
+#ANSIBLE_PYTHON_INTERPRETER=auto molecule --debug test

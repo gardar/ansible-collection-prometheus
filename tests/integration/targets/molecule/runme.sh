@@ -37,4 +37,4 @@ unset ANSIBLE_COLLECTIONS_PATH
 
 ansible-config dump --only-changed | cat
 
-#ANSIBLE_PYTHON_INTERPRETER=auto molecule --debug test
+molecule test

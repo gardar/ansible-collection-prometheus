@@ -36,6 +36,7 @@ unset ANSIBLE_LIBRARY
 unset ANSIBLE_COLLECTIONS_PATH
 unset ANSIBLE_PLAYBOOK_DIR
 unset ANSIBLE_PYTHON_MODULE_RLIMIT_NOFILE
+env
 
 ansible-config dump --only-changed | cat
 

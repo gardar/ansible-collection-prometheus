@@ -25,4 +25,5 @@ apt -y install docker.io
 pip install molecule molecule-docker
 cd ../../../../../../../../../roles/node_exporter
 ansible --version
-molecule test
+ansible-doc --list -j
+#molecule test

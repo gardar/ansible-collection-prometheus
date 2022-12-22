@@ -17,7 +17,6 @@ ls ../../../../../../../../../
 ls ../../../../../../../../../../
 ls ../../../../../../../../../../../
 ls ../../../../../../../../../../../../
-ls ../../../../../../host*
 
 
 apt -y update
@@ -26,4 +25,5 @@ pip install molecule molecule-docker
 cd ../../../../../../../../../roles/node_exporter
 ansible --version
 ansible-doc --list -j
+ansible-config dump | cat
 #molecule test

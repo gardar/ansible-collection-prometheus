@@ -26,4 +26,4 @@ cd ../../../../../../../../../roles/node_exporter
 ansible --version
 #ansible-doc --list -j
 #ansible-config dump | cat
-molecule test
+ANSIBLE_PYTHON_INTERPRETER=auto molecule test

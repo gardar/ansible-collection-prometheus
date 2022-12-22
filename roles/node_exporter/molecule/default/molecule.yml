@@ -48,10 +48,12 @@ provisioner:
   playbooks:
     prepare: prepare.yml
     converge: playbook.yml
+  env:
+    ANSIBLE_PYTHON_INTERPRETER: auto
   inventory:
     group_vars:
       all:
-        ansible_python_interpreter: /usr/bin/python
+        ansible_python_interpreter: auto
       python3:
         ansible_python_interpreter: /usr/bin/python3
 verifier:

@@ -37,4 +37,4 @@ unset ANSIBLE_COLLECTIONS_PATH
 
 ansible-config dump --only-changed | cat
 
-molecule test
+molecule --debug test

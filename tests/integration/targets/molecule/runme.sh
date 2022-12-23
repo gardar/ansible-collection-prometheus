@@ -20,7 +20,7 @@ echo "$@"
 
 
 #apt -y update
-#apt -y install docker.io
+apt -y install docker.io
 pip install molecule molecule-docker
 cd ../../../../../../../../../roles/node_exporter
 ansible --version

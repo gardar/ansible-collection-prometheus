@@ -14,6 +14,7 @@ echo \
 	        | tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list > /dev/null
 apt-get update -qq
 apt-get -qq -y install podman
+pip install molecule molecule-podman
 
 #apt -y update
 #apt -y install docker.io

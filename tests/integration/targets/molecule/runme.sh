@@ -37,4 +37,4 @@ unset ANSIBLE_PYTHON_INTERPRETER
 
 ansible-config dump --only-changed | cat
 
-molecule -s podman test
+molecule test -s podman

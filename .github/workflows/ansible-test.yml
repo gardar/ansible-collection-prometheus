@@ -23,6 +23,6 @@ jobs:
         uses: ansible-community/ansible-test-gh-action@release/v1
         with:
           ansible-core-version: stable-2.14
-          target-python-version: 3.9
+          target-python-version: 3.8
           controller-python-version: auto
           testing-type: integration

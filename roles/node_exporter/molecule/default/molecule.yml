@@ -19,11 +19,11 @@ platforms:
     image: quay.io/paulfantom/molecule-systemd:debian-9
     privileged: true
     cgroup_parent: docker.slice
-  - name: buster
-    pre_build_image: true
-    image: quay.io/paulfantom/molecule-systemd:debian-10
-    privileged: true
-    cgroup_parent: docker.slice
+    # - name: buster
+    #   pre_build_image: true
+    #   image: quay.io/paulfantom/molecule-systemd:debian-10
+    #   privileged: true
+    #   cgroup_parent: docker.slice
   - name: centos7
     pre_build_image: true
     image: quay.io/paulfantom/molecule-systemd:centos-7
@@ -36,13 +36,13 @@ platforms:
     cgroup_parent: docker.slice
     groups:
       - python3
-  - name: fedora
-    pre_build_image: true
-    image: quay.io/paulfantom/molecule-systemd:fedora-30
-    privileged: true
-    cgroup_parent: docker.slice
-    groups:
-      - python3
+    # - name: fedora
+    #   pre_build_image: true
+    #   image: quay.io/paulfantom/molecule-systemd:fedora-30
+    #   privileged: true
+    #   cgroup_parent: docker.slice
+    #   groups:
+    #     - python3
 provisioner:
   name: ansible
   playbooks:

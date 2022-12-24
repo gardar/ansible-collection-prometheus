@@ -4,21 +4,10 @@ set -eux
 
 echo "$@"
 
-mkdir -p /etc/apt/keyrings
-curl -fsSL https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_20.04/Release.key \
-	  | gpg --dearmor \
-	    | tee /etc/apt/keyrings/devel_kubic_libcontainers_stable.gpg > /dev/null
-echo \
-	  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/devel_kubic_libcontainers_stable.gpg]\
-	      https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_20.04/ /" \
-	        | tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list > /dev/null
-apt-get update -qq
-apt-get -qq -y install podman
-pip install molecule molecule-podman
 
-#apt -y update
-#apt -y install docker.io
-#pip install molecule molecule-docker
+apt -y update
+apt -y install docker.io
+python -m pip install molecule molecule-docker
 cd ../../../../../../../../../roles/node_exporter
 ansible --version
 #ansible-doc --list -j
@@ -27,6 +16,7 @@ ansible --version
 #ls /root/ansible
 #ls /root/ansible/lib/ansible/executor
 
+unset _ANSIBLE_COVERAGE_CONFIG
 unset ANSIBLE_PYTHON_INTERPRETER
 #unset ANSIBLE_CONNECTION_PATH
 #unset ANSIBLE_LIBRARY
@@ -37,4 +27,4 @@ unset ANSIBLE_PYTHON_INTERPRETER
 
 ansible-config dump --only-changed | cat
 
-molecule test -s podman
+molecule test

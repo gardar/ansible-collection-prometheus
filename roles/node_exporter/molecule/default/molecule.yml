@@ -8,6 +8,8 @@ platforms:
     pre_build_image: true
     image: quay.io/paulfantom/molecule-systemd:ubuntu-18.04
     command: /lib/systemd/systemd
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     privileged: true
     cgroup_parent: docker.slice
   - name: xenial
@@ -15,12 +17,16 @@ platforms:
     image: quay.io/paulfantom/molecule-systemd:ubuntu-16.04
     command: /lib/systemd/systemd
     privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     cgroup_parent: docker.slice
   - name: stretch
     pre_build_image: true
     image: quay.io/paulfantom/molecule-systemd:debian-9
     command: /lib/systemd/systemd
     privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     cgroup_parent: docker.slice
     # - name: buster
     #   pre_build_image: true
@@ -30,15 +36,16 @@ platforms:
   - name: centos7
     pre_build_image: true
     image: quay.io/paulfantom/molecule-systemd:centos-7
-    command: /lib/systemd/systemd
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     privileged: true
-    cgroup_parent: docker.slice
   - name: centos8
     pre_build_image: true
     image: quay.io/paulfantom/molecule-systemd:centos-8
     privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     command: /lib/systemd/systemd
-    cgroup_parent: docker.slice
     groups:
       - python3
   - name: almalinux-8

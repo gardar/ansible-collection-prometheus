@@ -15,7 +15,7 @@ ansible --version
 #ls /root
 #ls /root/ansible
 #ls /root/ansible/lib/ansible/executor
-ansible-galaxy list
+#ansible-galaxy list
 ansible-galaxy collection list
 
 unset _ANSIBLE_COVERAGE_CONFIG

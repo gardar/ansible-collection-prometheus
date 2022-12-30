@@ -18,6 +18,8 @@ platforms:
     command: /bin/systemd
     privileged: true
     cgroup_parent: docker.slice
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
   - name: stretch
     pre_build_image: true
     # image: quay.io/paulfantom/molecule-systemd:debian-9

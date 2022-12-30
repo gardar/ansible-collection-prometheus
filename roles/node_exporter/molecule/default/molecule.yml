@@ -15,7 +15,8 @@ platforms:
     pre_build_image: true
     # image: quay.io/paulfantom/molecule-systemd:ubuntu-16.04
     image: dokken/ubuntu-16.04
-    command: /bin/systemd
+    # command: /bin/systemd
+    command: /sbin/init
     privileged: true
     cgroup_parent: docker.slice
     volumes:

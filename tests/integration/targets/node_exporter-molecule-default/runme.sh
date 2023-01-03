@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+ls ../
+pwd
 targetname=${PWD##*/}
 targetarray=(${targetname//-/ })
 if [ "${targetarray[1]}" = "molecule" ]; then

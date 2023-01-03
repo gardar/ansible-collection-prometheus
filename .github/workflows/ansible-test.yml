@@ -13,12 +13,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Perform sanity testing with ansible-test
-        uses: ansible-community/ansible-test-gh-action@release/v1
-        with:
-          ansible-core-version: stable-2.14
-          testing-type: sanity
-
       - name: Perform integration testing with ansible-test
         uses: ansible-community/ansible-test-gh-action@release/v1
         with:
@@ -28,3 +22,9 @@ jobs:
           docker-image: "--docker-privileged"
           testing-type: integration
           target: node_exporter-molecule-default
+
+      - name: Perform sanity testing with ansible-test
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: stable-2.14
+          testing-type: sanity

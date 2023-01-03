@@ -10,6 +10,8 @@ if [ "${targetarray[1]}" = "molecule" ]; then
   scenario=(${targetarray[2]})
   echo ${role}
   echo ${scenario}
+  ls $collection_root/tests/
+  ls $collection_root/tests/_molecule
   $collection_root/tests/_molecule/molecule.sh ${role} ${scenario}
 else
   echo "ERROR: Unable to recognize molecule test target"

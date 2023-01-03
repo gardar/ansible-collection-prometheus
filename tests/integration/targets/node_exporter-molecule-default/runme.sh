@@ -2,6 +2,7 @@
 
 ls ../
 pwd
+collection_root=$(pwd | grep -oP ".+\/ansible_collections\/\w+?\/\w+")
 targetname=${PWD##*/}
 targetarray=(${targetname//-/ })
 if [ "${targetarray[1]}" = "molecule" ]; then
@@ -9,7 +10,7 @@ if [ "${targetarray[1]}" = "molecule" ]; then
   scenario=(${targetarray[2]})
   echo ${role}
   echo ${scenario}
-  ../molecule/molecule.sh ${role} ${scenario}
+  $collection_root/tests/_molecule/molecule.sh ${role} ${scenario}
 else
   echo "ERROR: Unable to recognize molecule test target"
   echo "Got: $targetname"

@@ -27,3 +27,4 @@ jobs:
           controller-python-version: auto
           docker-image: "--docker-privileged"
           testing-type: integration
+          target: node_exporter-molecule-default

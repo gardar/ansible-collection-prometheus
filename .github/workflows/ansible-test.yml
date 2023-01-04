@@ -30,20 +30,20 @@ jobs:
       matrix:
         test: ${{ fromJson(needs.discover-tests.outputs.tests) }}
 
-  name: "${{ matrix.test }}"
-  steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+    name: "${{ matrix.test }}"
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Perform molecule integration testing with ansible-test
-      uses: ansible-community/ansible-test-gh-action@release/v1
-      with:
-        ansible-core-version: stable-2.14
-        target-python-version: 3.8
-        controller-python-version: auto
-        docker-image: "--docker-privileged"
-        testing-type: integration
-        target: ${{ matrix.test }}
+      - name: Perform molecule integration testing with ansible-test
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: stable-2.14
+          target-python-version: 3.8
+          controller-python-version: auto
+          docker-image: "--docker-privileged"
+          testing-type: integration
+          target: ${{ matrix.test }}
 
   ansible-test-sanity:
     name: ansible-test-sanity

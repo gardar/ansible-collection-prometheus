@@ -5,8 +5,8 @@ targetname=${PWD##*/}
 #targetarray=(${targetname//-/ })
 #role=${targetarray[0]}
 #scenario=${targetarray[2]}
-role=$(expr $targetname : '\w*-\(\w*\)-\w*')
-scenario=$(expr $targetname : '\w*-\w*-\(\w*\)')
+role="$(expr $targetname : '\w*-\(\w*\)-\w*')"
+scenario="$(expr $targetname : '\w*-\w*-\(\w*\)')"
 
 apt -y update
 apt -y install docker.io

@@ -33,6 +33,7 @@ platforms:
     pre_build_image: true
     privileged: true
     cgroup_parent: docker.slice
+    command: /lib/systemd/systemd
   - name: debian-11
     image: dokken/debian-11
     pre_build_image: true

@@ -60,10 +60,5 @@ platforms:
     privileged: true
     cgroup_parent: docker.slice
     command: /lib/systemd/systemd
-provisioner:
-  name: ansible
-  playbooks:
-    prepare: prepare.yml
-    converge: playbook.yml
 verifier:
   name: testinfra

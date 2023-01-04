@@ -17,4 +17,4 @@ export MOLECULE_FILE=$collection_root/.config/molecule/config.yml
 unset _ANSIBLE_COVERAGE_CONFIG
 unset ANSIBLE_PYTHON_INTERPRETER
 
-molecule test -s $scenario
+molecule -c $collection_root/.config/molecule/config.yml test -s $scenario

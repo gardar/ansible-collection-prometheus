@@ -19,9 +19,11 @@ jobs:
         # Find path to all tests
         run: |
           echo tests="[`for x in $(ls -1 tests/integration/targets); do echo "'$x'"; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
+          echo test_names="[`for x in $(ls -1 tests/integration/targets); do echo "'${x//-molecule-/(})'"; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
+
 
   molecule:
-    name: ${{ matrix.test }}
+    name: molecule: ${{ matrix.test_name }}
     runs-on: ubuntu-latest
     needs:
       - discover-tests
@@ -29,6 +31,7 @@ jobs:
       fail-fast: false
       matrix:
         test: ${{ fromJson(needs.discover-tests.outputs.tests) }}
+        test_name: ${{ fromJson(needs.discover-tests.outputs.test_names) }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3

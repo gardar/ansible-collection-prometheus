@@ -22,7 +22,7 @@ jobs:
 
 
   molecule:
-    name: "molecule: ${{ matrix.test_name//-molecule-/( }})"
+    name: "${{ matrix.test }}"
     runs-on: ubuntu-latest
     needs:
       - discover-tests

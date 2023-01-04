@@ -18,7 +18,7 @@ jobs:
         id: set-tests
         # Find path to all tests
         run: |
-          echo tests="[`for x in $(ls -1 tests); do echo "'$x'"; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
+          echo tests="[`for x in $(ls -1 tests); do echo "'$x'"; done | tr '\n' ',' | sed '$s/,$//'`]"
 
   ansible-test:
     name: ansible-test

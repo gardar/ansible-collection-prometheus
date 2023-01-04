@@ -11,6 +11,7 @@ apt -y install docker.io
 python -m pip install molecule molecule-docker
 
 cd $collection_root/roles/$role
+git status
 
 # Unset ansible-test variables that break molecule
 unset _ANSIBLE_COVERAGE_CONFIG

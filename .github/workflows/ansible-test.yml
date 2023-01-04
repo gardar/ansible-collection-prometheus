@@ -6,9 +6,27 @@ env:
   ANSIBLE_FORCE_COLOR: true
 
 jobs:
+  discover-tests:
+    runs-on: ubuntu-latest
+    outputs:
+      tests: ${{ steps.set-tests.outputs.tests }}
+    steps:
+      - name: Check out codebase
+        uses: actions/checkout@v3
+
+      - name: Discover tests
+        id: set-tests
+        # Find path to all tests
+        run: |
+          echo tests="[`for x in $(ls -1 tests); do echo "'$x'"; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
+
   ansible-test:
     name: ansible-test
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        test: ${{ fromJson(needs.discover-tests.outputs.tests) }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -21,7 +39,7 @@ jobs:
           controller-python-version: auto
           docker-image: "--docker-privileged"
           testing-type: integration
-          target: node_exporter-molecule-default
+          target: ${{ matrix.test }}
 
       - name: Perform sanity testing with ansible-test
         uses: ansible-community/ansible-test-gh-action@release/v1

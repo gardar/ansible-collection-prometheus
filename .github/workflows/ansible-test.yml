@@ -39,7 +39,7 @@ jobs:
         with:
           ansible-core-version: stable-2.14
           target-python-version: 3.8
-          controller-python-version: "3.10"
+          controller-python-version: auto
           docker-image: "--docker-privileged"
           testing-type: integration
           target: ${{ matrix.test }}

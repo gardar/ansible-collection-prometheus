@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tests: ${{ steps.set-tests.outputs.tests }}
+      tests: ${{ steps.set-tests.outputs.test_names }}
     steps:
       - name: Check out codebase
         uses: actions/checkout@v3

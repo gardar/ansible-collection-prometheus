@@ -37,7 +37,7 @@
     - reload prometheus
 
 - name: Configure Prometheus web
-  ansible.builtin.template:
+  ansible.builtin.copy:
     content: "{{ prometheus_web_config | to_nice_yaml(indent=2, sort_keys=False) }}"
     dest: "{{ prometheus_config_dir }}/web.yml"
     force: true
@@ -46,7 +46,7 @@
     mode: 0640
 
 - name: Configure prometheus static targets
-  ansible.builtin.template:
+  ansible.builtin.copy:
     content: |
       {{ item.value | to_nice_yaml(indent=2, sort_keys=False) }}
     lstrip_blocks: true

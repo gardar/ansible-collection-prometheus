@@ -18,11 +18,13 @@ jobs:
         id: set-tests
         # Find path to all tests
         run: |
-          echo tests="[`for x in $(ls -1 tests); do echo "'$x'"; done | tr '\n' ',' | sed '$s/,$//'`]"
+          echo tests="[`for x in $(ls -1 tests/integration/targets); do echo "'$x'"; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
 
   ansible-test:
     name: ansible-test
     runs-on: ubuntu-latest
+    needs:
+      - discover-tests
     strategy:
       fail-fast: false
       matrix:

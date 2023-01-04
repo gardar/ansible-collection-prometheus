@@ -10,10 +10,10 @@ scenario=$(expr "$targetname" : '\w*-\w*-\(\w*\)')
 apt -y update
 apt -y install docker.io
 if [ -f "$role_root/test-requirements.txt"  ]; then
-	python -m pip install "$role_root/test-requirements.txt"
+	python -m pip install -r "$role_root/test-requirements.txt"
 fi
 if [ -f "$collection_root/test-requirements.txt"  ]; then
-	python -m pip install "$collection_root/test-requirements.txt"
+	python -m pip install -r "$collection_root/test-requirements.txt"
 fi
 python -m pip install molecule molecule-docker
 

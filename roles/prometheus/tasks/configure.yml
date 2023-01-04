@@ -49,7 +49,6 @@
   ansible.builtin.copy:
     content: |
       {{ item.value | to_nice_yaml(indent=2, sort_keys=False) }}
-    lstrip_blocks: true
     dest: "{{ prometheus_config_dir }}/file_sd/{{ item.key }}.yml"
     force: true
     owner: root

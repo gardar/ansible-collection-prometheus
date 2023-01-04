@@ -11,7 +11,7 @@
         state: directory
         owner: root
         group: root
-        mode: 0755
+        mode: u+rwX,g+rwX,o=rX
 
     - name: Copy cert and key
       ansible.builtin.copy:

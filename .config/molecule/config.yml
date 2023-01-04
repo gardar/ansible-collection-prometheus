@@ -4,60 +4,61 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: ubuntu-18.04
-    pre_build_image: true
-    image: dokken/ubuntu-18.04
-    command: /lib/systemd/systemd
-    privileged: true
-    cgroup_parent: docker.slice
-  - name: ubuntu-16.04
-    pre_build_image: true
-    image: dokken/ubuntu-16.04
-    command: /bin/systemd
-    privileged: true
-    cgroup_parent: docker.slice
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  - name: debian-9
-    pre_build_image: true
-    image: dokken/debian-9
-    command: /lib/systemd/systemd
-    privileged: true
-    cgroup_parent: docker.slice
-  - name: debian-10
-    pre_build_image: true
-    image: dokken/debian-10
-    privileged: true
-    cgroup_parent: docker.slice
-  - name: centos-7
-    pre_build_image: true
-    image: dokken/centos-7
-    command: /usr/lib/systemd/systemd
-    privileged: true
-    cgroup_parent: docker.slice
-  - name: centos-stream-8
-    pre_build_image: true
-    image: dokken/centos-stream-8
-    privileged: true
-    command: /lib/systemd/systemd
   - name: almalinux-8
     image: dokken/almalinux-8
     pre_build_image: true
+    privileged: true
+    cgroup_parent: docker.slice
     command: /lib/systemd/systemd
+  - name: centos-7
+    image: dokken/centos-7
+    pre_build_image: true
+    privileged: true
+    cgroup_parent: docker.slice
+    command: /usr/lib/systemd/systemd
+  - name: centos-stream-8
+    image: dokken/centos-stream-8
+    pre_build_image: true
+    privileged: true
+    cgroup_parent: docker.slice
+    command: /lib/systemd/systemd
+  - name: debian-9
+    image: dokken/debian-9
+    pre_build_image: true
+    privileged: true
+    cgroup_parent: docker.slice
+    command: /lib/systemd/systemd
+  - name: debian-10
+    image: dokken/debian-10
+    pre_build_image: true
     privileged: true
     cgroup_parent: docker.slice
   - name: debian-11
     image: dokken/debian-11
     pre_build_image: true
-    command: /lib/systemd/systemd
     privileged: true
     cgroup_parent: docker.slice
- - name: fedora-30
-   pre_build_image: true
-   image: dokken/fedora-30
-   privileged: true
-   command: /lib/systemd/systemd
-   cgroup_parent: docker.slice
+    command: /lib/systemd/systemd
+  - name: fedora-30
+    image: dokken/fedora-30
+    pre_build_image: true
+    privileged: true
+    cgroup_parent: docker.slice
+    command: /lib/systemd/systemd
+  - name: ubuntu-16.04
+    image: dokken/ubuntu-16.04
+    pre_build_image: true
+    privileged: true
+    cgroup_parent: docker.slice
+    command: /bin/systemd
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  - name: ubuntu-18.04
+    image: dokken/ubuntu-18.04
+    pre_build_image: true
+    privileged: true
+    cgroup_parent: docker.slice
+    command: /lib/systemd/systemd
 provisioner:
   name: ansible
   playbooks:

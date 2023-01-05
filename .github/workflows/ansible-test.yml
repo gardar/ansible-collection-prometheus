@@ -3,6 +3,10 @@ name: Ansible Test
 # on: [push, pull_request]
 on:
   workflow_call:
+    inputs:
+      molecule_tests:
+      required: true
+      type: string
 
 env:
   ANSIBLE_FORCE_COLOR: true
@@ -13,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test: ${{ fromJson(discover-tests.outputs.tests) }}
+        test: ${{ fromJson(inputs.molecule_tests) }}
 
     name: "${{ matrix.test }}"
     steps:

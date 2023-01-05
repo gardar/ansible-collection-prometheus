@@ -27,3 +27,7 @@ jobs:
 
   ansible-test:
     uses: ./.github/workflows/ansible-test.yml
+    needs:
+      - discover-molecule-tests
+    with:
+      molecule_tests: ${{ needs.discover-molecule-tests.outputs.tests }}

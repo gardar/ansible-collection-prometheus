@@ -10,12 +10,10 @@ env:
 jobs:
   molecule:
     runs-on: ubuntu-latest
-    needs:
-      - discover-molecule-tests
     strategy:
       fail-fast: false
       matrix:
-        test: ${{ fromJson(needs.discover-tests.outputs.tests) }}
+        test: ${{ fromJson(discover-tests.outputs.tests) }}
 
     name: "${{ matrix.test }}"
     steps:

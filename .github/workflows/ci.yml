@@ -4,4 +4,4 @@ on: [push, pull_request]
 
 jobs:
   ansible-test:
-    uses: ansible-test.yml@dev-collection-test
+    uses: ./.github/workflows/ansible-test.yml

@@ -8,25 +8,10 @@ env:
   ANSIBLE_FORCE_COLOR: true
 
 jobs:
-  discover-tests:
-    runs-on: ubuntu-latest
-    outputs:
-      tests: ${{ steps.set-tests.outputs.tests }}
-    steps:
-      - name: Check out codebase
-        uses: actions/checkout@v3
-
-      - name: Discover tests
-        id: set-tests
-        # Find path to all tests
-        run: |
-          echo tests="[`for x in $(ls -1 tests/integration/targets); do echo "'$x'"; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
-
-
   molecule:
     runs-on: ubuntu-latest
     needs:
-      - discover-tests
+      - discover-molecule-tests
     strategy:
       fail-fast: false
       matrix:
@@ -46,13 +31,3 @@ jobs:
           docker-image: "--docker-privileged"
           testing-type: integration
           target: ${{ matrix.test }}
-
-  ansible-test-sanity:
-    name: ansible-test-sanity
-    runs-on: ubuntu-latest
-    steps:
-      - name: Perform sanity testing with ansible-test
-        uses: ansible-community/ansible-test-gh-action@release/v1
-        with:
-          ansible-core-version: stable-2.14
-          testing-type: sanity

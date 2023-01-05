@@ -3,5 +3,27 @@ name: ci
 on: [push, pull_request]
 
 jobs:
+  ansible-test-sanity:
+    name: ansible-test-sanity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Perform sanity testing with ansible-test
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: stable-2.14
+          testing-type: sanity
+
+  discover-molecule-tests:
+    runs-on: ubuntu-latest
+    outputs:
+      tests: ${{ steps.set-tests.outputs.tests }}
+    steps:
+      - name: Check out codebase
+        uses: actions/checkout@v3
+      - name: Discover tests
+        id: set-tests
+        run: |
+          echo tests="[`for x in $(find tests/integration/targets -type d -iname "molecule-*" -printf '%f\n'); do echo "'$x'"; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
+
   ansible-test:
     uses: ./.github/workflows/ansible-test.yml

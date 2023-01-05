@@ -5,8 +5,8 @@ on:
   workflow_call:
     inputs:
       molecule_tests:
-      required: true
-      type: string
+        required: true
+        type: string
 
 env:
   ANSIBLE_FORCE_COLOR: true

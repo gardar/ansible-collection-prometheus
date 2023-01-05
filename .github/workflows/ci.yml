@@ -23,7 +23,7 @@ jobs:
       - name: Discover tests
         id: set-tests
         run: |
-          echo tests="[`for x in $(find tests/integration/targets -type d -iname "molecule-*" -printf '%f\n'); do echo "'$x'"; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
+          echo tests="[`for x in $(find tests/integration/targets -type d -iname "molecule-*" -printf '%f\n'); do echo "{'test':'$x','name':'${x#*-}'}"; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
 
   ansible-test:
     uses: ./.github/workflows/ansible-test.yml

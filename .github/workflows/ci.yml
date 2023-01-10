@@ -55,8 +55,6 @@ jobs:
     steps:
       - name: include ansible test
         uses: ./.github/workflows/python-version.yml
-        needs:
-          - discover-molecule-tests
         with:
           targets: ${{ needs.discover-molecule-tests.outputs.integration-tests }}
           ansible-core-versions: '["stable-2.13","stable-2.14"]'

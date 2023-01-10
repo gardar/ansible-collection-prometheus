@@ -32,11 +32,11 @@ jobs:
     needs:
       - discover-molecule-tests
     with:
-      integration_tests: ${{ needs.discover-molecule-tests.outputs.molecule-tests }}
+      targets: ${{ needs.discover-molecule-tests.outputs.molecule-tests }}
 
   ansible-test-integration:
     uses: ./.github/workflows/ansible-test.yml
     needs:
       - discover-molecule-tests
     with:
-      integration_tests: ${{ needs.discover-molecule-tests.outputs.integration-tests }}
+      targets: ${{ needs.discover-molecule-tests.outputs.integration-tests }}

@@ -4,8 +4,16 @@ name: Ansible Test
 on:
   workflow_call:
     inputs:
-      integration_tests:
+      targets:
         required: true
+        type: string
+      ansible-core-versions:
+        required: false
+        default: '["stable-2.14"]'
+        type: string
+      target-python-versions:
+        required: false
+        default: '["3.8"]'
         type: string
 
 env:
@@ -17,9 +25,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test: ${{ fromJson(inputs.integration_tests) }}
+        targets: ${{ fromJson(inputs.targets) }}
+        ansible-core-versions: ${{ fromJson(inputs.ansible-core-versions) }}
+        target-python-versions: ${{ fromJson(inputs.target-python-versions) }}
 
-    name: "${{ matrix.test.name }}"
+    name: "${{ matrix.targets.name }}"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -27,9 +37,9 @@ jobs:
       - name: Perform molecule integration testing with ansible-test
         uses: ansible-community/ansible-test-gh-action@release/v1
         with:
-          ansible-core-version: stable-2.14
-          target-python-version: 3.8
+          ansible-core-version: ${{ matrix.ansible-core-versions }}
+          target-python-version: ${{ matrix.target-python-versions }}
           controller-python-version: auto
           docker-image: "--docker-privileged"
           testing-type: integration
-          target: ${{ matrix.test.test }}
+          target: ${{ matrix.targets.test }}

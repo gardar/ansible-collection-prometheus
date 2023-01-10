@@ -51,10 +51,12 @@ jobs:
         target-python-versions:
           - "3.8"
           - "3.9"
-    uses: ./.github/workflows/python-version.yml
-    needs:
-      - discover-molecule-tests
-    with:
-      targets: ${{ needs.discover-molecule-tests.outputs.integration-tests }}
-      ansible-core-versions: '["stable-2.13","stable-2.14"]'
-      target-python-versions: '["3.8","3.9"]'
+    name: "python"
+    steps:
+      - name: include ansible test
+        uses: ./.github/workflows/python-version.yml
+        needs:
+          - discover-molecule-tests
+        with:
+          targets: ${{ needs.discover-molecule-tests.outputs.integration-tests }}
+          ansible-core-versions: '["stable-2.13","stable-2.14"]'

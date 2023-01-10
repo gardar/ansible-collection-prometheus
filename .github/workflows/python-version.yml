@@ -21,6 +21,12 @@ env:
 
 jobs:
   ansible-test-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+  ansible-test:
     uses: ./.github/workflows/ansible-test.yml
     with:
       targets: ${{ inputs.targets }}

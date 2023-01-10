@@ -20,10 +20,12 @@ env:
   ANSIBLE_FORCE_COLOR: true
 
 jobs:
+  check-out:
+    steps:
+      - name: Check out codebase
+        uses: actions/checkout@v3
   ansible-test-integration:
     runs-on: ubuntu-latest
     uses: ./.github/workflows/ansible-test.yml
-    needs:
-      - discover-molecule-tests
     with:
       targets: ${{ inputs.targets }}

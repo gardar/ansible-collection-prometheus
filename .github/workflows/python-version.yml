@@ -1,0 +1,29 @@
+---
+name: Python Version
+# on: [push, pull_request]
+on:
+  workflow_call:
+    inputs:
+      targets:
+        required: true
+        type: string
+      ansible-core-versions:
+        required: false
+        default: '["stable-2.14"]'
+        type: string
+      target-python-versions:
+        required: false
+        default: '["3.8"]'
+        type: string
+
+env:
+  ANSIBLE_FORCE_COLOR: true
+
+jobs:
+  ansible-test-integration:
+    runs-on: ubuntu-latest
+    uses: ./.github/workflows/ansible-test.yml
+    needs:
+      - discover-molecule-tests
+    with:
+      targets: ${{ inputs.targets }}

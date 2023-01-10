@@ -29,7 +29,7 @@ jobs:
         ansible-core-versions: ${{ fromJson(inputs.ansible-core-versions) }}
         target-python-versions: ${{ fromJson(inputs.target-python-versions) }}
 
-    name: "${{ matrix.targets.name }} (ansible: ${{ matrix.ansible-core-versions }}) (py: ${{ matrix.target-python-versions }})"
+    name: "${{ matrix.targets.name }} / py${{ matrix.target-python-versions }} / ${{ matrix.ansible-core-versions }}"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3

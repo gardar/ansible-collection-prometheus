@@ -20,7 +20,7 @@ env:
   ANSIBLE_FORCE_COLOR: true
 
 jobs:
-  molecule:
+  ansible-test-integration:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -29,12 +29,12 @@ jobs:
         ansible-core-versions: ${{ fromJson(inputs.ansible-core-versions) }}
         target-python-versions: ${{ fromJson(inputs.target-python-versions) }}
 
-    name: "${{ matrix.targets.name }}"
+    name: "${{ matrix.targets.name }} (ansible: ${{ matrix.ansible-core-versions }}) (py: ${{ matrix.target-python-versions }})"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Perform molecule integration testing with ansible-test
+      - name: "Perform ${{ matrix.targets.test }} integration test with ansible-test"
         uses: ansible-community/ansible-test-gh-action@release/v1
         with:
           ansible-core-version: ${{ matrix.ansible-core-versions }}

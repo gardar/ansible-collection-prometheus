@@ -10,12 +10,10 @@ jobs:
   ansible-test-sanity:
     name: ansible-test-sanity
     runs-on: ubuntu-latest
-    steps:
-      - name: Perform sanity testing with ansible-test
-        uses: ansible-community/ansible-test-gh-action@release/v1
-        with:
-          ansible-core-version: stable-2.14
-          testing-type: sanity
+    uses: ./.github/workflows/ansible-test-sanity.yml
+    needs:
+    with:
+      ansible-core-versions: '["stable-2.9","stable-2.10","stable-2.11","stable-2.12","stable-2.13","stable-2.14"]'
 
   discover-ansible-tests:
     runs-on: ubuntu-latest
@@ -34,7 +32,7 @@ jobs:
           echo ansible-test-integration="[`for x in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -not -iname "molecule-*" -printf "%f\n"); do echo '{"test":\"'"${x}"'\","name":\"'"${x}\"'"}'; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
 
   ansible-test-molecule:
-    uses: ./.github/workflows/ansible-test.yml
+    uses: ./.github/workflows/ansible-test-integration.yml
     needs:
       - ansible-test-sanity
       - discover-ansible-tests
@@ -42,7 +40,7 @@ jobs:
       targets: ${{ needs.discover-ansible-tests.outputs.molecule-tests }}
 
   ansible-test-integration:
-    uses: ./.github/workflows/ansible-test.yml
+    uses: ./.github/workflows/ansible-test-integration.yml
     needs:
       - ansible-test-sanity
       - discover-ansible-tests

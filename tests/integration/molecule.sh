@@ -15,7 +15,7 @@ fi
 if [ -f "$collection_root/test-requirements.txt"  ]; then
 	python -m pip install -r "$collection_root/test-requirements.txt"
 fi
-python -m pip install molecule molecule-docker
+python -m pip install molecule molecule-plugins[docker]
 
 export MOLECULE_FILE=$collection_root/.config/molecule/config.yml
 export YAMLLINT_CONFIG_FILE=$collection_root/.config/yamllint/config.yml

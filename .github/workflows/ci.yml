@@ -48,4 +48,4 @@ jobs:
       - discover-ansible-tests
     with:
       targets: ${{ needs.discover-ansible-tests.outputs.integration-tests }}
-      ansible-core-versions: ${{ ansible_versions_to_test }}
+      ansible-core-versions: $ansible_versions_to_test

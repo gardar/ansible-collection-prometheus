@@ -3,7 +3,6 @@ name: ci
 on: [push, pull_request]
 
 env:
-  ansible_versions_to_test: '["stable-2.9","stable-2.10","stable-2.11","stable-2.12","stable-2.13","stable-2.14"]'
   ANSIBLE_FORCE_COLOR: true
 
 jobs:
@@ -43,4 +42,4 @@ jobs:
       - discover-ansible-tests
     with:
       targets: ${{ needs.discover-ansible-tests.outputs.integration-tests }}
-      ansible-core-versions: $ansible_versions_to_test
+      ansible-core-versions: '["stable-2.9","stable-2.10","stable-2.11","stable-2.12","stable-2.13","stable-2.14"]'

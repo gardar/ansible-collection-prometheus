@@ -33,3 +33,4 @@ jobs:
           docker-image: "--docker-privileged"
           testing-type: integration
           target: ${{ matrix.targets.test }}
+          coverage: never

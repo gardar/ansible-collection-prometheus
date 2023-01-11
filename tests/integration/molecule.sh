@@ -20,7 +20,7 @@ python -m pip install molecule molecule-docker
 export MOLECULE_FILE=$collection_root/.config/molecule/config.yml
 
 # Unset ansible-test variables that break molecule
-unset _ANSIBLE_COVERAGE_CONFIG
+#unset _ANSIBLE_COVERAGE_CONFIG
 unset ANSIBLE_PYTHON_INTERPRETER
 
 # Run molecule test

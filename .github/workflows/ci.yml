@@ -13,8 +13,6 @@ jobs:
 
   discover-ansible-tests:
     runs-on: ubuntu-latest
-    needs:
-      - ansible-test-sanity
     outputs:
       molecule-tests: ${{ steps.set-tests.outputs.ansible-test-molecule }}
       integration-tests: ${{ steps.set-tests.outputs.ansible-test-integration }}

@@ -33,6 +33,7 @@ jobs:
       targets: ${{ needs.discover-ansible-tests.outputs.molecule-tests }}
 
   ansible-test-integration:
+    runs-on: ubuntu-latest
     needs: discover-ansible-tests
     steps:
       - uses: ./.github/workflows/ansible-test-integration.yml

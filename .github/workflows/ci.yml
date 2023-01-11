@@ -8,10 +8,7 @@ env:
 
 jobs:
   ansible-test-sanity:
-    name: ansible-test-sanity
-    runs-on: ubuntu-latest
     uses: ./.github/workflows/ansible-test-sanity.yml
-    needs:
     with:
       ansible-core-versions: '["stable-2.9","stable-2.10","stable-2.11","stable-2.12","stable-2.13","stable-2.14"]'
 

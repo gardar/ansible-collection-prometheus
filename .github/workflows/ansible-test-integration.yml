@@ -1,5 +1,5 @@
 ---
-name: Ansible Test
+name: Ansible Integration Test
 on:
   workflow_call:
     inputs:

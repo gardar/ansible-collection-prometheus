@@ -1,5 +1,5 @@
 ---
-name: Ansible Test Sanity
+name: Ansible Sanity Test
 on:
   workflow_call:
     inputs:

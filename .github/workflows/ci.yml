@@ -28,7 +28,6 @@ jobs:
   ansible-test-molecule:
     uses: ./.github/workflows/ansible-test-integration.yml
     needs:
-      - ansible-test-sanity
       - discover-ansible-tests
     with:
       targets: ${{ needs.discover-ansible-tests.outputs.molecule-tests }}
@@ -36,7 +35,6 @@ jobs:
   ansible-test-integration:
     uses: ./.github/workflows/ansible-test-integration.yml
     needs:
-      - ansible-test-sanity
       - discover-ansible-tests
     with:
       targets: ${{ needs.discover-ansible-tests.outputs.integration-tests }}

@@ -34,7 +34,7 @@ jobs:
 
   ansible-test-integration:
     uses: ./.github/workflows/ansible-test-integration.yml
-    needs: discover-ansible-tests
-    if: ${{ needs.discover-ansible-tests.outputs.integration-tests != '' && toJson(fromJson(discover-ansible-tests.outputs.integration-tests)) != '[]' }}
+    needs:
+      - discover-ansible-tests
     with:
       targets: ${{ needs.discover-ansible-tests.outputs.integration-tests }}

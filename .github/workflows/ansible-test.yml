@@ -11,10 +11,6 @@ on:
         required: false
         default: '["stable-2.14"]'
         type: string
-      target-python-versions:
-        required: false
-        default: '["3.8"]'
-        type: string
 
 env:
   ANSIBLE_FORCE_COLOR: true
@@ -27,9 +23,8 @@ jobs:
       matrix:
         targets: ${{ fromJson(inputs.targets) }}
         ansible-core-versions: ${{ fromJson(inputs.ansible-core-versions) }}
-        target-python-versions: ${{ fromJson(inputs.target-python-versions) }}
 
-    name: "${{ matrix.targets.name }} (py${{ matrix.target-python-versions }}) (${{ matrix.ansible-core-versions }})"
+    name: "${{ matrix.targets.name }} (ansible-${{ matrix.ansible-core-versions }})"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -38,7 +33,6 @@ jobs:
         uses: ansible-community/ansible-test-gh-action@release/v1
         with:
           ansible-core-version: ${{ matrix.ansible-core-versions }}
-          target-python-version: ${{ matrix.target-python-versions }}
           controller-python-version: auto
           docker-image: "--docker-privileged"
           testing-type: integration

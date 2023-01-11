@@ -1,5 +1,4 @@
 molecule
-molecule-docker
 docker
 ansible-lint
 pytest-testinfra
@@ -7,4 +6,3 @@ jmespath
 selinux
 passlib
 yamllint
-flake8

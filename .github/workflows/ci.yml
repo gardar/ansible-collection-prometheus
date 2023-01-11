@@ -2,6 +2,10 @@
 name: ci
 on: [push, pull_request]
 
+env:
+  prometheus_ansible_versions: '["stable-2.9","stable-2.10","stable-2.11","stable-2.12","stable-2.13","stable-2.14"]'
+  ANSIBLE_FORCE_COLOR: true
+
 jobs:
   ansible-test-sanity:
     name: ansible-test-sanity
@@ -13,7 +17,7 @@ jobs:
           ansible-core-version: stable-2.14
           testing-type: sanity
 
-  discover-molecule-tests:
+  discover-ansible-tests:
     runs-on: ubuntu-latest
     needs:
       - ansible-test-sanity
@@ -33,16 +37,15 @@ jobs:
     uses: ./.github/workflows/ansible-test.yml
     needs:
       - ansible-test-sanity
-      - discover-molecule-tests
+      - discover-ansible-tests
     with:
-      targets: ${{ needs.discover-molecule-tests.outputs.molecule-tests }}
+      targets: ${{ needs.discover-ansible-tests.outputs.molecule-tests }}
 
   ansible-test-integration:
     uses: ./.github/workflows/ansible-test.yml
     needs:
       - ansible-test-sanity
-      - discover-molecule-tests
+      - discover-ansible-tests
     with:
-      targets: ${{ needs.discover-molecule-tests.outputs.integration-tests }}
-      ansible-core-versions: '["stable-2.9","stable-2.10","stable-2.11","stable-2.12","stable-2.13","stable-2.14"]'
-      # ansible-core-versions: '["stable-2.9","stable-2.10","stable-2.11","stable-2.12","stable-2.13","stable-2.14"]'
+      targets: ${{ needs.discover-ansible-tests.outputs.integration-tests }}
+      ansible-core-versions: ${{ env.prometheus_ansible_versions }}

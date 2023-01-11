@@ -1,6 +1,5 @@
 ---
 name: Ansible Test
-# on: [push, pull_request]
 on:
   workflow_call:
     inputs:
@@ -12,9 +11,6 @@ on:
         default: '["stable-2.14"]'
         type: string
 
-env:
-  ANSIBLE_FORCE_COLOR: true
-
 jobs:
   ansible-test-integration:
     runs-on: ubuntu-latest
@@ -24,7 +20,7 @@ jobs:
         targets: ${{ fromJson(inputs.targets) }}
         ansible-core-versions: ${{ fromJson(inputs.ansible-core-versions) }}
 
-    name: "${{ matrix.targets.name }} (ansible-${{ matrix.ansible-core-versions }})"
+    name: "${{ matrix.targets.name }} (${{ matrix.ansible-core-versions }})"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3

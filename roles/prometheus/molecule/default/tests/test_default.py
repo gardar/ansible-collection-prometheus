@@ -1,8 +1,10 @@
 from __future__ import (absolute_import, division, print_function)
-import pytest
+__metaclass__ = type
+
 import os
 import yaml
 import testinfra.utils.ansible_runner
+import pytest
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')

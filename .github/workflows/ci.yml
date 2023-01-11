@@ -38,4 +38,3 @@ jobs:
       - discover-ansible-tests
     with:
       targets: ${{ needs.discover-ansible-tests.outputs.integration-tests }}
-      ansible-core-versions: '["stable-2.9","stable-2.10","stable-2.11","stable-2.12","stable-2.13","stable-2.14"]'

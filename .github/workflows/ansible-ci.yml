@@ -14,30 +14,63 @@ jobs:
   #     - name: Lint collection
   #       uses: ansible/ansible-lint-action@main
 
-  generate-matrix:
-    name: Generate job matrices
-    runs-on: ubuntu-latest
-    # don't forget to declare outputs here!
-    outputs:
-      matrix-ansible-role: ${{ steps.neo-ansible-role.outputs.matrix }}
+  build:
+    runs-on: ubuntu-latest  # windows-latest | macos-latest
+    name: Test changed-files
     steps:
-      - name: Generate matrix | ansible-role
-        id: neo-ansible-role
-        uses: hellofresh/action-changed-files@v3
+      - uses: actions/checkout@v3
         with:
-            pattern: roles/(?P<role>[^/]+)
-            default-patterns: |
-                ./
+          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
 
-  ansible-role:
-    runs-on: ubuntu-latest
-    needs: [ generate-matrix ] # don't forget this!
-    strategy:
-      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix-ansible-role) }}
-    if: ${{ fromJson(needs.generate-matrix.outputs.matrix-ansible-role).include[0] }} # skip if the matrix is empty!
-    steps:
-        - name: Deploy ansible-role
-          run: echo "Deploying ${{ matrix.role }}"
+      # Example 1
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v35
+
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+
+      # Example 2
+      - name: Get changed files in the docs folder
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v35
+        with:
+          files: |
+            roles/**
+
+      - name: Run step if any file(s) in the docs folder change
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        run: |
+          echo "One or more files in the docs folder has changed."
+          echo "List all the files that have changed: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
+
+#  generate-matrix:
+#    name: Generate job matrices
+#    runs-on: ubuntu-latest
+#    # don't forget to declare outputs here!
+#    outputs:
+#      matrix-ansible-role: ${{ steps.neo-ansible-role.outputs.matrix }}
+#    steps:
+#      - name: Generate matrix | ansible-role
+#        id: neo-ansible-role
+#        uses: hellofresh/action-changed-files@v3
+#        with:
+#            pattern: roles/(?P<role>[^/]+)
+#            default-patterns: |
+#                ./
+#
+#  ansible-role:
+#    runs-on: ubuntu-latest
+#    needs: [ generate-matrix ] # don't forget this!
+#    strategy:
+#      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix-ansible-role) }}
+#    if: ${{ fromJson(needs.generate-matrix.outputs.matrix-ansible-role).include[0] }} # skip if the matrix is empty!
+#    steps:
+#        - name: Deploy ansible-role
+#          run: echo "Deploying ${{ matrix.role }}"
 
 
 

@@ -1,5 +1,5 @@
 ---
-- name: Restart alertmanager
+- name: Restart alertmanager test
   listen: "restart alertmanager"
   become: true
   ansible.builtin.systemd:

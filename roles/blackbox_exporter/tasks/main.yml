@@ -1,5 +1,5 @@
 ---
-- name: Preflight
+- name: Preflight test
   ansible.builtin.include_tasks: preflight.yml
   tags:
     - blackbox_exporter_install

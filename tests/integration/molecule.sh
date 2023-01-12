@@ -25,6 +25,7 @@ if [ "$(printf '%s\n' "2.12" "$ansible_version" | sort -V | head -n1)" = "2.12" 
        python -m pip install molecule molecule-plugins[docker]
 else
        python -m pip install molecule molecule-docker
+       ansible-galaxy collection install community.docker
        ansible-galaxy collection install -r "$collection_root/requirements.yml"
 fi
 

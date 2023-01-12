@@ -30,6 +30,7 @@ jobs:
                 ./*
 
   ansible-role:
+    runs-on: ubuntu-latest
     needs: [ generate-matrix ] # don't forget this!
     strategy:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix-ansible-role) }}

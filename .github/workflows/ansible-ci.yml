@@ -27,7 +27,7 @@ jobs:
         with:
             pattern: roles/(?P<role>[^/]+)
             default-patterns: |
-                /
+                *
 
   ansible-role:
     runs-on: ubuntu-latest

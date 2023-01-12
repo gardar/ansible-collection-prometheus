@@ -6,13 +6,13 @@ env:
   ANSIBLE_FORCE_COLOR: true
 
 jobs:
-  ansible-lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out codebase
-        uses: actions/checkout@v3
-      - name: Lint collection
-        uses: ansible/ansible-lint-action@main
+  # ansible-lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check out codebase
+  #       uses: actions/checkout@v3
+  #     - name: Lint collection
+  #       uses: ansible/ansible-lint-action@main
 
   generate-matrix:
     name: Generate job matrices

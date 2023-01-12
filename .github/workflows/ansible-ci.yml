@@ -6,23 +6,31 @@ env:
   ANSIBLE_FORCE_COLOR: true
 
 jobs:
-  # ansible-lint:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Check out codebase
-  #       uses: actions/checkout@v3
-  #     - name: Lint collection
-  #       uses: ansible/ansible-lint-action@main
+  ansible-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-  build:
+      - name: Lint collection
+        uses: ansible/ansible-lint-action@main
+
+  ansible-test-sanity:
+    uses: ./.github/workflows/ansible-test-sanity.yml
+    needs: ansible-lint
+    with:
+      ansible-core-versions: '["stable-2.9","stable-2.10","stable-2.11","stable-2.12","stable-2.13","stable-2.14"]'
+
+  discover-changes:
     runs-on: ubuntu-latest  # windows-latest | macos-latest
-    name: Test changed-files
+    name: Detect changes in roles
+    needs: ansible-lint
+    outputs:
+      molecule-tests: ${{ steps.set-tests.outputs.ansible-test-molecule }}
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
 
-      # Example 2
       - name: Get changed roles
         id: changed-roles
         uses: tj-actions/changed-files@v35
@@ -36,48 +44,14 @@ jobs:
 
       - name: Run step if any files in roles change
         if: steps.changed-roles.outputs.any_changed == 'true'
+        id: set-molecule-tests
         run: |
           echo ansible-test-molecule="[`for role in ${{ steps.changed-roles.outputs.all_changed_and_modified_files }}; do
-            for x in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-${role}-*" -printf "%f\n"); do
-              echo '{"test":\"'"${x}"'\","name":\"'"${x#*-}\"'"}';
+            for test in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-${role}-*" -printf "%f\n"); do
+              echo '{"test":\"'"${test}"'\","name":\"'"${test#*-}\"'"}';
             done
-          done | tr '\n' ',' | sed '$s/,$//'`]"
-          #          echo "One or more roles has changed."
-          #          echo "List all the roles that have changed: ${{ steps.changed-roles.outputs.all_changed_and_modified_files }}"
-#          echo ansible-test-molecule="[`for x in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-*" -printf "%f\n"); do echo '{"test":\"'"${x}"'\","name":\"'"${x#*-}\"'"}'; done | tr '\n' ',' | sed '$s/,$//'`]"
+          done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
 
-#  generate-matrix:
-#    name: Generate job matrices
-#    runs-on: ubuntu-latest
-#    # don't forget to declare outputs here!
-#    outputs:
-#      matrix-ansible-role: ${{ steps.neo-ansible-role.outputs.matrix }}
-#    steps:
-#      - name: Generate matrix | ansible-role
-#        id: neo-ansible-role
-#        uses: hellofresh/action-changed-files@v3
-#        with:
-#            pattern: roles/(?P<role>[^/]+)
-#            default-patterns: |
-#                ./
-#
-#  ansible-role:
-#    runs-on: ubuntu-latest
-#    needs: [ generate-matrix ] # don't forget this!
-#    strategy:
-#      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix-ansible-role) }}
-#    if: ${{ fromJson(needs.generate-matrix.outputs.matrix-ansible-role).include[0] }} # skip if the matrix is empty!
-#    steps:
-#        - name: Deploy ansible-role
-#          run: echo "Deploying ${{ matrix.role }}"
-
-
-
-#  ansible-test-sanity:
-#    uses: ./.github/workflows/ansible-test-sanity.yml
-#    needs: ansible-lint
-#    with:
-#      ansible-core-versions: '["stable-2.9","stable-2.10","stable-2.11","stable-2.12","stable-2.13","stable-2.14"]'
 #
 #  discover-ansible-tests:
 #    runs-on: ubuntu-latest
@@ -94,13 +68,13 @@ jobs:
 #          echo ansible-test-molecule="[`for x in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-*" -printf "%f\n"); do echo '{"test":\"'"${x}"'\","name":\"'"${x#*-}\"'"}'; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
 #          echo ansible-test-integration="[`for x in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -not -iname "molecule-*" -printf "%f\n"); do echo '{"test":\"'"${x}"'\","name":\"'"${x}\"'"}'; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
 #
-#  ansible-test-molecule:
-#    uses: ./.github/workflows/ansible-test-integration.yml
-#    needs: discover-ansible-tests
-#    if: needs.discover-ansible-tests.outputs.molecule-tests != '[]'
-#    with:
-#      targets: ${{ needs.discover-ansible-tests.outputs.molecule-tests }}
-#      ansible-core-versions: '["stable-2.9","stable-2.10","stable-2.11","stable-2.12","stable-2.13","stable-2.14"]'
+ ansible-test-molecule:
+   uses: ./.github/workflows/ansible-test-integration.yml
+   needs: discover-changed-roles
+   if: needs.discover-changed-roles.outputs.molecule-tests != '[]'
+   with:
+     targets: ${{ needs.discover-ansible-tests.outputs.molecule-tests }}
+     ansible-core-versions: '["stable-2.9","stable-2.10","stable-2.11","stable-2.12","stable-2.13","stable-2.14"]'
 #
 #  ansible-test-integration:
 #    uses: ./.github/workflows/ansible-test-integration.yml

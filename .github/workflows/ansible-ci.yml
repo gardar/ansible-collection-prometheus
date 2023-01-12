@@ -38,7 +38,9 @@ jobs:
         if: steps.changed-roles.outputs.any_changed == 'true'
         run: |
           for role in ${{ steps.changed-roles.outputs.all_changed_and_modified_files }}; do
-            echo "[`for x in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-${role}-*" -printf "%f\n"); do echo '{"test":\"'"${x}"'\","name":\"'"${x#*-}\"'"}'; done | tr '\n' ',' | sed '$s/,$//'`]"
+            echo "[`for x in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-${role}-*" -printf "%f\n"); do
+              echo '{"test":\"'"${x}"'\","name":\"'"${x#*-}\"'"}';
+              done | tr '\n' ',' | sed '$s/,$//'`]"
           done
           #          echo "One or more roles has changed."
           #          echo "List all the roles that have changed: ${{ steps.changed-roles.outputs.all_changed_and_modified_files }}"

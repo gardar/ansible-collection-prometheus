@@ -7,6 +7,7 @@ env:
 
 jobs:
   ansible-lint:
+    name: Ansible Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -59,7 +60,9 @@ jobs:
 
   ansible-test-molecule:
     uses: ./.github/workflows/ansible-test-integration.yml
-    needs: discover-ansible-tests
+    needs:
+      - discover-ansible-tests
+      - set-molecule-tests
     if: needs.discover-ansible-tests.outputs.molecule-tests != '[]'
     with:
       targets: ${{ needs.discover-ansible-tests.outputs.molecule-tests }}

@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Generate matrix | ansible-role
         id: neo-ansible-role
-        uses: hellofresh/action-changed-files
+        uses: hellofresh/action-changed-files@v3
         with:
             pattern: roles/(?P<role>[^/]+)
             default-patterns: |

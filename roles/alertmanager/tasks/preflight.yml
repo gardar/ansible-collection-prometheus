@@ -21,6 +21,8 @@
     alertmanager_version: "{{ (lookup('url', 'https://api.github.com/repos/prometheus/alertmanager/releases/latest', split_lines=False) |
                             from_json).get('tag_name') | replace('v', '') }}"
   run_once: true
+  until: alertmanager_version is version('0.0.0', '>=')
+  retries: 10
   when:
     - alertmanager_version == "latest"
     - alertmanager_binary_local_dir | length == 0
@@ -34,6 +36,8 @@
         __alertmanager_checksums: "{{ lookup('url', 'https://github.com/prometheus/alertmanager/releases/download/v' + alertmanager_version +
                                    '/sha256sums.txt', wantlist=True) | list }}"
       run_once: true
+      until: __alertmanager_checksums is search('linux-' + go_arch + '.tar.gz')
+      retries: 10
 
     - name: "Get checksum for {{ go_arch }}"
       ansible.builtin.set_fact:

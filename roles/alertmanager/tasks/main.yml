@@ -1,5 +1,5 @@
 ---
-- name: Preflight test
+- name: Preflight
   ansible.builtin.include_tasks: preflight.yml
   tags:
     - alertmanager_install

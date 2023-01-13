@@ -39,12 +39,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: ansible-lint
     outputs:
-      molecule-tests: ${{ steps.set-molecule-tests.outputs.ansible-test-molecule }}
-      integration-tests: ${{ steps.set-integration-tests.outputs.ansible-test-integration }}
+      molecule-tests: ${{ steps.set-molecule-tests.outputs.tests }}
+      integration-tests: ${{ steps.set-integration-tests.outputs.tests }}
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
+          fetch-depth: 0
 
       - name: Get changed roles
         id: changed-roles
@@ -55,12 +55,13 @@ jobs:
           files: "**"
           dir_names: "true"
           dir_names_max_depth: "1"
+          since_last_remote_commit: "true"
 
       - name: Discover role tests
         if: steps.changed-roles.outputs.any_changed == 'true'
         id: set-molecule-tests
         run: |
-          echo ansible-test-molecule="[`for role in ${{ steps.changed-roles.outputs.all_changed_and_modified_files }}; do
+          echo tests="[`for role in ${{ steps.changed-roles.outputs.all_changed_and_modified_files }}; do
             for test in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-${role}-*" -printf "%f\n"); do
               echo '{"test":\"'"${test}"'\","name":\"'"${test#*-}\"'"}';
             done
@@ -69,38 +70,29 @@ jobs:
       - name: Discover integration tests
         id: set-integration-tests
         run: |
-          echo ansible-test-integration="[`for x in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -not -iname "molecule-*" -printf "%f\n"); do echo '{"test":\"'"${x}"'\","name":\"'"${x}\"'"}'; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
+          echo tests="[`for test in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -not -iname "molecule-*" -printf "%f\n"); do
+            echo '{"test":\"'"${test}"'\","name":\"'"${test}\"'"}';
+          done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
 
   ansible-test-molecule:
     uses: ./.github/workflows/ansible-test-integration.yml
-    needs: discover-ansible-tests
+    needs:
+      - discover-ansible-tests
+      - discover-ansible-versions
     if: needs.discover-ansible-tests.outputs.molecule-tests != '[]' &&
         needs.discover-ansible-tests.outputs.molecule-tests != ''
     with:
       targets: ${{ needs.discover-ansible-tests.outputs.molecule-tests }}
-      ansible-core-versions: '["stable-2.9","stable-2.10","stable-2.11","stable-2.12","stable-2.13","stable-2.14"]'
+      ansible-core-versions: ${{ needs.discover-ansible-versions.outputs.versions }}
 
   ansible-test-integration:
     uses: ./.github/workflows/ansible-test-integration.yml
-    needs: discover-ansible-tests
-    if: needs.discover-ansible-tests.outputs.integration-tests != '[]'
+    needs:
+      - discover-ansible-tests
+      - discover-ansible-versions
+    if:
+      needs.discover-ansible-tests.outputs.integration-tests != '[]' &&
+      needs.discover-ansible-tests.outputs.integration-tests != ''
     with:
       targets: ${{ needs.discover-ansible-tests.outputs.integration-tests }}
-      ansible-core-versions: '["stable-2.9","stable-2.10","stable-2.11","stable-2.12","stable-2.13","stable-2.14"]'
-#
-#  discover-ansible-tests:
-#    runs-on: ubuntu-latest
-#    needs: ansible-lint
-#    outputs:
-#      molecule-tests: ${{ steps.set-tests.outputs.ansible-test-molecule }}
-#      integration-tests: ${{ steps.set-tests.outputs.ansible-test-integration }}
-#    steps:
-#      - name: Check out codebase
-#        uses: actions/checkout@v3
-#      - name: Discover tests
-#        id: set-tests
-#        run: |
-#          echo ansible-test-molecule="[`for x in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-*" -printf "%f\n"); do echo '{"test":\"'"${x}"'\","name":\"'"${x#*-}\"'"}'; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
-#          echo ansible-test-integration="[`for x in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -not -iname "molecule-*" -printf "%f\n"); do echo '{"test":\"'"${x}"'\","name":\"'"${x}\"'"}'; done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
-#
-#
+      ansible-core-versions: ${{ needs.discover-ansible-versions.outputs.versions }}

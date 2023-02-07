@@ -13,7 +13,7 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: 'Run antsichaut'
-        uses: rndmh3ro/antsichaut-action@v1
+        uses: rndmh3ro/antsichaut-action@main
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           since_version: "${{ steps.previoustag.outputs.tag }}"

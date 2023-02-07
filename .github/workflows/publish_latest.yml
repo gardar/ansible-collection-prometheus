@@ -1,8 +1,9 @@
+---
 name: Publish Collection
 on:
   push:
     branches:
-      - main
+      - antsichaut
   release:
     types:
       - 'published'

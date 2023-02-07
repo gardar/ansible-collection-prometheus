@@ -3,14 +3,16 @@ name: Ansible changelog
 on: [push, pull_request]
 
 jobs:
-  - name: 'Get Previous tag'
-    id: previoustag
-    uses: "WyriHaximus/github-action-get-previous-tag@master"
-    env:
-      GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+  antsichaut:
+  steps:
+    - name: 'Get Previous tag'
+      id: previoustag
+      uses: "WyriHaximus/github-action-get-previous-tag@master"
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
-  - name: 'Run antsichaut'
-    uses: rndmh3ro/antsichaut-action@v1
-    with:
-      GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      since_version: "${{ steps.previoustag.outputs.tag }}"
+    - name: 'Run antsichaut'
+      uses: rndmh3ro/antsichaut-action@v1
+      with:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        since_version: "${{ steps.previoustag.outputs.tag }}"

@@ -2,8 +2,8 @@
 name: Ansible changelog
 on:
   pull_request:
-  types:
-    - closed
+    types:
+      - closed
 
 jobs:
   antsichaut:

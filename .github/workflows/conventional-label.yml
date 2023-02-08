@@ -1,13 +1,19 @@
 ---
 on:
-  pull_request_target:
-    types: [opened, edited]
-name: conventional-release-labels
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+name: Auto label pull request
 jobs:
   label:
     runs-on: ubuntu-latest
     steps:
-      - uses: bcoe/conventional-release-labels@v1
+      - name: "Confirm correct pull request title"
+        uses: deepakputhraya/action-pr-title@master
+        with:
+          allowed_prefixes: 'feat,fix,major,breaking,minor,enhancement,deprecated,removed,security,bug,bugfix,docs,packaging,test,refactor,refactoring'
+
+      - name: "Apply label"
+        uses: bcoe/conventional-release-labels@v1
         with:
           type_labels: |
               {

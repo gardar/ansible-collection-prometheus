@@ -11,20 +11,20 @@ jobs:
         with:
           type_labels: >
             '{
-               feat: "enhancement",
-               fix: "bugfix",
-               major: "major",
-               breaking: "breaking",
-               minor: "minor",
-               enhancement: "enhancement",
-               deprecated: "deprecated",
-               removed: "removed",
-               security: "security",
-               bug: "bug",
-               bugfix: "bugfix",
-               docs: "bugfix",
-               packaging: "bugfix",
-               test: "bugfix",
-               refactor: "refactoring",
-               refactoring: "refactoring"
+               "feat": "enhancement",
+               "fix": "bugfix",
+               "major": "major",
+               "breaking": "breaking",
+               "minor": "minor",
+               "enhancement": "enhancement",
+               "deprecated": "deprecated",
+               "removed": "removed",
+               "security": "security",
+               "bug": "bug",
+               "bugfix": "bugfix",
+               "docs": "bugfix",
+               "packaging": "bugfix",
+               "test": "bugfix",
+               "refactor": "refactoring",
+               "refactoring": "refactoring"
             }'

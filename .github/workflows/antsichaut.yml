@@ -57,20 +57,21 @@ jobs:
           rebase: true
 
       - name: "Checkout updated branch"
-      - uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.3.0
         with:
           ref: antsichaut
 
-      - name: Build the collection
+      - name: "Build the collection"
         run: ansible-galaxy collection build
 
+      - name: "Publish release"
       - uses: release-drafter/release-drafter@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           publish: true
 
-      - name: Upload files to release
+      - name: "Upload built collection to release"
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}

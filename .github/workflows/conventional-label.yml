@@ -1,0 +1,12 @@
+---
+on:
+  pull_request_target:
+    types: [ opened, edited ]
+name: conventional-release-labels
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: bcoe/conventional-release-labels@v1
+        with:
+          type_labels: '{"feat": "enhancement", "fix": "bugfix", "major": "major", "breaking": "breaking", "minor": "minor", "enhancement": "enhancement", "deprecated": "deprecated", "removed": "removed", "security": "security", "bug": "bug", "bugfix": "bugfix"}'

@@ -24,3 +24,5 @@ jobs:
             docs: "bugfix"
             packaging: "bugfix"
             test: "bugfix"
+            refactor: "refactoring"
+            refactoring: "refactoring"

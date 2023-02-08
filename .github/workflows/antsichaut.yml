@@ -54,6 +54,12 @@ jobs:
           commit-message: 'update changelog'
           force-add: 'true'
           files: galaxy.yml CHANGELOG.rst changelogs/
-          name: Prometheus
-          email: noreply@prometheus.io
           rebase: true
+
+      - uses: actions/checkout@v3.3.0
+        with:
+          ref: antsichaut
+
+      - uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

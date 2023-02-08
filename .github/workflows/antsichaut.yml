@@ -65,6 +65,7 @@ jobs:
         run: ansible-galaxy collection build
 
       - name: "Publish release"
+        id: release-publish
         uses: release-drafter/release-drafter@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -77,5 +78,5 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: prometheus-prometheus-*.tar.gz
           file_glob: true
-          tag: ${{ github.ref }}
+          tag: ${{ steps.release-publish.outputs.tag_name }}
           overwrite: true

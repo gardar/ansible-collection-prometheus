@@ -9,8 +9,8 @@ jobs:
     steps:
       - uses: bcoe/conventional-release-labels@v1
         with:
-          type_labels: >
-            '{
+          type_labels: |
+            {
                "feat": "enhancement",
                "fix": "bugfix",
                "major": "major",
@@ -27,4 +27,4 @@ jobs:
                "test": "bugfix",
                "refactor": "refactoring",
                "refactoring": "refactoring"
-            }'
+            }

@@ -1,0 +1,4 @@
+---
+major-labels: ['major', 'breaking']
+minor-labels: ['minor', 'enhancement', 'deprecated', 'removed', 'security']
+patch-labels: ['bug', 'trivial', 'bugfix']

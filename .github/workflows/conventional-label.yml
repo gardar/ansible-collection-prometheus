@@ -10,8 +10,7 @@ jobs:
       - uses: bcoe/conventional-release-labels@v1
         with:
           type_labels: >
-            {
-               "feat": "enhancement",
+            '{"feat": "enhancement",
                "fix": "bugfix",
                "major": "major",
                "breaking": "breaking",
@@ -26,5 +25,4 @@ jobs:
                "packaging": "bugfix",
                "test": "bugfix",
                "refactor": "refactoring",
-               "refactoring": "refactoring"
-            }
+               "refactoring": "refactoring"}'

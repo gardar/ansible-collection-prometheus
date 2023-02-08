@@ -1,4 +1,4 @@
-ancestor: null
+ancestor:
 releases:
   0.1.0:
     changes:
@@ -9,3 +9,8 @@ releases:
     release_date: '2023-02-02'
   1.0.0:
     release_date: '2023-02-07'
+  1.0.1:
+    changes:
+      minor_changes:
+      - 'test: trigger antsichaut (https://github.com/gardar/ansible-collection-prometheus/pull/5)'
+    release_date: '2023-02-08'

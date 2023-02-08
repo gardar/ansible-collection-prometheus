@@ -13,6 +13,11 @@ Minor Changes
 
 - test: trigger antsichaut (https://github.com/gardar/ansible-collection-prometheus/pull/5)
 
+Bugfixes
+--------
+
+- fix: test auto labeler (https://github.com/gardar/ansible-collection-prometheus/pull/6)
+
 v1.0.0
 ======
 

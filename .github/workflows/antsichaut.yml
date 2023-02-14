@@ -46,7 +46,7 @@ jobs:
         with:
           cmd: yq -i '.version = "${{ steps.version.outputs.next-version }}"' 'galaxy.yml'
 
-      - name: "push changelog"
+      - name: "Write changelog and version"
         uses: github-actions-x/commit@v2.9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -55,6 +55,8 @@ jobs:
           force-add: 'true'
           files: galaxy.yml CHANGELOG.rst changelogs/
           rebase: true
+          name: github-actions[bot]  # https://github.com/orgs/community/discussions/26560#discussioncomment-3531273
+          email: 41898282+github-actions[bot]@users.noreply.github.com
 
       - name: "Checkout updated branch"
         uses: actions/checkout@v3.3.0

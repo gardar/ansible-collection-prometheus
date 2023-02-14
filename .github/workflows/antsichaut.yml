@@ -39,8 +39,8 @@ jobs:
 
       - name: "Debug next version"
         run: |
-          echo "version: ${{ steps.version.outputs.next-version }}"
-          echo "version debug: ${{ steps.version_dbg.outputs.next-version }}"
+          echo "version: ${{ steps.version.outputs }}"
+          echo "version debug: ${{ steps.version_dbg.outputs }}"
 
 
       - name: "Generate new version in changelog.yaml"

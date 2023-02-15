@@ -25,14 +25,14 @@ jobs:
 
       - name: "Calculate next version"
         id: version
-        uses: patrickjahns/version-drafter-action@v1
+        uses: "patrickjahns/version-drafter-action@v1"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      
+
       - name: "Calculate next version debug"
         id: version_dbg
         uses: patrickjahns/version-drafter-action@v1
-        with: 
+        with:
           config-name: versiondrafter-debug.yml
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
@@ -43,7 +43,6 @@ jobs:
           echo "next version: ${{ steps.version.outputs.next-version }}"
           echo "current version debug: ${{ steps.version_dbg.outputs.current-version }}"
           echo "next version debug: ${{ steps.version_dbg.outputs.next-version }}"
-
 
       - name: "Generate new version in changelog.yaml"
         run: antsibull-changelog release -v --version "${{ steps.version.outputs.next-version }}"

@@ -1,13 +1,13 @@
 ---
 name: Ansible changelog
 on:
-  pull_request_target:
+  pull_request:
     types:
       - closed
 
 jobs:
   antsichaut:
-    #    if: github.event.pull_request.merged
+    if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

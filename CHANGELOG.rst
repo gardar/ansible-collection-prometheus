@@ -5,6 +5,14 @@ Prometheus.Prometheus Release Notes
 .. contents:: Topics
 
 
+v2.0.1
+======
+
+Bugfixes
+--------
+
+- fix: cleanup workflows (https://github.com/gardar/ansible-collection-prometheus/pull/48)
+
 v2.0.0
 ======
 

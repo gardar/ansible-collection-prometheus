@@ -4,6 +4,8 @@ on:
   pull_request:
     types:
       - closed
+    branches:
+      - ${{ github.event.repository.default_branch }}
 
 jobs:
   antsichaut:

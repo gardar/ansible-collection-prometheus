@@ -4,17 +4,16 @@ on:
   pull_request:
     types:
       - closed
-    branches:
-      - antsichaut
+        #    branches:
+        #      - antsichaut
 
 jobs:
   antsichaut:
-    if: github.event.pull_request.merged
+    if: github.event.pull_request.merged && if github.ref == github.event.repository.default_branch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
-          #    ref: ${{ github.ref }}
           fetch-depth: 0
 
       - name: "Install tools"
@@ -54,18 +53,6 @@ jobs:
         with:
           branch: ${{ github.event.pull_request.base.ref }}
           # branch: ${{ github.event.repository.default_branch }}
-
-          # - name: "Write changelog and version"
-          #   uses: github-actions-x/commit@v2.9
-          #   with:
-          #     github-token: ${{ secrets.GITHUB_TOKEN }}
-          #     push-branch: 'antsichaut'
-          #     commit-message: 'update changelog'
-          #     force-add: 'true'
-          #     files: galaxy.yml CHANGELOG.rst changelogs/
-          #     rebase: true
-          #     name: github-actions[bot]  # https://github.com/orgs/community/discussions/26560#discussioncomment-3531273
-          #     email: 41898282+github-actions[bot]@users.noreply.github.com
 
       - name: "Checkout updated branch"
         uses: actions/checkout@v3.3.0

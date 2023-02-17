@@ -7,7 +7,10 @@ on:
 
 jobs:
   release:
-    if: github.event.pull_request.merged && github.ref == github.event.repository.default_branch && !contains(github.event.pull_request.labels.*.name, 'skip-release')
+    if: |
+      github.event.pull_request.merged &&
+      github.ref == github.event.repository.default_branch &&
+      !contains(github.event.pull_request.labels.*.name, 'skip-release')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,6 +22,7 @@ jobs:
 
       - name: "Calculate next version"
         id: version
+        continue-on-error: true
         uses: "gardar/version-drafter-action@event-triggers"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
@@ -27,13 +31,13 @@ jobs:
         run: git status
 
       - name: "Generate new version in changelog.yaml"
-        run: antsibull-changelog release -v --version "${{ steps.version.outputs.next-version }}"
+        run: antsibull-changelog release -v --version "${{ steps.version.outputs.next-version || '0.0.1' }}"
 
       - name: "Run antsichaut"
         uses: gardar/antsichaut-action@yaml-lint
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          since_version: "${{ steps.version.outputs.current-version }}"
+          since_version: "${{ steps.version.outputs.current-version || '0.0.0' }}"
 
       - name: "Update Changelog.rst"
         run: "antsibull-changelog generate -v"
@@ -41,7 +45,7 @@ jobs:
       - name: "Update collection version"
         uses: mikefarah/yq@master
         with:
-          cmd: yq -i '.version = "${{ steps.version.outputs.next-version }}"' 'galaxy.yml'
+          cmd: yq -i '.version = ${{ steps.version.outputs.next-version || "0.0.1" }}' 'galaxy.yml'
 
       - name: "Check git repo"
         run: git status

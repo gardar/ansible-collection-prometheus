@@ -50,6 +50,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: ${{ github.event.pull_request.base.ref }}
+          commit_message: "chore: update version"
 
       - name: "Checkout updated branch"
         uses: actions/checkout@v3.3.0

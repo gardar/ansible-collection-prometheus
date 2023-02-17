@@ -39,3 +39,8 @@ releases:
       minor_changes:
       - 'feat: test major bump (https://github.com/gardar/ansible-collection-prometheus/pull/45)'
     release_date: '2023-02-17'
+  2.0.0:
+    changes:
+      major_changes:
+      - 'major: try major bump (https://github.com/gardar/ansible-collection-prometheus/pull/46)'
+    release_date: '2023-02-17'

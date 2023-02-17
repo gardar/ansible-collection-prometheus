@@ -5,6 +5,14 @@ Prometheus.Prometheus Release Notes
 .. contents:: Topics
 
 
+v2.0.3
+======
+
+Bugfixes
+--------
+
+- fix: allow skipping release (https://github.com/gardar/ansible-collection-prometheus/pull/50)
+
 v2.0.2
 ======
 

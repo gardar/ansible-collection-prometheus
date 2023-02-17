@@ -54,3 +54,8 @@ releases:
       bugfixes:
       - 'fix: release correct collection (https://github.com/gardar/ansible-collection-prometheus/pull/49)'
     release_date: '2023-02-17'
+  2.0.3:
+    changes:
+      bugfixes:
+      - 'fix: allow skipping release (https://github.com/gardar/ansible-collection-prometheus/pull/50)'
+    release_date: '2023-02-17'

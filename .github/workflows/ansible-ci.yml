@@ -1,12 +1,20 @@
 ---
 name: Ansible CI
-on: [push, pull_request]
+on:
+  push:
+    branches-ignore:
+      - antsichaut
+      - main
+  pull_request:
+    types:
+      - '!closed'
+  workflow_dispatch:
+
 
 env:
   ANSIBLE_FORCE_COLOR: true
 
 jobs:
-  if: github.event.pull_request.merged == false
   ansible-lint:
     runs-on: ubuntu-latest
     steps:

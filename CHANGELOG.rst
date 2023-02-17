@@ -5,6 +5,14 @@ Prometheus.Prometheus Release Notes
 .. contents:: Topics
 
 
+v1.2.0
+======
+
+Minor Changes
+-------------
+
+- feat: test major bump (https://github.com/gardar/ansible-collection-prometheus/pull/45)
+
 v1.1.7
 ======
 

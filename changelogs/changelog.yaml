@@ -1,61 +1,68 @@
+---
 ancestor:
 releases:
   0.1.0:
     changes:
       major_changes:
-      - Initial Release
+        - Initial Release
     fragments:
-    - initial_release.yml
+      - initial_release.yml
     release_date: '2023-02-02'
   1.0.0:
     release_date: '2023-02-07'
   1.0.1:
     changes:
       bugfixes:
-      - 'fix: test auto labeler (https://github.com/gardar/ansible-collection-prometheus/pull/6)'
+        - 'fix: test auto labeler (https://github.com/gardar/ansible-collection-prometheus/pull/6)'
       minor_changes:
-      - 'test: trigger antsichaut (https://github.com/gardar/ansible-collection-prometheus/pull/5)'
+        - 'test: trigger antsichaut (https://github.com/gardar/ansible-collection-prometheus/pull/5)'
     release_date: '2023-02-08'
   1.1.4:
     changes:
       trivial:
-      - 'test: write ref (https://github.com/gardar/ansible-collection-prometheus/pull/36)'
-      - 'test: write ref (https://github.com/gardar/ansible-collection-prometheus/pull/37)'
+        - 'test: write ref (https://github.com/gardar/ansible-collection-prometheus/pull/36)'
+        - 'test: write ref (https://github.com/gardar/ansible-collection-prometheus/pull/37)'
     release_date: '2023-02-17'
   1.1.6:
     changes:
       trivial:
-      - 'test: changelog branch base_ref (https://github.com/gardar/ansible-collection-prometheus/pull/42)'
+        - 'test: changelog branch base_ref (https://github.com/gardar/ansible-collection-prometheus/pull/42)'
     release_date: '2023-02-17'
   1.1.7:
     changes:
       bugfixes:
-      - 'fix: syntax (https://github.com/gardar/ansible-collection-prometheus/pull/44)'
+        - 'fix: syntax (https://github.com/gardar/ansible-collection-prometheus/pull/44)'
       trivial:
-      - 'test: run only on default branch (https://github.com/gardar/ansible-collection-prometheus/pull/43)'
+        - 'test: run only on default branch (https://github.com/gardar/ansible-collection-prometheus/pull/43)'
     release_date: '2023-02-17'
   1.2.0:
     changes:
       minor_changes:
-      - 'feat: test major bump (https://github.com/gardar/ansible-collection-prometheus/pull/45)'
+        - 'feat: test major bump (https://github.com/gardar/ansible-collection-prometheus/pull/45)'
     release_date: '2023-02-17'
   2.0.0:
     changes:
       major_changes:
-      - 'major: try major bump (https://github.com/gardar/ansible-collection-prometheus/pull/46)'
+        - 'major: try major bump (https://github.com/gardar/ansible-collection-prometheus/pull/46)'
     release_date: '2023-02-17'
   2.0.1:
     changes:
       bugfixes:
-      - 'fix: cleanup workflows (https://github.com/gardar/ansible-collection-prometheus/pull/48)'
+        - 'fix: cleanup workflows (https://github.com/gardar/ansible-collection-prometheus/pull/48)'
     release_date: '2023-02-17'
   2.0.2:
     changes:
       bugfixes:
-      - 'fix: release correct collection (https://github.com/gardar/ansible-collection-prometheus/pull/49)'
+        - 'fix: release correct collection (https://github.com/gardar/ansible-collection-prometheus/pull/49)'
     release_date: '2023-02-17'
   2.0.3:
     changes:
       bugfixes:
-      - 'fix: allow skipping release (https://github.com/gardar/ansible-collection-prometheus/pull/50)'
+        - 'fix: allow skipping release (https://github.com/gardar/ansible-collection-prometheus/pull/50)'
+    release_date: '2023-02-17'
+  2.0.4:
+    changes:
+      trivial:
+        - "skip-release: don't run release on this commit (https://github.com/gardar/ansible-collection-prometheus/pull/51)"
+        - 'test: use antsichaut version that has correct yaml formatting (https://github.com/gardar/ansible-collection-prometheus/pull/52)'
     release_date: '2023-02-17'

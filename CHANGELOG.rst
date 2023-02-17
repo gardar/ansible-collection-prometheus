@@ -5,6 +5,14 @@ Prometheus.Prometheus Release Notes
 .. contents:: Topics
 
 
+v2.0.2
+======
+
+Bugfixes
+--------
+
+- fix: release correct collection (https://github.com/gardar/ansible-collection-prometheus/pull/49)
+
 v2.0.1
 ======
 

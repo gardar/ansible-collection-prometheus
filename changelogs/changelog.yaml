@@ -49,3 +49,8 @@ releases:
       bugfixes:
       - 'fix: cleanup workflows (https://github.com/gardar/ansible-collection-prometheus/pull/48)'
     release_date: '2023-02-17'
+  2.0.2:
+    changes:
+      bugfixes:
+      - 'fix: release correct collection (https://github.com/gardar/ansible-collection-prometheus/pull/49)'
+    release_date: '2023-02-17'

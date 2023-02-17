@@ -10,9 +10,10 @@ jobs:
       - name: "Confirm correct pull request title"
         uses: deepakputhraya/action-pr-title@master
         with:
-          allowed_prefixes: 'feat,fix,major,breaking,minor,enhancement,deprecated,removed,security,bug,bugfix,docs,packaging,test,refactor,refactoring'
+          allowed_prefixes: 'feat,fix,major,breaking,minor,enhancement,deprecated,removed,security,bug,bugfix,docs,packaging,test,refactor,refactoring,skip-release'
 
       - name: "Apply label"
+        if: github.event.pull_request.labels.length == 0
         uses: bcoe/conventional-release-labels@v1
         with:
           type_labels: |
@@ -32,5 +33,6 @@ jobs:
               "packaging": "trivial",
               "test": "trivial",
               "refactor": "trivial",
-              "refactoring": "trivial"
+              "refactoring": "trivial",
+              "skip-release": "skip-release"
               }

@@ -22,7 +22,7 @@ jobs:
 
       - name: "Calculate next version"
         id: version
-        uses: "gardar/version-drafter-action@event-triggers"
+        uses: gardar/version-drafter-action@event-triggers  # Until PR gets merged: https://github.com/patrickjahns/version-drafter-action/pull/343
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
@@ -33,7 +33,7 @@ jobs:
         run: antsibull-changelog release -v --version "${{ steps.version.outputs.next-version }}"
 
       - name: "Run antsichaut"
-        uses: gardar/antsichaut-action@yaml-lint
+        uses: gardar/antsichaut-action@yaml-lint  # Until PR gets merged: https://github.com/rndmh3ro/antsichaut/pull/4
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           since_version: "${{ steps.version.outputs.current-version }}"

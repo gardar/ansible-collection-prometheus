@@ -11,8 +11,14 @@ releases:
     release_date: '2023-02-07'
   1.0.1:
     changes:
-      minor_changes:
-      - 'test: trigger antsichaut (https://github.com/gardar/ansible-collection-prometheus/pull/5)'
       bugfixes:
       - 'fix: test auto labeler (https://github.com/gardar/ansible-collection-prometheus/pull/6)'
+      minor_changes:
+      - 'test: trigger antsichaut (https://github.com/gardar/ansible-collection-prometheus/pull/5)'
     release_date: '2023-02-08'
+  1.1.4:
+    changes:
+      trivial:
+      - 'test: write ref (https://github.com/gardar/ansible-collection-prometheus/pull/36)'
+      - 'test: write ref (https://github.com/gardar/ansible-collection-prometheus/pull/37)'
+    release_date: '2023-02-17'

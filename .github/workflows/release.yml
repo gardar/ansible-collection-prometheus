@@ -1,5 +1,5 @@
 ---
-name: Ansible changelog
+name: Ansible collection release
 on:
   pull_request:
     types:
@@ -53,6 +53,8 @@ jobs:
 
       - name: "Checkout updated branch"
         uses: actions/checkout@v3.3.0
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
 
       - name: "Build the collection"
         run: ansible-galaxy collection build

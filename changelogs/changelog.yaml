@@ -71,3 +71,8 @@ releases:
       trivial:
         - 'test: Antsichaut test 25 (https://github.com/gardar/ansible-collection-prometheus/pull/53)'
     release_date: '2023-02-17'
+  2.0.6:
+    changes:
+      trivial:
+        - 'test: trigger release (https://github.com/gardar/ansible-collection-prometheus/pull/54)'
+    release_date: '2023-02-17'

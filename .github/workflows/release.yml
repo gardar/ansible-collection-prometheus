@@ -45,7 +45,7 @@ jobs:
       - name: "Update collection version"
         uses: mikefarah/yq@master
         with:
-          cmd: yq -i '.version = ${{ steps.version.outputs.next-version || "0.0.1" }}' 'galaxy.yml'
+          cmd: yq -i ".version = ${{ steps.version.outputs.next-version || '0.0.1' }}" galaxy.yml
 
       - name: "Check git repo"
         run: git status

@@ -22,3 +22,8 @@ releases:
       - 'test: write ref (https://github.com/gardar/ansible-collection-prometheus/pull/36)'
       - 'test: write ref (https://github.com/gardar/ansible-collection-prometheus/pull/37)'
     release_date: '2023-02-17'
+  1.1.6:
+    changes:
+      trivial:
+      - 'test: changelog branch base_ref (https://github.com/gardar/ansible-collection-prometheus/pull/42)'
+    release_date: '2023-02-17'

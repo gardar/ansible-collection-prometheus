@@ -36,7 +36,7 @@ else
 	       req="${req##*/}"
 	       req="${req%.*}"
 	       ansible-galaxy collection build "$req_dir/$req" --output-path "$req_dir"
-	       ansible-galaxy collection install "$req_dir/${req//./-}-*.tar.gz"
+	       ansible-galaxy collection install $req_dir/${req//./-}-*.tar.gz
        done
 fi
 

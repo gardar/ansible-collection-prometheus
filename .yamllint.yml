@@ -22,5 +22,5 @@ rules:
   line-length:
     max: 160
 
-ignore:
-  - changelogs/.plugin-cache.yaml
+ignore: |
+  changelogs/.plugin-cache.yaml

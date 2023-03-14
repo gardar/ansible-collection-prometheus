@@ -1,7 +1,7 @@
 ---
 - name: Register service name
   ansible.builtin.set_fact:
-    _service_name: "{{ ansible_parent_role_names | first }}"
+    _service_name: "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name, '') }}"
 
 - name: Create systemd service unit
   ansible.builtin.template:

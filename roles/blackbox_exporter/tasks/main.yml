@@ -15,10 +15,14 @@
     - blackbox_exporter_install
 
 - name: Configure
-  ansible.builtin.include_tasks:
-    file: configure.yml
+  ansible.builtin.include_role:
+    name: prometheus.prometheus._common
+    tasks_from: configure.yml
     apply:
       become: true
+  vars:
+    _system_user: "{{ blackbox_exporter_system_user }}"
+    _system_group: "{{ blackbox_exporter_system_group }}"
   tags:
     - blackbox_exporter_configure
 

@@ -65,3 +65,6 @@ blackbox_exporter_configuration_modules:
 #      preferred_ip_protocol: ip6
 #      validate_answer_rrs:
 #        fail_if_matches_regexp: [test]
+#
+blackbox_exporter_system_group: blackbox-exp
+blackbox_exporter_system_user: "{{ blackbox_exporter_system_group }}"

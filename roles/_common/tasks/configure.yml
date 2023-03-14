@@ -1,0 +1,24 @@
+---
+- name: Register service name
+  ansible.builtin.set_fact:
+    _service_name: "{{ ansible_parent_role_names | first }}"
+
+- name: Create systemd service unit
+  ansible.builtin.template:
+    src: "{{ ansible_parent_role_paths | first }}/{{ _service_name }}.service.j2"
+    dest: "/etc/systemd/system/{{ _service_name }}.service"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart service
+
+- name: Configure blackbox exporter
+  ansible.builtin.template:
+    src1: "{{ ansible_parent_role_paths | first }}/{{ _service_name }}.yml.j2"
+    dest: "/etc/{{ _service_name }}.yml"
+    owner: "{{ _system_user }}"
+    group: "{{ _system_group }}"
+    mode: 0644
+  notify:
+    - reload service

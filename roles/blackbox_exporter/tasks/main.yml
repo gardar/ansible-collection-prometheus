@@ -16,7 +16,7 @@
 
 - name: Configure
   ansible.builtin.include_role:
-    name: prometheus.prometheus._common
+    name: prometheus.prometheus.common
     tasks_from: configure.yml
     apply:
       become: true

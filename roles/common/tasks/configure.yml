@@ -13,7 +13,7 @@
   notify:
     - restart service
 
-- name: Configure blackbox exporter
+- name: "Configure {{ _service_name }}"
   ansible.builtin.template:
     src: "{{ ansible_parent_role_paths | first }}/templates/{{ _service_name }}.yml.j2"
     dest: "/etc/{{ _service_name }}.yml"
@@ -22,3 +22,4 @@
     mode: 0644
   notify:
     - reload service
+  when: (ansible_parent_role_paths | first '/templates/' _service_name '.yml.j2')

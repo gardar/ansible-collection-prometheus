@@ -15,12 +15,22 @@
     - snmp_exporter_install
 
 - name: Configure
-  ansible.builtin.include_tasks:
-    file: configure.yml
+  ansible.builtin.include_role:
+    name: prometheus.prometheus.common
+    tasks_from: configure.yml
     apply:
       become: true
+  vars:
+    _config_dest: /etc/snmp_exporter/snmp.yml
   tags:
     - snmp_exporter_configure
+    #- name: Configure
+    #  ansible.builtin.include_tasks:
+    #    file: configure.yml
+    #    apply:
+    #      become: true
+    #  tags:
+    #    - snmp_exporter_configure
 
 - name: Ensure snmp_exporter service is started and enabled
   become: true

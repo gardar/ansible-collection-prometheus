@@ -70,6 +70,9 @@ jobs:
           dir_names_max_depth: "1"
           since_last_remote_commit: "true"
 
+      - name: Debug:
+        run: echo ${{ github.event.pull_request.labels }}
+
       - name: Discover role tests
         id: set-molecule-tests
         run: |

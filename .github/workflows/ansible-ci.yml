@@ -70,46 +70,46 @@ jobs:
           dir_names_max_depth: "1"
           since_last_remote_commit: "true"
 
-      - name: Debug:
+      - name: "Debug"
         run: echo ${{ github.event.pull_request.labels }}
 
-      - name: Discover role tests
-        id: set-molecule-tests
-        run: |
-          roles=${{ steps.changed-roles.outputs.all_changed_and_modified_files }}
-          roles+=${{ github.event.label.name }}
-          echo tests="[`for role in $roles; do
-            for test in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-${role}-*" -printf "%f\n"); do
-              echo '{"test":\"'"${test}"'\","name":\"'"${test#*-}\"'"}';
-            done
-          done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
+        - name: Discover role tests
+          id: set-molecule-tests
+          run: |
+            roles=${{ steps.changed-roles.outputs.all_changed_and_modified_files }}
+            roles+=${{ github.event.label.name }}
+            echo tests="[`for role in $roles; do
+              for test in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-${role}-*" -printf "%f\n"); do
+                echo '{"test":\"'"${test}"'\","name":\"'"${test#*-}\"'"}';
+              done
+            done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
 
-      - name: Discover integration tests
-        id: set-integration-tests
-        run: |
-          echo tests="[`for test in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -not -iname "molecule-*" -printf "%f\n"); do
-            echo '{"test":\"'"${test}"'\","name":\"'"${test}\"'"}';
-          done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
+        - name: Discover integration tests
+          id: set-integration-tests
+          run: |
+            echo tests="[`for test in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -not -iname "molecule-*" -printf "%f\n"); do
+              echo '{"test":\"'"${test}"'\","name":\"'"${test}\"'"}';
+            done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
 
-  ansible-test-molecule:
-    uses: ./.github/workflows/ansible-test-integration.yml
-    needs:
-      - discover-ansible-tests
-      - discover-ansible-versions
-    if: needs.discover-ansible-tests.outputs.molecule-tests != '[]' &&
-        needs.discover-ansible-tests.outputs.molecule-tests != ''
-    with:
-      targets: ${{ needs.discover-ansible-tests.outputs.molecule-tests }}
-      ansible-core-versions: ${{ needs.discover-ansible-versions.outputs.versions }}
+    ansible-test-molecule:
+      uses: ./.github/workflows/ansible-test-integration.yml
+      needs:
+        - discover-ansible-tests
+        - discover-ansible-versions
+      if: needs.discover-ansible-tests.outputs.molecule-tests != '[]' &&
+          needs.discover-ansible-tests.outputs.molecule-tests != ''
+      with:
+        targets: ${{ needs.discover-ansible-tests.outputs.molecule-tests }}
+        ansible-core-versions: ${{ needs.discover-ansible-versions.outputs.versions }}
 
-  ansible-test-integration:
-    uses: ./.github/workflows/ansible-test-integration.yml
-    needs:
-      - discover-ansible-tests
-      - discover-ansible-versions
-    if:
-      needs.discover-ansible-tests.outputs.integration-tests != '[]' &&
-      needs.discover-ansible-tests.outputs.integration-tests != ''
-    with:
-      targets: ${{ needs.discover-ansible-tests.outputs.integration-tests }}
-      ansible-core-versions: ${{ needs.discover-ansible-versions.outputs.versions }}
+    ansible-test-integration:
+      uses: ./.github/workflows/ansible-test-integration.yml
+      needs:
+        - discover-ansible-tests
+        - discover-ansible-versions
+      if:
+        needs.discover-ansible-tests.outputs.integration-tests != '[]' &&
+        needs.discover-ansible-tests.outputs.integration-tests != ''
+      with:
+        targets: ${{ needs.discover-ansible-tests.outputs.integration-tests }}
+        ansible-core-versions: ${{ needs.discover-ansible-versions.outputs.versions }}

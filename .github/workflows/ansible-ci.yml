@@ -72,7 +72,7 @@ jobs:
 
       - name: "Debug"
         run: |
-          echo ${{ fromJson(github.event.pull_request.labels) }}
+          echo ${{ toJson(github.event.pull_request.labels.*.name) }}
 
       - name: Discover role tests
         id: set-molecule-tests

@@ -71,18 +71,23 @@ jobs:
           since_last_remote_commit: "true"
 
       - name: "Debug"
+        env:
+          LABELS: ${{ toJson(github.event.pull_request.labels.*.name }}
         run: |
           echo '${{ toJson(github.event.pull_request.labels.*.name) }}'
           for x in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do echo $x; done
           #          for x in '${{ github.event.pull_request.labels.*.name }}'; do echo $x; done
           for x in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do echo $x; done
           #for x in '${{ fromJson(toJson(github.event.pull_request.labels.*.name)) }}'; do echo $x; done
+          echo $LABELS
 
       - name: Discover role tests
         id: set-molecule-tests
+        env:
+          LABELS: ${{ toJson(github.event.pull_request.labels.*.name }}
         run: |
           roles=${{ steps.changed-roles.outputs.all_changed_and_modified_files }}
-          roles+=('${{ toJson(github.event.pull_request.labels.*.name) }}')
+          roles+=$LABELS
           echo tests="[`for role in $roles; do
             for test in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-${role}-*" -printf "%f\n"); do
               echo '{"test":\"'"${test}"'\","name":\"'"${test#*-}\"'"}';

@@ -72,7 +72,6 @@ jobs:
 
       - name: "Debug"
         run: |
-          echo ${{ github.event.pull_request.labels.*.name }}
           echo ${{ fromJson(github.event.pull_request.labels.*.name) }}
           echo ${{ toJson(github.event.pull_request.labels.*.name) }}
 

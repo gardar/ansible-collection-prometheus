@@ -79,7 +79,7 @@ jobs:
           #          for x in '${{ github.event.pull_request.labels.*.name }}'; do echo $x; done
           #for x in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do echo $x; done
           #for x in '${{ fromJson(toJson(github.event.pull_request.labels.*.name)) }}'; do echo $x; done
-          echo $LABELS
+          echo '$LABELS'
 
       - name: Discover role tests
         id: set-molecule-tests

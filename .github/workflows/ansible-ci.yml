@@ -70,16 +70,16 @@ jobs:
           dir_names_max_depth: "1"
           since_last_remote_commit: "true"
 
-      - name: "Debug"
-        env:
-          LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
-        run: |
-          # echo '${{ toJson(github.event.pull_request.labels.*.name) }}'
-          # for x in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do echo $x; done
-          #          for x in '${{ github.event.pull_request.labels.*.name }}'; do echo $x; done
-          #for x in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do echo $x; done
-          #for x in '${{ fromJson(toJson(github.event.pull_request.labels.*.name)) }}'; do echo $x; done
-          echo '$LABELS'
+          # - name: "Debug"
+          #   env:
+          #     LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
+          #   run: |
+          #     # echo '${{ toJson(github.event.pull_request.labels.*.name) }}'
+          #     # for x in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do echo $x; done
+          #     #          for x in '${{ github.event.pull_request.labels.*.name }}'; do echo $x; done
+          #     #for x in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do echo $x; done
+          #     #for x in '${{ fromJson(toJson(github.event.pull_request.labels.*.name)) }}'; do echo $x; done
+          #     echo '$LABELS'
 
       - name: Discover role tests
         id: set-molecule-tests

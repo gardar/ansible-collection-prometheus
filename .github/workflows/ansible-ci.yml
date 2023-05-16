@@ -72,6 +72,8 @@ jobs:
 
       - name: "Debug"
         run: |
+          echo '${{ toJson(github.event.pull_request.labels.*.name) }}'
+          for x in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do echo $x; done
           for x in ${{ github.event.pull_request.labels.*.name }}; do echo $x; done
           for x in ${{ toJson(github.event.pull_request.labels.*.name) }}; do echo $x; done
           for x in ${{ fromJson(toJson(github.event.pull_request.labels.*.name)) }}; o echo $x; done

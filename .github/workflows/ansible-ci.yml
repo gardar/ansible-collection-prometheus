@@ -86,8 +86,10 @@ jobs:
         env:
           LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
         run: |
+          set -x
           roles=${{ steps.changed-roles.outputs.all_changed_and_modified_files }}
-          roles+=($(echo $LABELS))
+          for label in "$LABELS"; do
+            roles+=("$label")
           echo tests="[`for role in $roles; do
             for test in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-${role}-*" -printf "%f\n"); do
               echo '{"test":\"'"${test}"'\","name":\"'"${test#*-}\"'"}';

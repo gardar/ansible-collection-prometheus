@@ -70,16 +70,16 @@ jobs:
           dir_names_max_depth: "1"
           since_last_remote_commit: "true"
 
-      - name: "Debug"
-        run: |
-          echo ${{ toJson(github.event.pull_request.labels.*.name) }}
-          echo ${{ fromJson(toJson(github.event.pull_request.labels.*.name)) }}
+          # - name: "Debug"
+          #   run: |
+          #     echo ${{ toJson(github.event.pull_request.labels.*.name) }}
+          #     echo ${{ fromJson(toJson(github.event.pull_request.labels.*.name)) }}
 
       - name: Discover role tests
         id: set-molecule-tests
         run: |
           roles=${{ steps.changed-roles.outputs.all_changed_and_modified_files }}
-          roles+=${{ github.event.label.name }}
+          roles+=${{ github.event.pull_request.labels.*.name }}
           echo tests="[`for role in $roles; do
             for test in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-${role}-*" -printf "%f\n"); do
               echo '{"test":\"'"${test}"'\","name":\"'"${test#*-}\"'"}';

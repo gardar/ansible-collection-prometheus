@@ -88,7 +88,7 @@ jobs:
         run: |
           set -x
           roles=${{ steps.changed-roles.outputs.all_changed_and_modified_files }}
-          for label in "$LABELS"; do
+          for label in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do
             roles+="$label";
           done
           echo tests="[`for role in $roles; do

@@ -70,10 +70,10 @@ jobs:
           dir_names_max_depth: "1"
           since_last_remote_commit: "true"
 
-          # - name: "Debug"
-          #   run: |
-          #     echo ${{ toJson(github.event.pull_request.labels.*.name) }}
-          #     echo ${{ fromJson(toJson(github.event.pull_request.labels.*.name)) }}
+      - name: "Debug"
+        run: |
+          echo for x in ${{ toJson(github.event.pull_request.labels.*.name) }}; do echo $x; done
+          echo ${{ fromJson(toJson(github.event.pull_request.labels.*.name)) }}
 
       - name: Discover role tests
         id: set-molecule-tests

@@ -75,8 +75,8 @@ jobs:
           LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
         run: |
           set -x
-          # echo '${{ toJson(github.event.pull_request.labels.*.name) }}'
           for x in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do echo "bla $x"; done
+          # echo '${{ toJson(github.event.pull_request.labels.*.name) }}'
           #          for x in '${{ github.event.pull_request.labels.*.name }}'; do echo $x; done
           #for x in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do echo $x; done
           #for x in '${{ fromJson(toJson(github.event.pull_request.labels.*.name)) }}'; do echo $x; done

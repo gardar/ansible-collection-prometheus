@@ -78,6 +78,8 @@ jobs:
           for x in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do echo "bla $x"; done
           roles=$(echo $LABELS | jq @sh)
           for x in $roles; do echo $x; done
+          roles=$(echo $LABELS | jq)
+          for x in $roles; do echo $x; done
           LABEL='${{toJson(github.event.pull_request.labels.*.name) }}' | jq
           echo $LABEL
 

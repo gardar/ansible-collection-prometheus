@@ -75,7 +75,7 @@ jobs:
       - name: Add changed roles labels
         uses: actions/github-script@v6
         if: |
-          github.event.label
+          steps.changed-roles.outputs.all_changed_and_modified_files
         with:
           script: |
             github.rest.issues.addLabels({

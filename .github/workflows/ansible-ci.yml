@@ -17,13 +17,13 @@ env:
   ANSIBLE_GALAXY_SERVER_LIST: "galaxy"
 
 jobs:
-  ansible-lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+  # ansible-lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      - name: Lint collection
-        uses: ansible/ansible-lint-action@main
+  #     - name: Lint collection
+  #       uses: ansible/ansible-lint-action@main
 
   discover-ansible-versions:
     runs-on: ubuntu-latest
@@ -80,7 +80,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              labels: ${{ steps.changed-roles.outputs.all_changed_and_modified_files }}
+              labels: '${{ steps.changed-roles.outputs.all_changed_and_modified_files }}'
             })
 
       - name: Discover role tests

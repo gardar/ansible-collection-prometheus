@@ -78,11 +78,8 @@ jobs:
           for x in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do echo "bla $x"; done
           roles=$(echo $LABELS | jq @sh)
           echo $roles
-          # echo '${{ toJson(github.event.pull_request.labels.*.name) }}'
-          #          for x in '${{ github.event.pull_request.labels.*.name }}'; do echo $x; done
-          #for x in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do echo $x; done
-          #for x in '${{ fromJson(toJson(github.event.pull_request.labels.*.name)) }}'; do echo $x; done
-          #echo '($LABELS)'
+          LABEL='${{toJson(github.event.pull_request.labels.*.name) }}' | jq
+          echo $LABEL
 
       - name: Discover role tests
         id: set-molecule-tests

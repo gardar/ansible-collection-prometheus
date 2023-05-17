@@ -70,25 +70,11 @@ jobs:
           dir_names_max_depth: "1"
           since_last_remote_commit: "true"
 
-      - name: "Debug"
-        env:
-          LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
-        run: |
-          set -x
-          for x in '${{ toJson(github.event.pull_request.labels.*.name) }}'; do echo "bla $x"; done
-          roles=$(echo $LABELS | jq @sh)
-          for x in $roles; do echo $x; done
-          roles=$(echo $LABELS | jq -r '.[]')
-          for x in $roles; do echo "bla $x"; done
-          LABEL='${{toJson(github.event.pull_request.labels.*.name) }}' | jq
-          echo $LABEL
-
       - name: Discover role tests
         id: set-molecule-tests
         env:
           LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
         run: |
-          set -x
           roles=${{ steps.changed-roles.outputs.all_changed_and_modified_files }}
           roles+=$(echo $LABELS | jq -r '.[]')
           echo tests="[`for role in $roles; do

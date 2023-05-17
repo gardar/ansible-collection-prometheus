@@ -74,6 +74,8 @@ jobs:
 
       - name: Add changed roles labels
         uses: actions/github-script@v6
+        if: |
+          github.event.label
         with:
           script: |
             github.rest.issues.addLabels({

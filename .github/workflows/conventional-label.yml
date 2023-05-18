@@ -40,3 +40,29 @@ jobs:
               "skip-release": "skip_changelog",
               "skip_changelog": "skip_changelog"
               }
+
+
+      - name: Get changed roles
+        id: changed-roles
+        uses: tj-actions/changed-files@v35
+        with:
+          path: "roles"
+          diff_relative: "true"
+          files: "**"
+          dir_names: "true"
+          dir_names_max_depth: "1"
+          since_last_remote_commit: "true"
+
+      - name: Add changed roles labels
+        uses: actions/github-script@v6
+        if: |
+          steps.changed-roles.outputs.all_changed_and_modified_files
+        with:
+          script: |
+            const labels = '${{ steps.changed-roles.outputs.all_changed_and_modified_files }}'.split(' ');
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: labels
+            })

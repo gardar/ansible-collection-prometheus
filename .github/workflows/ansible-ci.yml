@@ -51,6 +51,7 @@ jobs:
   discover-ansible-tests:
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       issues: write
       pull-requests: write
       #    needs: ansible-lint

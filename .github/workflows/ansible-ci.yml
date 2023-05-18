@@ -52,6 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write
+      pull-requests: write
       #    needs: ansible-lint
     outputs:
       molecule-tests: ${{ steps.set-molecule-tests.outputs.tests }}

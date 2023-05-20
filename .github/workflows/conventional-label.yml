@@ -6,7 +6,7 @@ permissions:
   pull-requests: write
 name: Auto label pull request
 jobs:
-  label:
+  pr-label:
     runs-on: ubuntu-latest
     steps:
       - name: "Confirm correct pull request title"
@@ -41,6 +41,10 @@ jobs:
               "skip_changelog": "skip_changelog"
               }
 
+  role-label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
       - name: Get changed roles
         id: changed-roles

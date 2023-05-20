@@ -128,8 +128,8 @@ jobs:
       issues: write
       pull-requests: write
       needs:
-        pr-label
-        ansible-lint
+        - pr-label
+        - ansible-lint
     outputs:
       molecule-tests: ${{ steps.set-molecule-tests.outputs.tests }}
       integration-tests: ${{ steps.set-integration-tests.outputs.tests }}

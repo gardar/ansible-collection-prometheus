@@ -129,6 +129,7 @@ jobs:
       pull-requests: write
     needs:
       - pr-label
+      - role-label
       - ansible-lint
     outputs:
       molecule-tests: ${{ steps.set-molecule-tests.outputs.tests }}

@@ -26,13 +26,11 @@ jobs:
     steps:
       - name: "Confirm correct pull request title"
         uses: mmubeen/action-pr-title@master # until PR gets merged https://github.com/deepakputhraya/action-pr-title/pull/29
-        id: pr-title
         with:
           allowed_prefixes: 'feat,feature,fix,major,breaking,minor,enhancement,deprecated,removed,security,bug,bugfix,docs,packaging,test,refactor,refactoring,skip-release,skip_changelog'
 
       - name: "Apply label"
         if: github.event.pull_request.labels.length == 0
-        needs: pr-title
         uses: bcoe/conventional-release-labels@v1
         with:
           type_labels: |
@@ -60,7 +58,7 @@ jobs:
 
   role-label:
     runs-on: ubuntu-latest
-    needs: pr-title
+    needs: pr-label
     if: github.event.pull_request.labels.length == 0
     steps:
       - uses: actions/checkout@v3
@@ -92,7 +90,7 @@ jobs:
 
   # ansible-lint:
   #   runs-on: ubuntu-latest
-  #   needs: pr-title
+  #   needs: pr-label
   #   steps:
   #     - uses: actions/checkout@v3
 
@@ -101,7 +99,7 @@ jobs:
 
   discover-ansible-versions:
     runs-on: ubuntu-latest
-    needs: pr-title
+    needs: pr-label
     outputs:
       versions: ${{ steps.supported-ansible-versions.outputs.result }}
     steps:

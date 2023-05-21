@@ -10,6 +10,10 @@ on:
       - labeled
   workflow_dispatch:
 
+concurrency:
+  group: ansible-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 env:
   ANSIBLE_FORCE_COLOR: true
   ANSIBLE_GALAXY_SERVER_GALAXY_URL: "https://galaxy.ansible.com"
@@ -17,8 +21,76 @@ env:
   ANSIBLE_GALAXY_SERVER_LIST: "galaxy"
 
 jobs:
+  pr-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Confirm correct pull request title"
+        uses: deepakputhraya/action-pr-title@master
+        with:
+          allowed_prefixes: 'feat,feature,fix,major,breaking,minor,enhancement,deprecated,removed,security,bug,bugfix,docs,packaging,test,refactor,refactoring,skip-release,skip_changelog'
+
+      - name: "Apply label"
+        if: github.event.pull_request.labels.length == 0
+        uses: bcoe/conventional-release-labels@v1
+        with:
+          type_labels: |
+              {
+              "feature": "enhancement",
+              "feat": "enhancement",
+              "fix": "bugfix",
+              "major": "major",
+              "breaking": "breaking",
+              "minor": "minor",
+              "enhancement": "enhancement",
+              "deprecated": "deprecated",
+              "removed": "removed",
+              "security": "security",
+              "bug": "bug",
+              "bugfix": "bugfix",
+              "docs": "trivial",
+              "packaging": "trivial",
+              "test": "trivial",
+              "refactor": "trivial",
+              "refactoring": "trivial",
+              "skip-release": "skip_changelog",
+              "skip_changelog": "skip_changelog"
+              }
+
+  role-label:
+    runs-on: ubuntu-latest
+    needs: pr-label
+    if: github.event.pull_request.labels.length == 0
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get changed roles
+        id: changed-roles
+        uses: tj-actions/changed-files@v35
+        with:
+          path: "roles"
+          diff_relative: "true"
+          files: "**"
+          dir_names: "true"
+          dir_names_max_depth: "1"
+          since_last_remote_commit: "true"
+
+      - name: Add changed roles labels
+        uses: actions/github-script@v6
+        if: |
+          steps.changed-roles.outputs.all_changed_and_modified_files
+        with:
+          script: |
+            const labels = '${{ steps.changed-roles.outputs.all_changed_and_modified_files }}'.split(' ');
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: labels
+            })
+
   ansible-lint:
     runs-on: ubuntu-latest
+    needs: pr-label
     steps:
       - uses: actions/checkout@v3
 
@@ -27,6 +99,7 @@ jobs:
 
   discover-ansible-versions:
     runs-on: ubuntu-latest
+    needs: pr-label
     outputs:
       versions: ${{ steps.supported-ansible-versions.outputs.result }}
     steps:
@@ -50,7 +123,13 @@ jobs:
 
   discover-ansible-tests:
     runs-on: ubuntu-latest
-    needs: ansible-lint
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    needs:
+      - pr-label
+      - role-label
     outputs:
       molecule-tests: ${{ steps.set-molecule-tests.outputs.tests }}
       integration-tests: ${{ steps.set-integration-tests.outputs.tests }}
@@ -59,22 +138,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get changed roles
-        id: changed-roles
-        uses: tj-actions/changed-files@v35
-        with:
-          path: "roles"
-          diff_relative: "true"
-          files: "**"
-          dir_names: "true"
-          dir_names_max_depth: "1"
-          since_last_remote_commit: "true"
-
       - name: Discover role tests
         id: set-molecule-tests
+        env:
+          LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
         run: |
-          roles=${{ steps.changed-roles.outputs.all_changed_and_modified_files }}
-          roles+=${{ github.event.label.name }}
+          roles=$(echo $LABELS | jq -r '.[]')
           echo tests="[`for role in $roles; do
             for test in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-${role}-*" -printf "%f\n"); do
               echo '{"test":\"'"${test}"'\","name":\"'"${test#*-}\"'"}';
@@ -93,6 +162,7 @@ jobs:
     needs:
       - discover-ansible-tests
       - discover-ansible-versions
+      - ansible-lint
     if: needs.discover-ansible-tests.outputs.molecule-tests != '[]' &&
         needs.discover-ansible-tests.outputs.molecule-tests != ''
     with:
@@ -104,6 +174,7 @@ jobs:
     needs:
       - discover-ansible-tests
       - discover-ansible-versions
+      - ansible-lint
     if:
       needs.discover-ansible-tests.outputs.integration-tests != '[]' &&
       needs.discover-ansible-tests.outputs.integration-tests != ''

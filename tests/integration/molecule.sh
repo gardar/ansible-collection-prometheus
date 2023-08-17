@@ -44,6 +44,11 @@ else
        done
 fi
 
+ansible-config dump | grep -i roles_path                                                                                                                                                                                             │
+ansible-config dump | grep -i ansible_home 
+ansible-config dump | grep -i collection
+
+
 # Define config locations within collection
 export MOLECULE_FILE=$collection_root/.config/molecule/config.yml
 export YAMLLINT_CONFIG_FILE=$collection_root/.yamllint.yml

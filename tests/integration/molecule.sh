@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eux
+set -x
 
 collection_root=$(pwd | grep -oP ".+\/ansible_collections\/\w+?\/\w+")
 targetname=${PWD##*/}

@@ -23,7 +23,7 @@ def test_service(host):
         assert s.is_running
     except AssertionError:
         # Capture the output of 'systemctl status node_exporter'
-        status_output = host.check_output('systemctl status node_exporter')
+        status_output = host.run('journalctl -u node_exporter --since "1 hour ago"')
         print("\n==== systemctl status node_exporter Output ====\n")
         print(status_output)
         print("\n===============================================\n")

@@ -19,8 +19,15 @@ def test_directories(host):
 
 def test_service(host):
     s = host.service("node_exporter")
-#    assert s.is_enabled
-    assert s.is_running
+    try:
+        assert s.is_running
+    except AssertionError:
+        # Capture the output of 'systemctl status node_exporter'
+        status_output = host.check_output('systemctl status node_exporter')
+        print("\n==== systemctl status node_exporter Output ====\n")
+        print(status_output)
+        print("\n===============================================\n")
+        raise  # Re-raise the original assertion error
 
 
 def test_protecthome_property(host):

@@ -1,6 +1,5 @@
 ---
 provisioner:
-  name: ansible
   inventory:
     group_vars:
       all:

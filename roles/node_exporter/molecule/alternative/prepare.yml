@@ -2,7 +2,6 @@
 - name: Prepare
   hosts: localhost
   gather_facts: false
-  vars:
   tasks:
     - name: Download node_exporter binary to local folder
       become: false

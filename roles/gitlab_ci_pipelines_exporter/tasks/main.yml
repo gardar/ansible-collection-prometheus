@@ -1,0 +1,56 @@
+---
+- name: Preflight
+  ansible.builtin.include_tasks:
+    file: preflight.yml
+    apply:
+      tags:
+        - gitlab_ci_pipelines_exporter_install
+        - gitlab_ci_pipelines_exporter_configure
+        - gitlab_ci_pipelines_exporter_run
+  tags:
+    - gitlab_ci_pipelines_exporter_install
+    - gitlab_ci_pipelines_exporter_configure
+    - gitlab_ci_pipelines_exporter_run
+
+- name: Install
+  ansible.builtin.include_tasks:
+    file: install.yml
+    apply:
+      become: true
+      tags:
+        - gitlab_ci_pipelines_exporter_install
+  tags:
+    - gitlab_ci_pipelines_exporter_install
+
+- name: SELinux
+  ansible.builtin.include_tasks:
+    file: selinux.yml
+    apply:
+      become: true
+      tags:
+        - gitlab_ci_pipelines_exporter_configure
+  when: ansible_selinux.status == "enabled"
+  tags:
+    - gitlab_ci_pipelines_exporter_configure
+
+- name: Configure
+  ansible.builtin.include_tasks:
+    file: configure.yml
+    apply:
+      become: true
+      tags:
+        - gitlab_ci_pipelines_exporter_configure
+  tags:
+    - gitlab_ci_pipelines_exporter_configure
+
+- name: Ensure gitlab_ci_pipelines_exporter is enabled on boot
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: gitlab_ci_pipelines_exporter
+    enabled: true
+    state: started
+  when:
+    - not ansible_check_mode
+  tags:
+    - gitlab_ci_pipelines_exporter_run

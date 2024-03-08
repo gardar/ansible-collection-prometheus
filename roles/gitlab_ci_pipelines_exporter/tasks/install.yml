@@ -1,0 +1,69 @@
+---
+- name: Create the gitlab_ci_pipelines_exporter group
+  ansible.builtin.group:
+    name: "{{ gitlab_ci_pipelines_exporter_system_group }}"
+    state: present
+    system: true
+  when: gitlab_ci_pipelines_exporter_system_group != "root"
+
+- name: Create the gitlab_ci_pipelines_exporter user
+  ansible.builtin.user:
+    name: "{{ gitlab_ci_pipelines_exporter_system_user }}"
+    groups: "{{ gitlab_ci_pipelines_exporter_system_group }}"
+    append: true
+    shell: /usr/sbin/nologin
+    system: true
+    create_home: false
+    home: /
+  when: gitlab_ci_pipelines_exporter_system_user != "root"
+
+- name: Get binary
+  when:
+    - gitlab_ci_pipelines_exporter_binary_local_dir | length == 0
+    - not gitlab_ci_pipelines_exporter_skip_install
+  block:
+
+    - name: Download gitlab_ci_pipelines_exporter binary to local folder
+      become: false
+      ansible.builtin.get_url:
+        url: "{{ gitlab_ci_pipelines_exporter_binary_url }}"
+        dest: "{{ gitlab_ci_pipelines_exporter_archive_path }}/gitlab_ci_pipelines_exporter-{{ gitlab_ci_pipelines_exporter_version }}.linux-{{ go_arch }}.tar.gz"
+        checksum: "sha256:{{ __gitlab_ci_pipelines_exporter_checksum }}"
+        mode: '0644'
+      register: _download_binary
+      until: _download_binary is succeeded
+      retries: 5
+      delay: 2
+      delegate_to: localhost
+      check_mode: false
+
+    - name: Unpack gitlab_ci_pipelines_exporter binary
+      become: false
+      ansible.builtin.unarchive:
+        src: "{{ gitlab_ci_pipelines_exporter_archive_path }}/gitlab_ci_pipelines_exporter-{{ gitlab_ci_pipelines_exporter_version }}.linux-{{ go_arch }}.tar.gz"
+        dest: "{{ gitlab_ci_pipelines_exporter_archive_path }}"
+        creates: "{{ gitlab_ci_pipelines_exporter_archive_path }}/gitlab-ci-pipelines-exporter-{{ gitlab_ci_pipelines_exporter_version }}.linux-{{ go_arch }}/gitlab-ci-pipelines-exporter"
+      delegate_to: localhost
+      check_mode: false
+
+    - name: Propagate gitlab_ci_pipelines_exporter binaries
+      ansible.builtin.copy:
+        src: "{{ gitlab_ci_pipelines_exporter_archive_path }}/gitlab-ci-pipelines-exporter-{{ gitlab_ci_pipelines_exporter_version }}.linux-{{ go_arch }}/gitlab-ci-pipelines-exporter"
+        dest: "{{ gitlab_ci_pipelines_exporter_binary_install_dir }}/gitlab_ci_pipelines_exporter"
+        mode: 0755
+        owner: root
+        group: root
+      notify: restart gitlab_ci_pipelines_exporter
+      when: not ansible_check_mode
+
+- name: Propagate locally distributed gitlab_ci_pipelines_exporter binary
+  ansible.builtin.copy:
+    src: "{{ gitlab_ci_pipelines_exporter_binary_local_dir }}/gitlab-ci-pipelines-exporter"
+    dest: "{{ gitlab_ci_pipelines_exporter_binary_install_dir }}/gitlab_ci_pipelines_exporter"
+    mode: 0755
+    owner: root
+    group: root
+  when:
+    - gitlab_ci_pipelines_exporter_binary_local_dir | length > 0
+    - not gitlab_ci_pipelines_exporter_skip_install
+  notify: restart gitlab_ci_pipelines_exporter

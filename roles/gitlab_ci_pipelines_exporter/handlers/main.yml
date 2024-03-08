@@ -1,0 +1,8 @@
+---
+- name: Restart gitlab_ci_pipelines_exporter
+  listen: "restart gitlab_ci_pipelines_exporter"
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: gitlab_ci_pipelines_exporter
+    state: restarted

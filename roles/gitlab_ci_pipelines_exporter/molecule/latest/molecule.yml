@@ -1,0 +1,6 @@
+---
+provisioner:
+  inventory:
+    group_vars:
+      all:
+        gitlab_ci_pipelines_exporter_version: latest

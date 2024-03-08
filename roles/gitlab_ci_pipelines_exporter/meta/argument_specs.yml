@@ -1,0 +1,69 @@
+---
+# yamllint disable rule:line-length
+argument_specs:
+  main:
+    short_description: "Prometheus GitLab CI pipelines exporter"
+    description:
+      - "Deploy prometheus L(GitLab CI pipelines exporter,https://github.com/ncabatoff/gitlab_ci_pipelines_exporter) using ansible"
+    author:
+      - "Prometheus Community"
+    options:
+      gitlab_ci_pipelines_exporter_version:
+        description: "GitLab CI pipelines exporter package version. Also accepts latest as parameter."
+        default: "0.7.5"
+      gitlab_ci_pipelines_exporter_skip_install:
+        description: "GitLab CI pipelines exporter installation tasks gets skipped when set to true."
+        type: bool
+        default: false
+      gitlab_ci_pipelines_exporter_binary_local_dir:
+        description:
+          - "Enables the use of local packages instead of those distributed on github."
+          - "The parameter may be set to a directory where the C(gitlab_ci_pipelines_exporter) binary is stored on the host where ansible is run."
+          - "This overrides the I(gitlab_ci_pipelines_exporter_version) parameter"
+      gitlab_ci_pipelines_exporter_archive_path:
+        description: "Local path to stash the archive and its extraction"
+        default: "/tmp"
+      gitlab_ci_pipelines_exporter_binary_url:
+        description: "URL of the GitLab CI pipelines exporter binaries .tar.gz file"
+        default: "https://github.com/{{ _gitlab_ci_pipelines_exporter_repo }}/releases/download/v{{ gitlab_ci_pipelines_exporter_version }}/gitlab_ci_pipelines_exporter-{{ gitlab_ci_pipelines_exporter_version }}.linux-{{ go_arch }}.tar.gz"
+      gitlab_ci_pipelines_exporter_checksums_url:
+        description: "URL of the GitLab CI pipelines exporter checksums file"
+        default: "https://github.com/{{ _gitlab_ci_pipelines_exporter_repo }}/releases/download/v{{ gitlab_ci_pipelines_exporter_version }}/checksums.txt"
+      gitlab_ci_pipelines_exporter_web_listen_address:
+        description: "Address on which GitLab CI pipelines exporter will listen"
+        default: "0.0.0.0:9256"
+      gitlab_ci_pipelines_exporter_web_telemetry_path:
+        description: "Path under which to expose metrics"
+        default: "/metrics"
+      gitlab_ci_pipelines_exporter_tls_server_config:
+        description:
+          - "Configuration for TLS authentication."
+        type: "dict"
+      gitlab_ci_pipelines_exporter_http_server_config:
+        description:
+          - "Config for HTTP/2 support."
+        type: "dict"
+      gitlab_ci_pipelines_exporter_basic_auth_users:
+        description: "Dictionary of users and password for basic authentication. Passwords are automatically hashed with bcrypt."
+        type: "dict"
+      gitlab_ci_pipelines_exporter_names:
+        description:
+          - "Processes which should be monitored."
+          - "Syntax is the same as in"
+          - "L(using-a-config-file Default is consistent with deb/rpm packages,https://github.com/ncabatoff/gitlab-ci-pipelines-exporter#using-a-config-file Default is consistent with deb/rpm packages)"
+        default: !unsafe "[{name: '{{.Comm}}', cmdline: [.+]}]"
+      gitlab_ci_pipelines_exporter_binary_install_dir:
+        description:
+          - "I(Advanced)"
+          - "Directory to install gitlab_ci_pipelines_exporter binary"
+        default: "/usr/local/bin"
+      gitlab_ci_pipelines_exporter_system_group:
+        description:
+          - "I(Advanced)"
+          - "System group for GitLab CI pipelines exporter"
+        default: "gl-ci-pipe-exp"
+      gitlab_ci_pipelines_exporter_system_user:
+        description:
+          - "I(Advanced)"
+          - "GitLab CI pipelines exporter user"
+        default: "gl-ci-pipe-exp"

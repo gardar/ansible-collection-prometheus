@@ -1,0 +1,77 @@
+---
+- name: Run local preparation
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Download gitlab_ci_pipelines_exporter binary to local folder
+      become: false
+      ansible.builtin.get_url:
+        url: "https://github.com/ncabatoff/gitlab-ci-pipelines-exporter/releases/download/v{{\
+          \ gitlab_ci_pipelines_exporter_version }}/gitlab-ci-pipelines-exporter-{{ gitlab_ci_pipelines_exporter_version }}.linux-{{\
+          \ go_arch }}.tar.gz"
+        dest: "/tmp/gitlab_ci_pipelines_exporter-{{ gitlab_ci_pipelines_exporter_version }}.linux-{{ go_arch }}.tar.gz"
+        mode: 0644
+      register: _download_binary
+      until: _download_binary is succeeded
+      retries: 5
+      delay: 2
+      check_mode: false
+
+    - name: Unpack gitlab_ci_pipelines_exporter binary
+      become: false
+      ansible.builtin.unarchive:
+        src: "/tmp/gitlab_ci_pipelines_exporter-{{ gitlab_ci_pipelines_exporter_version }}.linux-{{ go_arch }}.tar.gz"
+        dest: "/tmp"
+        creates: "/tmp/gitlab-ci-pipelines-exporter-{{ gitlab_ci_pipelines_exporter_version }}.linux-{{ go_arch }}/gitlab-ci-pipelines-exporter"
+      check_mode: false
+
+    - name: Link to gitlab_ci_pipelines_exporter binaries directory
+      become: false
+      ansible.builtin.file:
+        src: "/tmp/gitlab-ci-pipelines-exporter-{{ gitlab_ci_pipelines_exporter_version }}.linux-amd64"
+        dest: "/tmp/gitlab_ci_pipelines_exporter-linux-amd64"
+        state: link
+      check_mode: false
+
+    - name: Install pyOpenSSL for certificate generation
+      ansible.builtin.pip:
+        name: "pyOpenSSL"
+
+    - name: Create private key
+      community.crypto.openssl_privatekey:
+        path: "/tmp/tls.key"
+
+    - name: Create CSR
+      community.crypto.openssl_csr:
+        path: "/tmp/tls.csr"
+        privatekey_path: "/tmp/tls.key"
+
+    - name: Create certificate
+      community.crypto.x509_certificate:
+        path: "/tmp/tls.cert"
+        csr_path: "/tmp/tls.csr"
+        privatekey_path: "/tmp/tls.key"
+        provider: selfsigned
+
+- name: Run target preparation
+  hosts: all
+  any_errors_fatal: true
+  tasks:
+    - name: Create gitlab_ci_pipelines_exporter cert dir
+      ansible.builtin.file:
+        path: "{{ gitlab_ci_pipelines_exporter_tls_server_config.cert_file | dirname }}"
+        state: directory
+        owner: root
+        group: root
+        mode: u+rwX,g+rwX,o=rX
+
+    - name: Copy cert and key
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        mode: "{{ item.mode | default('0644') }}"
+      loop:
+        - src: "/tmp/tls.cert"
+          dest: "{{ gitlab_ci_pipelines_exporter_tls_server_config.cert_file }}"
+        - src: "/tmp/tls.key"
+          dest: "{{ gitlab_ci_pipelines_exporter_tls_server_config.key_file }}"

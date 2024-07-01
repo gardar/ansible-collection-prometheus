@@ -1,0 +1,55 @@
+---
+name: Ansible Molecule
+on:
+  workflow_call:
+    inputs:
+      roles:
+        required: true
+        type: string
+
+jobs:
+  discover-molecule-scenarios:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        role: ${{ fromJson(inputs.roles) }}
+    outputs:
+      molecule-tests: ${{ steps.set-molecule-tests.outputs.tests }}
+
+    name: "${{ matrix.role }}"
+    steps:
+      - name: "Perform ${{ matrix.targets.test }} integration test with ansible-test"
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: ${{ matrix.ansible-core-versions }}
+          target-python-version: ${{ matrix.target-python-versions }}
+          controller-python-version: auto
+          docker-image: "--docker-privileged"  # Workaround because ansible-test action doesn't support setting privileged flag
+          testing-type: integration
+          target: ${{ matrix.targets.test }}
+          coverage: ${{ inputs.coverage }}
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: "Discover ${{ matrix.role }} molecule scenarios"
+        id: set-molecule-tests
+        run: |
+          roles=${{ matrix.role }}
+          echo tests="[`for role in $roles; do
+            for test in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-${role}-*" -printf "%f\n"); do
+              echo '{"test":\"'"${test}"'\","name":\"'"${test#*-}\"'"}';
+            done
+          done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
+
+  ansible-test-molecule:
+    uses: ./.github/workflows/ansible-test-integration.yml
+    needs:
+      - discover-molecule-scenarios
+      - discover-ansible-versions
+    if: needs.discover-molecule-scenarios.outputs.molecule-tests != '[]' &&
+        needs.discover-molecule-scenarios.outputs.molecule-tests != ''
+    with:
+      targets: ${{ needs.discover-molecule-scenarios.outputs.molecule-tests }}
+      ansible-core-versions: ${{ needs.discover-molecule-scenarios.outputs.versions }}
+      coverage: never

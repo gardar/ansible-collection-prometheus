@@ -3,38 +3,35 @@ name: Ansible Molecule
 on:
   workflow_call:
     inputs:
-      roles:
+      role:
         required: true
+        type: string
+      ansible-core-versions:
+        required: false
+        default: '["stable-2.14"]'
         type: string
 
 jobs:
   discover-molecule-scenarios:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        role: ${{ fromJson(inputs.roles) }}
     outputs:
       molecule-tests: ${{ steps.set-molecule-tests.outputs.tests }}
 
-    name: "${{ matrix.role }}"
+    name: "${{ inputs.role }}-discover-molecule-scenarios"
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: "Discover ${{ matrix.role }} molecule scenarios"
+      - name: "Discover ${{ inputs.role }} molecule scenarios"
         id: set-molecule-tests
         run: |
-          roles=(${{ matrix.role }})
-          echo $roles
-          echo tests="[`for role in $roles; do
-            for test in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-${role}-*" -printf "%f\n"); do
+          role=${{ inputs.role }}
+          echo tests="[`for test in $(find tests/integration/targets -maxdepth 1 -mindepth 1 -type d -iname "molecule-${role}-*" -printf "%f\n"); do
               echo '{"test":\"'"${test}"'\","name":\"'"${test#*-}\"'"}';
-            done
           done | tr '\n' ',' | sed '$s/,$//'`]" >> $GITHUB_OUTPUT
 
-  ansible-test-molecule:
+  ansible-test-integration-molecule:
     uses: ./.github/workflows/ansible-test-integration.yml
     needs:
       - discover-molecule-scenarios
@@ -42,5 +39,5 @@ jobs:
         needs.discover-molecule-scenarios.outputs.molecule-tests != ''
     with:
       targets: ${{ needs.discover-molecule-scenarios.outputs.molecule-tests }}
-      ansible-core-versions: ${{ needs.discover-molecule-scenarios.outputs.versions }}
+      ansible-core-versions: ${{ inputs.ansible-core-versions }}
       coverage: never

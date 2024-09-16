@@ -67,7 +67,7 @@ provisioner:
   inventory:
     hosts:
       target_hosts:
-        hosts: []
+        hosts: {}
     host_vars:
       fedora-39:
         exclude_ansible_vers:

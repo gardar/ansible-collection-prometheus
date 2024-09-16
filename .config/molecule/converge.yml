@@ -11,6 +11,7 @@
       ansible.builtin.add_host:
         name: "{{ item }}"
         groups: target_hosts
+      when: item not in groups['target_hosts']
       loop: >-
         {{
           groups['all']

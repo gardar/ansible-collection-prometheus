@@ -28,13 +28,13 @@
       ansible.builtin.debug:
         var: groups
 
-# - name: Converge
-#   hosts: target_hosts
-#   any_errors_fatal: true
-#   tasks:
-#     - name: "Debug groups"
-#       ansible.builtin.debug:
-#         var: groups
+- name: Converge
+  hosts: target_hosts
+  #  any_errors_fatal: true
+  tasks:
+    - name: "Debug groups"
+      ansible.builtin.debug:
+        var: groups
 #
 #    - name: "Run role"
 #      ansible.builtin.include_role:

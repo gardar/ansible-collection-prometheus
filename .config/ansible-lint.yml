@@ -5,3 +5,6 @@ warn_list:
   - name[casing]  # https://github.com/ansible/ansible-lint/issues/4035#issuecomment-2116272270
 skip_list:
   - var-naming[no-role-prefix]  # https://github.com/ansible/ansible-lint/pull/3422#issuecomment-1549584988
+exclude_paths:
+  - .cache
+  - .config/molecule/converge.yml

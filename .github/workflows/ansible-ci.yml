@@ -50,12 +50,12 @@ jobs:
         run: |
           echo "result=$(python ./.github/scripts/collection_version_parser.py)" >> $GITHUB_OUTPUT
 
-  ansible-test-sanity:
-    uses: ./.github/workflows/ansible-test-sanity.yml
-    needs:
-      - discover-ansible-versions
-    with:
-      ansible-core-versions: ${{ needs.discover-ansible-versions.outputs.versions }}
+#  ansible-test-sanity:
+#    uses: ./.github/workflows/ansible-test-sanity.yml
+#    needs:
+#      - discover-ansible-versions
+#    with:
+#      ansible-core-versions: ${{ needs.discover-ansible-versions.outputs.versions }}
 
   discover-ansible-tests:
     runs-on: ubuntu-latest

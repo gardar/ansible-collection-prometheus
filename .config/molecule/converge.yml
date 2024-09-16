@@ -30,7 +30,7 @@
 
 - name: Converge
   hosts: target_hosts
-  #  any_errors_fatal: true
+  any_errors_fatal: true
   tasks:
     - name: "Debug groups"
       ansible.builtin.debug:

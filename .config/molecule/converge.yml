@@ -3,6 +3,10 @@
   hosts: localhost
   gather_facts: false
   tasks:
+    - name: "Debug groups before add_host"
+      ansible.builtin.debug:
+        var: groups
+
     - name: Filter out incompatible distro/ansible version combos
       ansible.builtin.add_host:
         name: "{{ item }}"
@@ -24,18 +28,18 @@
           )
         }}
 
-    - name: "Debug groups from localhost"
+    - name: "Debug groups after add_host"
       ansible.builtin.debug:
         var: groups
 
-- name: Converge
-  hosts: target_hosts
-  any_errors_fatal: true
-  tasks:
-    - name: "Debug groups"
-      ansible.builtin.debug:
-        var: groups
-#
-#    - name: "Run role"
-#      ansible.builtin.include_role:
-#        name: "prometheus.prometheus.{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"
+# - name: Converge
+#   hosts: target_hosts
+#   any_errors_fatal: true
+#   tasks:
+#     - name: "Debug groups"
+#       ansible.builtin.debug:
+#         var: groups
+# #
+# #    - name: "Run role"
+# #      ansible.builtin.include_role:
+# #        name: "prometheus.prometheus.{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"

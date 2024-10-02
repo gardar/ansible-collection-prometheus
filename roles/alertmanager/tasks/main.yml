@@ -27,6 +27,7 @@
     name: prometheus.prometheus._common
     tasks_from: selinux.yml
     apply:
+      become: true
       tags:
         - alertmanager_configure
   vars:

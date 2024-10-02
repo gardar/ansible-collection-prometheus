@@ -9,7 +9,6 @@
   until: __common_install_selinux_packages is success
   retries: 5
   delay: 2
-  become: true
   when: ansible_os_family | lower == "redhat"
 
 - name: Install selinux python packages [clearlinux]
@@ -20,7 +19,6 @@
   until: __common_install_selinux_packages is success
   retries: 5
   delay: 2
-  become: true
   when:
     - ansible_distribution | lower == "clearlinux"
 
@@ -30,7 +28,6 @@
     proto: tcp
     setype: http_port_t
     state: present
-  become: true
   when:
     - ansible_version.full is version_compare('2.4', '>=')
     - ansible_selinux.status == "enabled"

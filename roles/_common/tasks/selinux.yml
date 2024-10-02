@@ -5,19 +5,33 @@
            if ansible_python_version is version('3', '<') else
            ['python3-libselinux', 'python3-policycoreutils'] }}"
     state: present
-  register: _install_selinux_packages
-  until: _install_selinux_packages is success
+  register: __common_install_selinux_packages
+  until: __common_install_selinux_packages is success
   retries: 5
   delay: 2
+  become: true
   when: ansible_os_family | lower == "redhat"
 
 - name: Install selinux python packages [clearlinux]
   ansible.builtin.package:
     name: sysadmin-basic
     state: present
-  register: _install_selinux_packages
-  until: _install_selinux_packages is success
+  register: __common_install_selinux_packages
+  until: __common_install_selinux_packages is success
   retries: 5
   delay: 2
+  become: true
   when:
     - ansible_distribution | lower == "clearlinux"
+
+- name: Allow port in SELinux
+  community.general.seport:
+    ports: "{{ _common_selinux_port }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+  become: true
+  when:
+    - ansible_version.full is version_compare('2.4', '>=')
+    - ansible_selinux.status == "enabled"
+    - (_common_selinux_port)

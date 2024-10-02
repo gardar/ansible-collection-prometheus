@@ -23,12 +23,14 @@
     - alertmanager_install
 
 - name: SELinux
-  ansible.builtin.include_tasks:
-    file: selinux.yml
+  ansible.builtin.include_role:
+    name: prometheus.prometheus._common
+    tasks_from: selinux.yml
     apply:
-      become: true
       tags:
         - alertmanager_configure
+  vars:
+    _common_selinux_port: "{{ alertmanager_web_listen_address.split(':')[-1] }}"
   when: ansible_selinux.status == "enabled"
   tags:
     - alertmanager_configure

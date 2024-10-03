@@ -1,0 +1,60 @@
+---
+- name: Register service name
+  ansible.builtin.set_fact:
+    __common_service_name: "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
+
+- name: Create system group
+  ansible.builtin.group:
+    name: "{{ _common_system_group }}"
+    system: true
+    state: present
+
+- name: Create alertmanager system user
+  ansible.builtin.user:
+    name: "{{ _common_system_user }}"
+    system: true
+    shell: "/usr/sbin/nologin"
+    group: "{{ _common_system_group }}"
+    createhome: false
+
+- name: Download and install from binary
+  when:
+    - _common_binary_local_dir | length == 0
+  block:
+
+    - name: Download binary archive to local folder
+      become: false
+      ansible.builtin.get_url:
+        url: "{{ _common_binary_url }}"
+        dest: "{{ _common_archive_path }}/{{ _common_binary_url | urlsplit('path') | basename }}"
+        checksum: "sha256:{{ __common_binary_checksum }}"
+        mode: 0644
+      register: __common_download_archive
+      until: __common_download_archive is succeeded
+      retries: 5
+      delay: 2
+      # run_once: true  # <-- this can't be set due to multi-arch support
+      delegate_to: localhost
+      check_mode: false
+
+    - name: Unpack binary archive
+      become: false
+      ansible.builtin.unarchive:
+        src: "{{ _common_archive_path }}/{{ _common_binary_url | urlsplit('path') | basename }}"
+        dest: "{{ _common_archive_path }}"
+        mode: 0755
+      register: __common_unpack_archive
+      delegate_to: localhost
+      check_mode: false
+
+- name: Propagate binaries
+  ansible.builtin.copy:
+    src: "{{ _common_binary_local_dir | ternary((_common_binary_local_dir ~ '/' ~ item),
+          (__common_unpack_archive.dest ~ __common_unpack_archive.files | select('search', item + '$') | first)) }}"
+    dest: "{{ _common_binary_install_dir }}/{{ item }}"
+    mode: 0755
+    owner: root
+    group: root
+  loop: "{{ _common_binaries }}"
+  notify:
+    - restart_service

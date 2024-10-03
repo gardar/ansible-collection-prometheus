@@ -13,12 +13,19 @@
     - alertmanager_run
 
 - name: Install
-  ansible.builtin.include_tasks:
-    file: install.yml
+  ansible.builtin.include_role:
+    name: prometheus.prometheus._common
+    tasks_from: install.yml
     apply:
       become: true
       tags:
         - alertmanager_install
+  vars:
+    _common_binary_url: "{{ alertmanager_binary_url }}"
+    _common_binaries: "{{ _alertmanager_binaries }}"
+    _common_archive_path: "{{ alertmanager_archive_path }}"
+    _common_binary_local_dir: "{{ _alertmanager_binary_local_dir }}"
+    _common_binary_install_dir: "{{ alertmanager_binary_install_dir }}"
   tags:
     - alertmanager_install
 
@@ -27,7 +34,6 @@
     name: prometheus.prometheus._common
     tasks_from: selinux.yml
     apply:
-      become: true
       tags:
         - alertmanager_configure
   vars:

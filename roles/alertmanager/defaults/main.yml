@@ -137,3 +137,6 @@ alertmanager_amtool_config_output: 'extended'
 
 # Local path to stash the archive and its extraction
 alertmanager_archive_path: /tmp
+
+alertmanager_system_group: alertmanager
+alertmanager_system_user: "{{ alertmanager_system_group }}"

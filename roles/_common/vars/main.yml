@@ -7,3 +7,8 @@
 #  _common_github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
 _common_selinux_port: ""
 _common_binaries: []
+_common_system_group: ""
+_common_system_user: ""
+_common_binary_url: ""
+_common_binary_local_dir: ""
+_common_archive_path: ""

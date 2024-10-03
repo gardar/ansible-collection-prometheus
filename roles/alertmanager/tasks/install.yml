@@ -13,19 +13,6 @@
     group: alertmanager
     createhome: false
 
-- name: Create alertmanager directories
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    owner: alertmanager
-    group: alertmanager
-    mode: 0755
-  with_items:
-    - "{{ alertmanager_config_dir }}"
-    - "{{ alertmanager_config_dir }}/templates"
-    - "{{ alertmanager_db_dir }}"
-    - "{{ _alertmanager_amtool_config_dir }}"
-
 - name: Get binary
   when:
     - alertmanager_binary_local_dir | length == 0

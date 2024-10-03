@@ -27,7 +27,7 @@
     _common_binaries: "{{ _alertmanager_binaries }}"
     _common_archive_path: "{{ alertmanager_archive_path }}"
     _common_binary_local_dir: "{{ alertmanager_binary_local_dir }}"
-    _common_binary_install_dir: "{{ alertmanager_binary_install_dir }}"
+    _common_binary_install_dir: "{{ _alertmanager_binary_install_dir }}"
   tags:
     - alertmanager_install
 

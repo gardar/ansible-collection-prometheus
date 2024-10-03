@@ -43,14 +43,13 @@
         src: "{{ _common_archive_path }}/{{ _common_binary_url | urlsplit('path') | basename }}"
         dest: "{{ _common_archive_path }}"
         mode: 0755
-      register: __common_unpack_archive
+      register: __common_unpack
       delegate_to: localhost
       check_mode: false
 
 - name: Propagate binaries
   ansible.builtin.copy:
-    src: "{{ _common_binary_local_dir | ternary((_common_binary_local_dir ~ '/' ~ item),
-          (__common_unpack_archive.dest ~ __common_unpack_archive.files | select('search', item + '$') | first)) }}"
+    src: "{{ (_common_binary_local_dir ~ '/' ~ item) | default(__common_archive_content | select('search', item + '$') | first) }}"
     dest: "{{ _common_binary_install_dir }}/{{ item }}"
     mode: 0755
     owner: root
@@ -58,3 +57,5 @@
   loop: "{{ _common_binaries }}"
   notify:
     - restart_service
+  vars:
+    __common_archive_content: "{{ [_common_archive_path ~ '/' ] | product(__common_unpack.files | default([])) | map('join') | list }}"

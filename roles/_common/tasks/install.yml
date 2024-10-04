@@ -24,7 +24,7 @@
   block:
     - name: "Get checksum list"
       ansible.builtin.set_fact:
-        __common_binary_checksums: "{{ dict(lookup('url', _common_checksums_url, headers=__common_github_api_headers, wantlist=True) |
+        __common_binary_checksums: "{{ dict(lookup('url', _common_checksums_url, headers=_common_github_api_headers, wantlist=True) |
                                     map('regex_replace', '^([a-fA-F0-9]+)\\s+', 'sha256:\\1 ') | map('split', ' ') | map('reverse')) }}"
       run_once: true
       when: (_common_checksums_url)
@@ -34,6 +34,7 @@
       ansible.builtin.get_url:
         url: "{{ _common_binary_url }}"
         dest: "{{ _common_archive_path }}/{{ __common_binary_archive }}"
+        headers: "{{ _common_github_api_headers }}"
         checksum: "{{ __common_binary_checksums[__common_binay_archive] | default(omit) }}"
         mode: 0644
       register: __common_download_archive

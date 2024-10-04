@@ -4,7 +4,7 @@
 #                                'aarch64': 'arm64',
 #                                'armv7l': 'armv7',
 #                                'armv6l': 'armv6'}.get(ansible_architecture, ansible_architecture) }}"
-#  _common_github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+_common_github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
 _common_selinux_port: ""
 _common_binaries: []
 _common_system_group: ""

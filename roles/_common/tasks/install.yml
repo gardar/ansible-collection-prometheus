@@ -38,7 +38,7 @@
         url: "{{ _common_binary_url }}"
         dest: "{{ _common_archive_path }}/{{ __common_binary_archive }}"
         headers: "{{ _common_github_api_headers }}"
-        checksum: "{{ __common_binary_checksums[__common_binay_archive] | default(omit) }}"
+        checksum: "{{ __common_binary_checksums[__common_binary_archive] | default(omit) }}"
         mode: 0644
       register: __common_download_archive
       until: __common_download_archive is succeeded

@@ -63,6 +63,8 @@
     msg:
       - "__common_archive_content {{ __common_archive_content }}"
       - "__common_unpack {{ __common_unpack | default('') }}"
+      - "_common_binary_url {{ _common_binary_url }}"
+      - "__common_binary_archive {{ __common_binary_archive }}"
   failed_when: false
   vars:
     __common_archive_content: "{{ [_common_archive_path ~ '/' ] | product(__common_unpack.files | default([])) | map('join') | list }}"

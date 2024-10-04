@@ -24,8 +24,11 @@
   block:
     - name: "Get checksum list"
       ansible.builtin.set_fact:
-        __common_binary_checksums: "{{ dict(lookup('url', _common_checksums_url, headers=_common_github_api_headers, wantlist=True) |
-                                    map('regex_replace', '^([a-fA-F0-9]+)\\s+', 'sha256:\\1 ') | map('split', ' ') | map('reverse')) }}"
+        #        __common_binary_checksums: "{{ dict(lookup('url', _common_checksums_url, headers=_common_github_api_headers, wantlist=True) |
+        #                            map('regex_replace', '^([a-fA-F0-9]+)\\s+', 'sha256:\\1 ') | map('split', ' ') | map('reverse')) }}"
+        __common_binary_checksums: "{{ dict(lookup('url', _common_checksums_url, headers=_common_github_api_headers, wantlist=True)
+                                    | map('regex_replace', '^([a-fA-F0-9]+)\\s+', 'sha256:\\1 ')
+                                    | map('regex_findall', '^(sha256:[a-fA-F0-9]+)\\s+(.+)$') | map('flatten') | map('reverse')) }}"
       run_once: true
       when: (_common_checksums_url)
 

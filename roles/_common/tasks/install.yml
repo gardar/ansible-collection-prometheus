@@ -95,7 +95,8 @@
 
 - name: Propagate binaries
   ansible.builtin.copy:
-    src: "{{ (_common_binary_local_dir) | ternary((_common_binary_local_dir ~ '/' ~ item), (__common_archive_content | select('search', item + '$') | first) }}"
+    src: "{{ (_common_binary_local_dir) | ternary((_common_binary_local_dir ~ '/' ~ item),
+          (__common_archive_content | select('search', item + '$') | first)) }}"
     dest: "{{ _common_binary_install_dir }}/{{ item }}"
     mode: 0755
     owner: root

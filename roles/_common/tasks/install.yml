@@ -75,7 +75,8 @@
   ansible.builtin.debug:
     msg:
       - "binary src__ {{ (_common_binary_local_dir ~ '/' ~ item) | default(__common_archive_content | select('search', item + '$') | first) }}"
-      - "{{ (_common_binary_local_dir) | ternary((_common_binary_local_dir  ~ '/' ~ item), (__common_archive_content | select('search', item + '$') | first)) }}"
+      - "{{ (_common_binary_local_dir) | ternary((_common_binary_local_dir  ~ '/' ~ item),
+         (__common_archive_content | select('search', item + '$') | first)) }}"
       - "binary src__ def true {{ (_common_binary_local_dir ~ '/' ~ item) | default(__common_archive_content | select('search', item + '$') | first, true) }}"
       - "common local dir {{ (_common_binary_local_dir ~ '/' ~ item) }}"
       - "common arch content {{ __common_archive_content | select('search', item + '$') | first }}"

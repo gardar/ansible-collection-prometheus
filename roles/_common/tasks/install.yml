@@ -54,6 +54,7 @@
         src: "{{ _common_archive_path }}/{{ __common_binary_archive }}"
         dest: "{{ _common_archive_path }}"
         mode: 0755
+        list_files: true
       register: __common_unpack
       delegate_to: localhost
       check_mode: false

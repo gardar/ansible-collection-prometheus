@@ -59,41 +59,6 @@
       delegate_to: localhost
       check_mode: false
 
-- name: Debug download
-  ansible.builtin.debug:
-    msg:
-      - "__common_download_archive {{ __common_download_archive }}"
-      - "__common_archive_content {{ __common_archive_content }}"
-      - "__common_unpack {{ __common_unpack | default('') }}"
-      - "_common_binary_url {{ _common_binary_url }}"
-      - "__common_binary_archive {{ __common_binary_archive }}"
-  failed_when: false
-  vars:
-    __common_archive_content: "{{ [_common_archive_path ~ '/' ] | product(__common_unpack.files | default([])) | map('join') | list }}"
-
-- name: Debug binary src
-  ansible.builtin.debug:
-    msg:
-      - "binary src__ {{ (_common_binary_local_dir ~ '/' ~ item) | default(__common_archive_content | select('search', item + '$') | first) }}"
-      - "{{ (_common_binary_local_dir) | ternary((_common_binary_local_dir  ~ '/' ~ item),
-         (__common_archive_content | select('search', item + '$') | first)) }}"
-      - "binary src__ def true {{ (_common_binary_local_dir ~ '/' ~ item) | default(__common_archive_content | select('search', item + '$') | first, true) }}"
-      - "common local dir {{ (_common_binary_local_dir ~ '/' ~ item) }}"
-      - "common arch content {{ __common_archive_content | select('search', item + '$') | first }}"
-  loop: "{{ _common_binaries }}"
-  failed_when: false
-  vars:
-    __common_archive_content: "{{ [_common_archive_path ~ '/' ] | product(__common_unpack.files | default([])) | map('join') | list }}"
-
-- name: Debug checksum
-  ansible.builtin.debug:
-    msg:
-      - "{{ __common_binary_checksums[__common_binary_archive] | default(omit) }}"
-  loop: "{{ _common_binaries }}"
-  failed_when: false
-  vars:
-    __common_archive_content: "{{ [_common_archive_path ~ '/' ] | product(__common_unpack.files | default([])) | map('join') | list }}"
-
 - name: Propagate binaries
   ansible.builtin.copy:
     src: "{{ (_common_binary_local_dir) | ternary((_common_binary_local_dir ~ '/' ~ item),

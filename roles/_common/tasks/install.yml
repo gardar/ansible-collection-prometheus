@@ -61,6 +61,7 @@
 - name: Debug download
   ansible.builtin.debug:
     msg:
+      - "__common_download_archive {{ __common_download_archive }}"
       - "__common_archive_content {{ __common_archive_content }}"
       - "__common_unpack {{ __common_unpack | default('') }}"
       - "_common_binary_url {{ _common_binary_url }}"
@@ -89,7 +90,7 @@
 
 - name: Propagate binaries
   ansible.builtin.copy:
-    src: "{{ (_common_binary_local_dir ~ '/' ~ item) | default(__common_archive_content | select('search', item + '$') | first) }}"
+    src: "{{ (_common_binary_local_dir ~ '/' ~ item) | default(__common_archive_content | select('search', item + '$') | first, true) }}"
     dest: "{{ _common_binary_install_dir }}/{{ item }}"
     mode: 0755
     owner: root

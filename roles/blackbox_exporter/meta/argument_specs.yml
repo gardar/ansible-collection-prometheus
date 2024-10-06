@@ -50,10 +50,10 @@ argument_specs:
           - "I(Advanced)"
           - "Directory to install blackbox_exporter binary"
         default: "/usr/local/bin"
-      blackbox_exporter_user:
+      blackbox_exporter_system_user:
         description: "The user the exporter runs as"
         default: "blackbox-exp"
-      blackbox_exporter_group:
+      blackbox_exporter_system_group:
         description: "The group the exporter runs as"
         default: "blackbox-exp"
       blackbox_exporter_archive_path:

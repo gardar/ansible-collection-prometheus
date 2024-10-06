@@ -13,14 +13,37 @@
     - blackbox_exporter_run
 
 - name: Install
-  ansible.builtin.include_tasks:
-    file: install.yml
+  ansible.builtin.include_role:
+    name: prometheus.prometheus._common
+    tasks_from: install.yml
     apply:
       become: true
       tags:
         - blackbox_exporter_install
+  vars:
+    _common_archive_path: "{{ blackbox_exporter_archive_path }}"
+    _common_binaries: "{{ _blackbox_exporter_binaries }}"
+    _common_binary_install_dir: "{{ _blackbox_exporter_binary_install_dir }}"
+    _common_binary_local_dir: "{{ blackbox_exporter_binary_local_dir }}"
+    _common_binary_url: "{{ blackbox_exporter_binary_url }}"
+    _common_checksums_url: "{{ blackbox_exporter_checksums_url }}"
+    _common_system_group:  "{{ blackbox_exporter_system_group }}"
+    _common_system_user:  "{{ blackbox_exporter_system_user }}"
   tags:
     - blackbox_exporter_install
+
+- name: SELinux
+  ansible.builtin.include_role:
+    name: prometheus.prometheus._common
+    tasks_from: selinux.yml
+    apply:
+      tags:
+        - blackbox_exporter_configure
+  vars:
+    _common_selinux_port: "{{ blackbox_exporter_web_listen_address.split(':')[-1] }}"
+  when: ansible_selinux.status == "enabled"
+  tags:
+    - blackbox_exporter_configure
 
 - name: Configure
   ansible.builtin.include_tasks:

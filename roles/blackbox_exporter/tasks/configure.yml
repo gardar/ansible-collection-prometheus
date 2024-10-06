@@ -1,4 +1,18 @@
 ---
+- name: Ensure blackbox exporter binary has cap_net_raw capability
+  community.general.capabilities:
+    path: "{{ blackbox_exporter_binary_install_dir }}/blackbox_exporter"
+    capability: cap_net_raw+ep
+    state: present
+  become: true
+  when: not ansible_check_mode
+  changed_when: "'molecule-idempotence-notest' not in ansible_skip_tags"
+
+- name: Check Debug Message
+  ansible.builtin.debug:
+    msg: "The capabilities module is skipped during check mode, as the file may not exist, causing execution to fail."
+  when: ansible_check_mode
+
 - name: Create systemd service unit
   ansible.builtin.template:
     src: blackbox_exporter.service.j2

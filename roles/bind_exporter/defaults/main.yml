@@ -24,4 +24,3 @@ bind_exporter_system_group: "bind-exp"
 bind_exporter_system_user: "{{ bind_exporter_system_group }}"
 
 bind_exporter_archive_path: /tmp
-

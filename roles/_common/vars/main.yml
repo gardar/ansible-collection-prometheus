@@ -10,5 +10,7 @@ _common_binaries: []
 _common_system_group: ""
 _common_system_user: ""
 _common_binary_url: ""
+_common_service_name: "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
+_common_binary_archive: "{{ _common_binary_url | urlsplit('path') | basename }}"
 _common_binary_local_dir: ""
 _common_archive_path: ""

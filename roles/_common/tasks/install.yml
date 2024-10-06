@@ -1,16 +1,11 @@
 ---
-- name: Register service name
-  ansible.builtin.set_fact:
-    __common_service_name: "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
-    __common_binary_archive: "{{ _common_binary_url | urlsplit('path') | basename }}"
-
-- name: Create system group
+- name: "Create system group {{ _common_system_group }}"
   ansible.builtin.group:
     name: "{{ _common_system_group }}"
     system: true
     state: present
 
-- name: Create alertmanager system user
+- name: "Create system user {{ _common_system_user }}"
   ansible.builtin.user:
     name: "{{ _common_system_user }}"
     system: true
@@ -18,27 +13,25 @@
     group: "{{ _common_system_group }}"
     createhome: false
 
-- name: Download and install from binary
+- name: "Download and install from binary {{ _common_binary_archive }}"
   when:
     - _common_binary_local_dir | length == 0
   block:
-    - name: "Get checksum list"
+    - name: "Get checksum list for {{ _common_binary_archive }}"
       ansible.builtin.set_fact:
-        #        __common_binary_checksums: "{{ dict(lookup('url', _common_checksums_url, headers=_common_github_api_headers, wantlist=True) |
-        #                            map('regex_replace', '^([a-fA-F0-9]+)\\s+', 'sha256:\\1 ') | map('split', ' ') | map('reverse')) }}"
         __common_binary_checksums: "{{ dict(lookup('url', _common_checksums_url, headers=_common_github_api_headers, wantlist=True)
                                     | map('regex_replace', '^([a-fA-F0-9]+)\\s+', 'sha256:\\1 ')
                                     | map('regex_findall', '^(sha256:[a-fA-F0-9]+)\\s+(.+)$') | map('flatten') | map('reverse')) }}"
       run_once: true
       when: (_common_checksums_url)
 
-    - name: Download binary archive to local folder
+    - name: "Download binary archive {{ _common_binary_archive }}"
       become: false
       ansible.builtin.get_url:
         url: "{{ _common_binary_url }}"
-        dest: "{{ _common_archive_path }}/{{ __common_binary_archive }}"
+        dest: "{{ _common_archive_path }}/{{ _common_binary_archive }}"
         headers: "{{ _common_github_api_headers }}"
-        checksum: "{{ __common_binary_checksums[__common_binary_archive] | default(omit) }}"
+        checksum: "{{ __common_binary_checksums[_common_binary_archive] | default(omit) }}"
         mode: 0644
       register: __common_download_archive
       until: __common_download_archive is succeeded
@@ -48,10 +41,10 @@
       delegate_to: localhost
       check_mode: false
 
-    - name: Unpack binary archive
+    - name: "Unpack binary archive {{ _common_binary_archive }}"
       become: false
       ansible.builtin.unarchive:
-        src: "{{ _common_archive_path }}/{{ __common_binary_archive }}"
+        src: "{{ _common_archive_path }}/{{ _common_binary_archive }}"
         dest: "{{ _common_archive_path }}"
         mode: 0755
         list_files: true
@@ -59,7 +52,7 @@
       delegate_to: localhost
       check_mode: false
 
-- name: Propagate binaries
+- name: "Propagate binaries"
   ansible.builtin.copy:
     src: "{{ (_common_binary_local_dir) | ternary((_common_binary_local_dir ~ '/' ~ item),
           (__common_archive_content | select('search', item + '$') | first)) }}"

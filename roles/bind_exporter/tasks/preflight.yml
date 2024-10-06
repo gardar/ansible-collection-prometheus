@@ -41,14 +41,14 @@
 
 - name: Check if bind_exporter is installed
   ansible.builtin.stat:
-    path: "{{ bind_exporter_binary_install_dir }}/bind_exporter"
+    path: "{{ _bind_exporter_binary_install_dir }}/bind_exporter"
   register: __bind_exporter_is_installed
   check_mode: false
   tags:
     - bind_exporter_install
 
 - name: Gather currently installed bind_exporter version (if any)
-  ansible.builtin.command: "{{ bind_exporter_binary_install_dir }}/bind_exporter --version"
+  ansible.builtin.command: "{{ _bind_exporter_binary_install_dir }}/bind_exporter --version"
   changed_when: false
   register: __bind_exporter_current_version_output
   check_mode: false

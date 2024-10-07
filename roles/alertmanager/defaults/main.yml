@@ -1,6 +1,6 @@
 ---
 alertmanager_version: 0.27.0
-alertmanager_binary_local_dir: ''
+alertmanager_binary_skip_download: false
 alertmanager_binary_url: "https://github.com/{{ _alertmanager_repo }}/releases/download/v{{ alertmanager_version }}/\
                           alertmanager-{{ alertmanager_version }}.{{ ansible_system | lower }}-{{ go_arch }}.tar.gz"
 alertmanager_checksums_url: "https://github.com/{{ _alertmanager_repo }}/releases/download/v{{ alertmanager_version }}/sha256sums.txt"
@@ -136,7 +136,7 @@ alertmanager_amtool_config_alertmanager_url: "{{ alertmanager_web_external_url }
 alertmanager_amtool_config_output: 'extended'
 
 # Local path to stash the archive and its extraction
-alertmanager_archive_path: /tmp
+alertmanager_local_cache_path: "/tmp/alertmanager-{{ ansible_system | lower }}-{{ go_arch }}/{{ alertmanager_version }}"
 
-alertmanager_system_group: alertmanager
-alertmanager_system_user: "{{ alertmanager_system_group }}"
+alertmanager_system_user: alertmanager
+alertmanager_system_group: "{{ alertmanager_system_user }}"

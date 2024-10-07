@@ -4,12 +4,13 @@
 #                                'aarch64': 'arm64',
 #                                'armv7l': 'armv7',
 #                                'armv6l': 'armv6'}.get(ansible_architecture, ansible_architecture) }}"
-_common_local_binary_cache_path: ""
+_common_local_cache_path: ""
 _common_binaries: []
 _common_binary: "{{ _common_binary_url | urlsplit('path') | basename }}"
 _common_binary_install_dir:
 _common_binary_local_dir: ""
 _common_binary_url: ""
+_common_binary_skip_download: false
 _common_checksums_url: ""
 _common_github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
 _common_selinux_port: ""

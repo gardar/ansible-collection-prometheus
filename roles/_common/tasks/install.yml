@@ -15,9 +15,15 @@
     createhome: false
   when: _common_system_user != "root"
 
+- name: "Create localhost binary cache path"
+  ansible.builtin.file:
+    path: "{{ _common_local_cache_path }}"
+    state: directory
+    mode: 0755
+  delegate_to: localhost
+
 - name: "Download and install from binary {{ _common_binary }}"
-  when:
-    - _common_binary_local_dir | length == 0
+  when: "not (_common_binary_skip_download)"
   block:
     - name: "Get checksum list for {{ _common_binary }}"
       ansible.builtin.set_fact:
@@ -31,7 +37,7 @@
       become: false
       ansible.builtin.get_url:
         url: "{{ _common_binary_url }}"
-        dest: "{{ _common_local_binary_cache_path }}/{{ _common_binary }}"
+        dest: "{{ _common_local_cache_path }}/{{ _common_binary }}"
         headers: "{{ _common_github_api_headers }}"
         checksum: "{{ __common_binary_checksums[_common_binary] | default(omit) }}"
         mode: 0644
@@ -46,8 +52,8 @@
     - name: "Unpack binary archive {{ _common_binary }}"
       become: false
       ansible.builtin.unarchive:
-        src: "{{ _common_local_binary_cache_path }}/{{ _common_binary }}"
-        dest: "{{ _common_local_binary_cache_path }}"
+        src: "{{ _common_local_cache_path }}/{{ _common_binary }}"
+        dest: "{{ _common_local_cache_path }}"
         mode: 0755
         list_files: true
         extra_opts: "{{ _common_binary_unarchive_opts | default(omit, true) }}"
@@ -59,8 +65,9 @@
 
 - name: "Propagate binaries"
   ansible.builtin.copy:
-    src: "{{ (_common_binary_local_dir) | ternary((_common_binary_local_dir ~ '/' ~ item),
-          (__common_archive_content | select('search', item + '$') | first)) }}"
+    # src: "{{ (_common_binary_local_dir) | ternary((_common_binary_local_dir ~ '/' ~ item),
+    #       (__common_archive_content | select('search', item + '$') | first)) }}"
+    src: "{{ _common_local_cache_path }}/{{ item }}"
     dest: "{{ _common_binary_install_dir }}/{{ item }}"
     mode: 0755
     owner: root
@@ -69,4 +76,4 @@
   notify:
     - restart_service
   vars:
-    __common_archive_content: "{{ [_common_local_binary_cache_path ~ '/' ] | product(__common_unpack.files | default([])) | map('join') | list }}"
+  #  __common_archive_content: "{{ [_common_local_cache_path ~ '/' ] | product(__common_unpack.files | default([])) | map('join') | list }}"

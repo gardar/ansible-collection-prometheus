@@ -21,7 +21,7 @@
       tags:
         - blackbox_exporter_install
   vars:
-    _common_local_binary_cache_path: "{{ blackbox_exporter_archive_path }}"
+    _common_local_cache_path: "{{ blackbox_exporter_archive_path }}"
     _common_binaries: "{{ _blackbox_exporter_binaries }}"
     _common_binary_install_dir: "{{ _blackbox_exporter_binary_install_dir }}"
     _common_binary_local_dir: "{{ blackbox_exporter_binary_local_dir }}"

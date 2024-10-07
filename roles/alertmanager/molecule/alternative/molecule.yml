@@ -6,6 +6,7 @@ provisioner:
     group_vars:
       all:
         alertmanager_binary_local_dir: '/tmp/alertmanager-linux-amd64'
+        alertmanager_binary_skip_download: true
         alertmanager_config_dir: /opt/am/etc
         alertmanager_db_dir: /opt/am/lib
         alertmanager_web_listen_address:

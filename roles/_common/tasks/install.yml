@@ -75,5 +75,5 @@
   loop: "{{ _common_binaries }}"
   notify:
     - restart_service
-  vars:
-  #  __common_archive_content: "{{ [_common_local_cache_path ~ '/' ] | product(__common_unpack.files | default([])) | map('join') | list }}"
+# vars:
+#  __common_archive_content: "{{ [_common_local_cache_path ~ '/' ] | product(__common_unpack.files | default([])) | map('join') | list }}"

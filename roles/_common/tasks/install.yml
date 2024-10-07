@@ -31,7 +31,7 @@
       become: false
       ansible.builtin.get_url:
         url: "{{ _common_binary_url }}"
-        dest: "{{ _common_archive_path }}/{{ _common_binary }}"
+        dest: "{{ _common_local_binary_cache_path }}/{{ _common_binary }}"
         headers: "{{ _common_github_api_headers }}"
         checksum: "{{ __common_binary_checksums[_common_binary] | default(omit) }}"
         mode: 0644
@@ -46,10 +46,11 @@
     - name: "Unpack binary archive {{ _common_binary }}"
       become: false
       ansible.builtin.unarchive:
-        src: "{{ _common_archive_path }}/{{ _common_binary }}"
-        dest: "{{ _common_archive_path }}"
+        src: "{{ _common_local_binary_cache_path }}/{{ _common_binary }}"
+        dest: "{{ _common_local_binary_cache_path }}"
         mode: 0755
         list_files: true
+        extra_opts: "{{ _common_binary_unarchive_opts | default(omit, true) }}"
       register: __common_unpack
       delegate_to: localhost
       check_mode: false
@@ -68,4 +69,4 @@
   notify:
     - restart_service
   vars:
-    __common_archive_content: "{{ [_common_archive_path ~ '/' ] | product(__common_unpack.files | default([])) | map('join') | list }}"
+    __common_archive_content: "{{ [_common_local_binary_cache_path ~ '/' ] | product(__common_unpack.files | default([])) | map('join') | list }}"

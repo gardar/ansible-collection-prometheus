@@ -4,7 +4,7 @@
 #                                'aarch64': 'arm64',
 #                                'armv7l': 'armv7',
 #                                'armv6l': 'armv6'}.get(ansible_architecture, ansible_architecture) }}"
-_common_archive_path: ""
+_common_local_binary_cache_path: ""
 _common_binaries: []
 _common_binary: "{{ _common_binary_url | urlsplit('path') | basename }}"
 _common_binary_install_dir:
@@ -20,3 +20,4 @@ _common_dependencies: "{% if (ansible_pkg_mgr == 'apt') %}\
                        {{ ('python-apt' if ansible_python_version is version('3', '<') else 'python3-apt') }}
                        {% else %}\
                        {% endif %}"
+_common_binary_unarchive_opts: ""

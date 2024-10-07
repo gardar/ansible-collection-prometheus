@@ -21,7 +21,7 @@
       tags:
         - bind_exporter_install
   vars:
-    _common_archive_path: "{{ bind_exporter_archive_path }}"
+    _common_local_binary_cache_path: "{{ bind_exporter_archive_path }}"
     _common_binaries: "{{ _bind_exporter_binaries }}"
     _common_binary_install_dir: "{{ _bind_exporter_binary_install_dir }}"
     _common_binary_local_dir: "{{ bind_exporter_binary_local_dir }}"
@@ -40,7 +40,7 @@
       tags:
         - bind_exporter_configure
   vars:
-    _common_selinux_port: "{{ bind_exporter_web_listen_address.split(':')[-1] }}"
+    _common_selinux_port: "{{ bind_exporter_web_listen_address | urlsplit('port') }}"
   when: ansible_selinux.status == "enabled"
   tags:
     - bind_exporter_configure

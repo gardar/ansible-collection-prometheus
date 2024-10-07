@@ -8,3 +8,6 @@ go_arch_map:
 go_arch: "{{ go_arch_map[ansible_architecture] | default(ansible_architecture) }}"
 _cadvisor_repo: "google/cadvisor"
 _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+_cadvisor_binary_install_dir: "/usr/local/bin"
+_cadvisor_binaries:
+  - cadvisor

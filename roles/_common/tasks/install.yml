@@ -4,6 +4,7 @@
     name: "{{ _common_system_group }}"
     system: true
     state: present
+  when: _common_system_group != "root"
 
 - name: "Create system user {{ _common_system_user }}"
   ansible.builtin.user:
@@ -12,12 +13,13 @@
     shell: "/usr/sbin/nologin"
     group: "{{ _common_system_group }}"
     createhome: false
+  when: _common_system_user != "root"
 
-- name: "Download and install from binary {{ _common_binary_archive }}"
+- name: "Download and install from binary {{ _common_binary }}"
   when:
     - _common_binary_local_dir | length == 0
   block:
-    - name: "Get checksum list for {{ _common_binary_archive }}"
+    - name: "Get checksum list for {{ _common_binary }}"
       ansible.builtin.set_fact:
         __common_binary_checksums: "{{ dict(lookup('url', _common_checksums_url, headers=_common_github_api_headers, wantlist=True)
                                     | map('regex_replace', '^([a-fA-F0-9]+)\\s+', 'sha256:\\1 ')
@@ -25,32 +27,34 @@
       run_once: true
       when: (_common_checksums_url)
 
-    - name: "Download binary archive {{ _common_binary_archive }}"
+    - name: "Download {{ _common_binary }}"
       become: false
       ansible.builtin.get_url:
         url: "{{ _common_binary_url }}"
-        dest: "{{ _common_archive_path }}/{{ _common_binary_archive }}"
+        dest: "{{ _common_archive_path }}/{{ _common_binary }}"
         headers: "{{ _common_github_api_headers }}"
-        checksum: "{{ __common_binary_checksums[_common_binary_archive] | default(omit) }}"
+        checksum: "{{ __common_binary_checksums[_common_binary] | default(omit) }}"
         mode: 0644
-      register: __common_download_archive
-      until: __common_download_archive is succeeded
+      register: __common_download
+      until: __common_download is succeeded
       retries: 5
       delay: 2
       # run_once: true  # <-- this can't be set due to multi-arch support
       delegate_to: localhost
       check_mode: false
 
-    - name: "Unpack binary archive {{ _common_binary_archive }}"
+    - name: "Unpack binary archive {{ _common_binary }}"
       become: false
       ansible.builtin.unarchive:
-        src: "{{ _common_archive_path }}/{{ _common_binary_archive }}"
+        src: "{{ _common_archive_path }}/{{ _common_binary }}"
         dest: "{{ _common_archive_path }}"
         mode: 0755
         list_files: true
       register: __common_unpack
       delegate_to: localhost
       check_mode: false
+      when: _common_binary is search('\.zip$|\.tar\.gz$')
+
 
 - name: "Propagate binaries"
   ansible.builtin.copy:

@@ -6,7 +6,7 @@
 #                                'armv6l': 'armv6'}.get(ansible_architecture, ansible_architecture) }}"
 _common_archive_path: ""
 _common_binaries: []
-_common_binary_archive: "{{ _common_binary_url | urlsplit('path') | basename }}"
+_common_binary: "{{ _common_binary_url | urlsplit('path') | basename }}"
 _common_binary_install_dir:
 _common_binary_local_dir: ""
 _common_binary_url: ""

@@ -13,29 +13,33 @@
     - cadvisor_run
 
 - name: Install
-  ansible.builtin.include_tasks:
-    file: install.yml
+  ansible.builtin.include_role:
+    name: prometheus.prometheus._common
+    tasks_from: install.yml
     apply:
       become: true
       tags:
         - cadvisor_install
-  when:
-    ( not __cadvisor_is_installed.stat.exists ) or
-    ( (__cadvisor_current_version_output.stderr_lines | length > 0)
-      and ((__cadvisor_current_version_output.stderr_lines[0].split(" ")[2] | replace('v', '')) != cadvisor_version) ) or
-    ( (__cadvisor_current_version_output.stdout_lines | length > 0)
-      and ((__cadvisor_current_version_output.stdout_lines[0].split(" ")[2] | replace('v', '')) != cadvisor_version) ) or
-    ( cadvisor_binary_local_dir | length > 0 )
+  vars:
+    _common_archive_path: "{{ cadvisor_archive_path }}"
+    _common_binaries: "{{ _cadvisor_binaries }}"
+    _common_binary_install_dir: "{{ _cadvisor_binary_install_dir }}"
+    _common_binary_local_dir: "{{ cadvisor_binary_local_dir }}"
+    _common_binary_url: "{{ cadvisor_binary_url }}"
+    _common_system_group:  "{{ cadvisor_system_group }}"
+    _common_system_user:  "{{ cadvisor_system_user }}"
   tags:
     - cadvisor_install
 
 - name: SELinux
-  ansible.builtin.include_tasks:
-    file: selinux.yml
+  ansible.builtin.include_role:
+    name: prometheus.prometheus._common
+    tasks_from: selinux.yml
     apply:
-      become: true
       tags:
         - cadvisor_configure
+  vars:
+    _common_selinux_port: "{{ cadvisor_port }}"
   when: ansible_selinux.status == "enabled"
   tags:
     - cadvisor_configure

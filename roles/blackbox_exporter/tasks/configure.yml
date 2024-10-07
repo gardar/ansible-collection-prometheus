@@ -36,7 +36,7 @@
     src: blackbox_exporter.yml.j2
     dest: "{{ blackbox_exporter_config_dir }}/blackbox_exporter.yml"
     owner: root
-    group: "{{ blackbox_exporter_group }}"
+    group: "{{ blackbox_exporter_system_group }}"
     mode: '0644'
   notify:
     - reload blackbox_exporter

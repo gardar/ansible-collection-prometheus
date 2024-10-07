@@ -23,4 +23,5 @@ bind_exporter_basic_auth_users: {}
 bind_exporter_system_group: "bind-exp"
 bind_exporter_system_user: "{{ bind_exporter_system_group }}"
 
+bind_exporter_config_dir: "/etc/bind_exporter"
 bind_exporter_archive_path: /tmp

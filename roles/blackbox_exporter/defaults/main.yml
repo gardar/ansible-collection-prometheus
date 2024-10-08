@@ -73,4 +73,5 @@ blackbox_exporter_configuration_modules:
 blackbox_exporter_config_dir: /etc/blackbox_exporter
 
 # Local path to stash the archive and its extraction
-blackbox_exporter_local_cache_path: "/tmp/blackbox_exporter-{{ ansible_system | lower }}-{{ _blackbox_exporter_go_ansible_arch }}/{{ alertmanager_version }}"
+blackbox_exporter_local_cache_path: "/tmp/blackbox_exporter-{{ ansible_system | lower }}-{{ _blackbox_exporter_go_ansible_arch }}/\
+                                     {{ blackbox_exporter_version }}"

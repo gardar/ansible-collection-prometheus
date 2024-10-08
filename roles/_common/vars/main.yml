@@ -10,6 +10,7 @@ _common_binary_basename: "{{ _common_binary_url | urlsplit('path') | basename }}
 _common_binary_name: "{{ _common_binary_basename }}"
 _common_binary_install_dir:
 _common_binary_local_dir: ""
+_common_config_dir: ""
 _common_binary_url: ""
 _common_skip_download: false
 _common_checksums_url: ""

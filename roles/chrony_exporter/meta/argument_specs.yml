@@ -59,11 +59,6 @@ argument_specs:
       chrony_exporter_basic_auth_users:
         description: "Dictionary of users and password for basic authentication. Passwords are automatically hashed with bcrypt."
         type: "dict"
-      chrony_exporter_binary_install_dir:
-        description:
-          - "I(Advanced)"
-          - "Directory to install chrony_exporter binary"
-        default: "/usr/local/bin"
       chrony_exporter_system_group:
         description:
           - "I(Advanced)"

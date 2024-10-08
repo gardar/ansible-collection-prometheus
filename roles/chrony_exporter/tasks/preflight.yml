@@ -58,14 +58,14 @@
 
 - name: Check if chrony_exporter is installed
   ansible.builtin.stat:
-    path: "{{ chrony_exporter_binary_install_dir }}/chrony_exporter"
+    path: "{{ _chrony_exporter_binary_install_dir }}/chrony_exporter"
   register: __chrony_exporter_is_installed
   check_mode: false
   tags:
     - chrony_exporter_install
 
 - name: Gather currently installed chrony_exporter version (if any)
-  ansible.builtin.command: "{{ chrony_exporter_binary_install_dir }}/chrony_exporter --version"
+  ansible.builtin.command: "{{ _chrony_exporter_binary_install_dir }}/chrony_exporter --version"
   changed_when: false
   register: __chrony_exporter_current_version_output
   check_mode: false

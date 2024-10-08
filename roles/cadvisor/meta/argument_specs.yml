@@ -81,11 +81,6 @@ argument_specs:
         description: "do not report raw cgroup metrics, except the root cgroup"
         type: "bool"
         default: false
-      cadvisor_binary_install_dir:
-        description:
-          - "I(Advanced)"
-          - "Directory to install cadvisor binary"
-        default: "/usr/local/bin"
       cadvisor_system_group:
         description:
           - "I(Advanced)"

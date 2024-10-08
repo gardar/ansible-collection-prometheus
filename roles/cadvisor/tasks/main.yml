@@ -22,6 +22,7 @@
         - cadvisor_install
   vars:
     _common_local_cache_path: "{{ cadvisor_local_cache_path }}"
+    _common_binary_name: "cadvisor"
     _common_binaries: "{{ _cadvisor_binaries }}"
     _common_binary_install_dir: "{{ _cadvisor_binary_install_dir }}"
     _common_binary_local_dir: "{{ cadvisor_binary_local_dir }}"

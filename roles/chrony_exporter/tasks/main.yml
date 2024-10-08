@@ -47,7 +47,8 @@
     - chrony_exporter_configure
 
 - name: Configure
-  ansible.builtin.include_tasks:
+  ansible.builtin.include_role:
+    name: prometheus.prometheus._common
     file: configure.yml
     apply:
       become: true

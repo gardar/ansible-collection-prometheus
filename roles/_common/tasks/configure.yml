@@ -12,6 +12,18 @@
   notify:
     - restart_service
 
+- name: "Create config dir {{ _common_config_dir }}"
+  ansible.builtin.file:
+    path: "{{ _common_config_dir }}"
+    state: directory
+    owner: "{{ _common_system_user }}"
+    group: "{{ _common_system_group }}"
+    mode: u+rwX,g+rwX,o=rX
+  become: true
+  notify:
+    - restart_service
+  when: (_common_config_dir)
+
 # - name: "Create systemd service unit {{ _common_service_name }}"
 #   ansible.builtin.template:
 #     # src: "{{ ansible_parent_role_paths | first }}/templates/{{ _common_service_name }}.service.j2"

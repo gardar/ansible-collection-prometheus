@@ -72,6 +72,16 @@ provisioner:
     hosts:
       target_hosts:
         hosts: {}
+    group_vars:
+      all:
+        exclude_ansible_vers:
+          - "2.10"
+          - "2.11"
+          - "2.12"
+          - "2.13"
+          - "2.14"
+          - "2.15"
+          - "2.16"
     host_vars:
       fedora-39:
         exclude_ansible_vers:

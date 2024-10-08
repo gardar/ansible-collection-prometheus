@@ -6,7 +6,7 @@
     __role_name: "{{ lookup('ansible.builtin.env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"
     __binary_name: "{{ __role_name }}"
     __binary_url: "{{ lookup('ansible.builtin.vars', __role_name ~ '_binary_url', default='') }}"
-    __binary_local_cache_path: "{{ lookup('ansible.builtin.vars', __role_name ~ '_local_cache_path', default='') }}"
+    __cache_path: "{{ lookup('ansible.builtin.vars', __role_name ~ '_local_cache_path', default='') }}"
     __tls_server_config: "{{ lookup('ansible.builtin.vars', __role_name ~ '_tls_server_config', default={}) }}"
   tasks:
     - name: "Create local binary directory"

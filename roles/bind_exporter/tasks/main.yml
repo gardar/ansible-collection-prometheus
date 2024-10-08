@@ -24,7 +24,7 @@
     _common_local_cache_path: "{{ bind_exporter_local_cache_path }}"
     _common_binaries: "{{ _bind_exporter_binaries }}"
     _common_skip_download: "{{ bind_exporter_skip_download }}"
-    _common_binary_install_dir: "{{ _bind_exporter_binary_install_dir }}"
+    _common_binary_install_dir: "{{ bind_exporter_binary_install_dir }}"
     _common_binary_url: "{{ bind_exporter_binary_url }}"
     _common_checksums_url: "{{ bind_exporter_checksums_url }}"
     _common_system_group:  "{{ bind_exporter_system_group }}"
@@ -42,17 +42,6 @@
         - bind_exporter_configure
   vars:
     _common_selinux_port: "{{ bind_exporter_web_listen_address | urlsplit('port') }}"
-  when: ansible_selinux.status == "enabled"
-  tags:
-    - bind_exporter_configure
-
-- name: SELinux
-  ansible.builtin.include_tasks:
-    file: selinux.yml
-    apply:
-      become: true
-      tags:
-        - bind_exporter_configure
   when: ansible_selinux.status == "enabled"
   tags:
     - bind_exporter_configure

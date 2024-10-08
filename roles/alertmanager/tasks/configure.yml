@@ -29,7 +29,7 @@
     owner: "{{ alertmanager_system_user }}"
     group: "{{ alertmanager_system_group }}"
     mode: 0644
-    validate: "{{ _alertmanager_binary_install_dir }}/amtool check-config %s"
+    validate: "{{ alertmanager_binary_install_dir }}/amtool check-config %s"
   no_log: "{{ false if (lookup('env', 'CI')) or (lookup('env', 'MOLECULE_PROVISIONER_NAME')) else true }}"
   notify:
     - restart alertmanager

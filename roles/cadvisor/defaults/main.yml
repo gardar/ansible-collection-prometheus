@@ -20,3 +20,5 @@ cadvisor_system_user: "{{ cadvisor_system_group }}"
 
 # Local path to stash the archive and its extraction
 cadvisor_local_cache_path: "/tmp/cadvisor-{{ ansible_system | lower }}-{{ _cadvisor_go_ansible_arch }}/{{ cadvisor_version }}"
+
+cadvisor_binary_install_dir: "/usr/local/bin"

@@ -30,13 +30,3 @@
         group: '{{ bind_exporter_system_group }}'
         mode: '0640'
       notify: restart bind_exporter
-
-- name: Allow bind_exporter port in SELinux on RedHat OS family
-  community.general.seport:
-    ports: "{{ bind_exporter_web_listen_address.split(':')[-1] }}"
-    proto: tcp
-    setype: http_port_t
-    state: present
-  when:
-    - ansible_version.full is version_compare('2.4', '>=')
-    - ansible_selinux.status == "enabled"

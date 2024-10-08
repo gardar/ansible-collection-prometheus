@@ -8,7 +8,7 @@ After=network-online.target
 Type=simple
 User={{ bind_exporter_system_user }}
 Group={{ bind_exporter_system_group }}
-ExecStart={{ _bind_exporter_binary_install_dir }}/bind_exporter \
+ExecStart={{ bind_exporter_binary_install_dir }}/bind_exporter \
 {% if bind_exporter_stats_groups | length > 0 %}
     --bind.stats-groups="{{ bind_exporter_stats_groups | join(',') }}" \
 {% endif %}

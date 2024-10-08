@@ -6,14 +6,14 @@
 
 - name: Check if cadvisor is installed
   ansible.builtin.stat:
-    path: "{{ _cadvisor_binary_install_dir }}/cadvisor"
+    path: "{{ cadvisor_binary_install_dir }}/cadvisor"
   register: __cadvisor_is_installed
   check_mode: false
   tags:
     - cadvisor_install
 
 - name: Gather currently installed cadvisor version (if any)
-  ansible.builtin.command: "{{ _cadvisor_binary_install_dir }}/cadvisor --version"
+  ansible.builtin.command: "{{ cadvisor_binary_install_dir }}/cadvisor --version"
   changed_when: false
   register: __cadvisor_current_version_output
   check_mode: false

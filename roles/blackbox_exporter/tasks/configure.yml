@@ -1,7 +1,7 @@
 ---
 - name: Ensure blackbox exporter binary has cap_net_raw capability
   community.general.capabilities:
-    path: "{{ _blackbox_exporter_binary_install_dir }}/blackbox_exporter"
+    path: "{{ blackbox_exporter_binary_install_dir }}/blackbox_exporter"
     capability: cap_net_raw+ep
     state: present
   become: true

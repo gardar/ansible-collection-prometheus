@@ -134,6 +134,8 @@ alertmanager_amtool_config_alertmanager_url: "{{ alertmanager_web_external_url }
 # Extended output of `amtool` commands, use '' for less verbosity
 alertmanager_amtool_config_output: 'extended'
 
+alertmanager_binary_install_dir: '/usr/local/bin'
+
 # Local path to stash the archive and its extraction
 alertmanager_local_cache_path: "/tmp/alertmanager-{{ ansible_system | lower }}-{{ _alertmanager_go_ansible_arch }}/{{ alertmanager_version }}"
 

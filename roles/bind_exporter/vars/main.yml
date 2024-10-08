@@ -7,4 +7,3 @@ _bind_exporter_go_ansible_arch: "{{ {'i386': '386',
 _bind_exporter_repo: "prometheus-community/bind_exporter"
 _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
 _bind_exporter_binaries: ['bind_exporter']
-_bind_exporter_binary_install_dir: "/usr/local/bin"

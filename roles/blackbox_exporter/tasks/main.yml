@@ -24,7 +24,7 @@
     _common_local_cache_path: "{{ blackbox_exporter_local_cache_path }}"
     _common_binaries: "{{ _blackbox_exporter_binaries }}"
     _common_skip_download: "{{ blackbox_exporter_skip_download }}"
-    _common_binary_install_dir: "{{ _blackbox_exporter_binary_install_dir }}"
+    _common_binary_install_dir: "{{ blackbox_exporter_binary_install_dir }}"
     _common_binary_url: "{{ blackbox_exporter_binary_url }}"
     _common_checksums_url: "{{ blackbox_exporter_checksums_url }}"
     _common_system_group:  "{{ blackbox_exporter_system_group }}"

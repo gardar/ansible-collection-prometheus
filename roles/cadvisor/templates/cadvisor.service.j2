@@ -8,7 +8,7 @@ After=network-online.target
 Type=simple
 User={{ cadvisor_system_user }}
 Group={{ cadvisor_system_group }}
-ExecStart={{ _cadvisor_binary_install_dir }}/cadvisor \
+ExecStart={{ cadvisor_binary_install_dir }}/cadvisor \
 {% if cadvisor_disable_metrics | length > 0 %}
     '--disable_metrics={{ cadvisor_disable_metrics | join(',') }}' \
 {% endif -%}

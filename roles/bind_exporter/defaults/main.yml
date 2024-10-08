@@ -21,6 +21,7 @@ bind_exporter_basic_auth_users: {}
 # Internal variables.
 bind_exporter_system_group: "bind-exp"
 bind_exporter_system_user: "{{ bind_exporter_system_group }}"
+bind_exporter_binary_install_dir: "/usr/local/bin"
 
 bind_exporter_config_dir: "/etc/bind_exporter"
 bind_exporter_local_cache_path: "/tmp/bind_exporter-{{ ansible_system | lower }}-{{ _bind_exporter_go_ansible_arch }}/{{ bind_exporter_version }}"

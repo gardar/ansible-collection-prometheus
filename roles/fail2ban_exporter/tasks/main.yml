@@ -21,10 +21,10 @@
       tags:
         - fail2ban_exporter_install
   vars:
-    _common_local_cache_path: "{{ fail2ban_exporter_archive_path }}"
+    _common_local_cache_path: "{{ fail2ban_exporter_local_cache_path }}"
     _common_binaries: "{{ _fail2ban_exporter_binaries }}"
+    _common_skip_download: "{{ fail2ban_exporter_skip_download }}"
     _common_binary_install_dir: "{{ _fail2ban_exporter_binary_install_dir }}"
-    _common_binary_local_dir: "{{ fail2ban_exporter_binary_local_dir }}"
     _common_binary_url: "{{ fail2ban_exporter_binary_url }}"
     _common_checksums_url: "{{ fail2ban_exporter_checksums_url }}"
     _common_system_group:  "{{ fail2ban_exporter_system_group }}"

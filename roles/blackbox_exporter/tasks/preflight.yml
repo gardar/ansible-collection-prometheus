@@ -36,5 +36,6 @@
   retries: 10
   when:
     - blackbox_exporter_version == "latest"
-    - blackbox_exporter_binary_local_dir | length == 0
-    - not blackbox_exporter_skip_install
+    - not blackbox_exporter_skip_download
+  tags:
+    - blackbox_exporter_install

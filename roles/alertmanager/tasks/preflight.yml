@@ -34,8 +34,8 @@
   retries: 10
   when:
     - alertmanager_version == "latest"
-    - alertmanager_binary_local_dir | length == 0
-    - not alertmanager_skip_install
+  tags:
+    - alertmanager_install
 
 - name: Fail when extra config flags are duplicating ansible variables
   ansible.builtin.fail:

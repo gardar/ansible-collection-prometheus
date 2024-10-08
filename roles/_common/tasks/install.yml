@@ -23,7 +23,7 @@
   delegate_to: localhost
 
 - name: "Download and install from binary {{ _common_binary }}"
-  when: "not (_common_binary_skip_download)"
+  when: "not (_common_skip_download)"
   block:
     - name: "Get checksum list for {{ _common_binary }}"
       ansible.builtin.set_fact:

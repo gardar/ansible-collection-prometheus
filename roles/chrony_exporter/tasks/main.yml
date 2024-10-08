@@ -21,14 +21,15 @@
       tags:
         - chrony_exporter_install
   vars:
-    _common_local_cache_path: "{{ chrony_exporter_archive_path }}"
+    _common_local_cache_path: "{{ chrony_exporter_local_cache_path }}"
     _common_binaries: "{{ _chrony_exporter_binaries }}"
+    _common_skip_download: "{{ chrony_exporter_skip_download }}"
     _common_binary_install_dir: "{{ _chrony_exporter_binary_install_dir }}"
-    _common_binary_local_dir: "{{ chrony_exporter_binary_local_dir }}"
     _common_binary_url: "{{ chrony_exporter_binary_url }}"
     _common_checksums_url: "{{ chrony_exporter_checksums_url }}"
     _common_system_group:  "{{ chrony_exporter_system_group }}"
     _common_system_user:  "{{ chrony_exporter_system_user }}"
+    _common_binary_unarchive_opts: ['--strip-components=1']
   tags:
     - chrony_exporter_install
 

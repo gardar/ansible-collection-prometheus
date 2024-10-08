@@ -10,7 +10,7 @@ _common_binary: "{{ _common_binary_url | urlsplit('path') | basename }}"
 _common_binary_install_dir:
 _common_binary_local_dir: ""
 _common_binary_url: ""
-_common_binary_skip_download: false
+_common_skip_download: false
 _common_checksums_url: ""
 _common_github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
 _common_selinux_port: ""

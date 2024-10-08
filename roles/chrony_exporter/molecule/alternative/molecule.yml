@@ -5,7 +5,9 @@ provisioner:
   inventory:
     group_vars:
       all:
-        chrony_exporter_binary_local_dir: "/tmp/chrony_exporter-linux-amd64"
+        chrony_exporter_version: 0.6.0
+        chrony_exporter_local_cache_path: "/tmp/chrony_exporter-linux-amd64/{{ chrony_exporter_version }}"
+        chrony_exporter_skip_download: true
         chrony_exporter_web_listen_address:
           - '127.0.0.1:8080'
           - '127.0.1.1:8080'
@@ -21,6 +23,5 @@ provisioner:
         chrony_exporter_basic_auth_users:
           randomuser: examplepassword
         go_arch: amd64
-        chrony_exporter_version: 0.6.0
         chrony_exporter_binary_url: "https://github.com/superq/chrony_exporter/releases/download/v{{ chrony_exporter_version\
                                      \ }}/chrony_exporter-{{ chrony_exporter_version }}.linux-{{ go_arch }}.tar.gz"

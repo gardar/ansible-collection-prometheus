@@ -65,5 +65,6 @@
   retries: 10
   when:
     - bind_exporter_version == "latest"
-    - bind_exporter_binary_local_dir | length == 0
-    - not bind_exporter_skip_install
+    - not bind_exporter_skip_download
+  tags:
+    - bind_exporter_install

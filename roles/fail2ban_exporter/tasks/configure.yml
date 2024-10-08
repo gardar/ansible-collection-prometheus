@@ -1,9 +1,0 @@
----
-- name: Copy the fail2ban_exporter systemd service file
-  ansible.builtin.template:
-    src: fail2ban_exporter.service.j2
-    dest: /etc/systemd/system/fail2ban_exporter.service
-    owner: root
-    group: root
-    mode: 0644
-  notify: restart fail2ban_exporter

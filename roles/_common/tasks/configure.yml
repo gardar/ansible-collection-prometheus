@@ -1,28 +1,37 @@
 ---
-- name: Register service name
-  ansible.builtin.set_fact:
-    __common_service_name: "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
-
-- name: Create systemd service unit
+- name: "Create systemd service unit {{ _common_service_name }}"
   ansible.builtin.template:
-    # src: "{{ ansible_parent_role_paths | first }}/templates/{{ __common_service_name }}.service.j2"
-    src: "{{ _service_template | default(ansible_parent_role_paths | first ~ '/templates/' ~ __common_service_name ~ '.service.j2') }}"
-    dest: "/etc/systemd/system/{{ __common_service_name }}.service"
+    # src: "{{ ansible_parent_role_paths | first }}/templates/{{ _common_service_name }}.service.j2"
+    # src: "{{ _service_template | default(ansible_parent_role_paths | first ~ '/templates/' ~ _common_service_name ~ '.service.j2') }}"
+    src: "{{ _common_service_name }}.service.j2"
+    dest: "/etc/systemd/system/{{ _common_service_name }}.service"
     owner: root
     group: root
     mode: 0644
+  become: true
   notify:
     - restart_service
 
-- name: "Configure {{ __common_service_name }}"
-  ansible.builtin.template:
-    # src: "{{ ansible_parent_role_paths | first }}/templates/{{ __common_service_name }}.yml.j2"
-    src: "{{ _config_template | default(ansible_parent_role_paths | first ~ '/templates/' ~ __common_service_name ~ '.yml.j2') }}"
-    # dest: "/etc/{{ __common_service_name }}.yml"
-    dest: "{{ _config_dest | default('/etc/' ~ __common_service_name ~ '.yml') }}"
-    owner: "{{ _system_user }}"
-    group: "{{ _system_group }}"
-    mode: 0644
-  notify:
-    - reload_service
-  when: (ansible_parent_role_paths | first '/templates/' __common_service_name '.yml.j2')
+# - name: "Create systemd service unit {{ _common_service_name }}"
+#   ansible.builtin.template:
+#     # src: "{{ ansible_parent_role_paths | first }}/templates/{{ _common_service_name }}.service.j2"
+#     src: "{{ _service_template | default(ansible_parent_role_paths | first ~ '/templates/' ~ _common_service_name ~ '.service.j2') }}"
+#     dest: "/etc/systemd/system/{{ _common_service_name }}.service"
+#     owner: root
+#     group: root
+#     mode: 0644
+#   notify:
+#     - restart_service
+#
+# - name: "Configure {{ _common_service_name }}"
+#   ansible.builtin.template:
+#     # src: "{{ ansible_parent_role_paths | first }}/templates/{{ _common_service_name }}.yml.j2"
+#     src: "{{ _config_template | default(ansible_parent_role_paths | first ~ '/templates/' ~ _common_service_name ~ '.yml.j2') }}"
+#     # dest: "/etc/{{ _common_service_name }}.yml"
+#     dest: "{{ _config_dest | default('/etc/' ~ _common_service_name ~ '.yml') }}"
+#     owner: "{{ _system_user }}"
+#     group: "{{ _system_group }}"
+#     mode: 0644
+#   notify:
+#     - reload_service
+#   when: (ansible_parent_role_paths | first '/templates/' _common_service_name '.yml.j2')

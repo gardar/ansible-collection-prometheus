@@ -1,12 +1,8 @@
 ---
-- name: Copy the bind_exporter systemd service file
-  ansible.builtin.template:
-    src: bind_exporter.service.j2
-    dest: /etc/systemd/system/bind_exporter.service
-    owner: root
-    group: root
-    mode: '0644'
-  notify: restart bind_exporter
+- name: "Common configure"
+  ansible.builtin.include_role:
+    name: prometheus.prometheus._common
+    tasks_from: configure.yml
 
 - name: Create bind_exporter config directory
   ansible.builtin.file:

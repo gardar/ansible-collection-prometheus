@@ -1,4 +1,9 @@
 ---
+- name: "Common configure"
+  ansible.builtin.include_role:
+    name: prometheus.prometheus._common
+    tasks_from: configure.yml
+
 - name: Create alertmanager directories
   ansible.builtin.file:
     path: "{{ item }}"
@@ -31,16 +36,6 @@
     mode: 0644
     validate: "{{ alertmanager_binary_install_dir }}/amtool check-config %s"
   no_log: "{{ false if (lookup('env', 'CI')) or (lookup('env', 'MOLECULE_PROVISIONER_NAME')) else true }}"
-  notify:
-    - restart alertmanager
-
-- name: Create systemd service unit
-  ansible.builtin.template:
-    src: alertmanager.service.j2
-    dest: /etc/systemd/system/alertmanager.service
-    owner: root
-    group: root
-    mode: 0644
   notify:
     - restart alertmanager
 

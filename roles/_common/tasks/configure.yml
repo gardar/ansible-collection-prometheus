@@ -24,6 +24,50 @@
     - restart_service
   when: (_common_config_dir)
 
+# - name: "Install web config for {{ _common_service_name }}"
+#   ansible.builtin.template:
+#     src: "{{ __common_web_config_template | splitext | first }}"
+#     dest: "{{ _common_config_dir }}/{{ __common_web_config_template }}"
+#     owner: "{{ _common_system_user }}"
+#     group: "{{ _common_system_group }}"
+#     mode: 0644
+#   become: true
+#   notify:
+#     - restart_service
+#   when: (__common_web_config_template)
+#   vars:
+#     __common_web_config_template: "{{ lookup('ansible.builtin.fileglob', 'templates/web_config.*.j2') }}"
+
+- name: "Install web config for {{ _common_service_name }}"
+  ansible.builtin.template:
+    src: "web_config.yml.j2"
+    dest: "{{ _common_config_dir }}/web_config.yml"
+    owner: "{{ _common_system_user }}"
+    group: "{{ _common_system_group }}"
+    mode: 0644
+  become: true
+  notify:
+    - restart_service
+  when: "[_common_tls_server_config, _common_http_server_config, _common_basic_auth_users] | map('length') | select('>', 0) | list is any"
+
+  vars:
+    __common_web_config_template: "{{ lookup('ansible.builtin.fileglob', 'templates/web_config.*.j2') }}"
+
+# - name: "Install web config for {{ _common_service_name }}"
+#   ansible.builtin.template:
+#     src: "{{ __common_web_config_template | splitext | first }}"
+#     dest: "{{ _common_config_dir }}/{{ __common_web_config_template }}"
+#     owner: "{{ _common_system_user }}"
+#     group: "{{ _common_system_group }}"
+#     mode: 0644
+#   become: true
+#   notify:
+#     - restart_service
+#   when: (__common_web_config_template)
+#   vars:
+#     __common_web_config_template: "{{ lookup('ansible.builtin.fileglob', 'templates/web_config.*.j2') }}"
+
+
 # - name: "Create systemd service unit {{ _common_service_name }}"
 #   ansible.builtin.template:
 #     # src: "{{ ansible_parent_role_paths | first }}/templates/{{ _common_service_name }}.service.j2"

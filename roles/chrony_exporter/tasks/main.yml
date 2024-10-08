@@ -49,11 +49,15 @@
 - name: Configure
   ansible.builtin.include_role:
     name: prometheus.prometheus._common
-    file: configure.yml
+    tasks_from: configure.yml
     apply:
-      become: true
       tags:
         - chrony_exporter_configure
+  vars:
+    _common_config_dir: "{{ chrony_exporter_config_dir }}"
+    _common_tls_server_config: "{{ chrony_exporter_tls_server_config }}"
+    _common_http_server_config: "{{ chrony_exporter_http_server_config }}"
+    _common_basic_auth_users: "{{ chrony_exporter_basic_auth_users }}"
   tags:
     - chrony_exporter_configure
 

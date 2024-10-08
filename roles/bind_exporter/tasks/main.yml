@@ -46,13 +46,19 @@
   tags:
     - bind_exporter_configure
 
+
 - name: Configure
-  ansible.builtin.include_tasks:
-    file: configure.yml
+  ansible.builtin.include_role:
+    name: prometheus.prometheus._common
+    tasks_from: configure.yml
     apply:
-      become: true
       tags:
         - bind_exporter_configure
+  vars:
+    _common_config_dir: "{{ bind_exporter_config_dir }}"
+    _common_tls_server_config: "{{ bind_exporter_tls_server_config }}"
+    _common_http_server_config: "{{ bind_exporter_http_server_config }}"
+    _common_basic_auth_users: "{{ bind_exporter_basic_auth_users }}"
   tags:
     - bind_exporter_configure
 

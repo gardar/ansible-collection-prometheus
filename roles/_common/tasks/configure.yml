@@ -24,20 +24,6 @@
     - restart_service
   when: (_common_config_dir)
 
-# - name: "Install web config for {{ _common_service_name }}"
-#   ansible.builtin.template:
-#     src: "{{ __common_web_config_template | splitext | first }}"
-#     dest: "{{ _common_config_dir }}/{{ __common_web_config_template }}"
-#     owner: "{{ _common_system_user }}"
-#     group: "{{ _common_system_group }}"
-#     mode: 0644
-#   become: true
-#   notify:
-#     - restart_service
-#   when: (__common_web_config_template)
-#   vars:
-#     __common_web_config_template: "{{ lookup('ansible.builtin.fileglob', 'templates/web_config.*.j2') }}"
-
 - name: "Install web config for {{ _common_service_name }}"
   ansible.builtin.template:
     src: "web_config.yml.j2"
@@ -52,6 +38,20 @@
 
   vars:
     __common_web_config_template: "{{ lookup('ansible.builtin.fileglob', 'templates/web_config.*.j2') }}"
+
+# - name: "Install web config for {{ _common_service_name }}"
+#   ansible.builtin.template:
+#     src: "{{ __common_web_config_template | splitext | first }}"
+#     dest: "{{ _common_config_dir }}/{{ __common_web_config_template }}"
+#     owner: "{{ _common_system_user }}"
+#     group: "{{ _common_system_group }}"
+#     mode: 0644
+#   become: true
+#   notify:
+#     - restart_service
+#   when: (__common_web_config_template)
+#   vars:
+#     __common_web_config_template: "{{ lookup('ansible.builtin.fileglob', 'templates/web_config.*.j2') }}"
 
 # - name: "Install web config for {{ _common_service_name }}"
 #   ansible.builtin.template:

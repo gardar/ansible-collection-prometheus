@@ -3,6 +3,8 @@
   ansible.builtin.include_role:
     name: prometheus.prometheus._common
     tasks_from: preflight.yml
+  vars:
+    _common_dependencies: "{{ _ipmi_exporter_dependencies }}"
 
 - name: Assert that used version supports listen address type
   ansible.builtin.assert:

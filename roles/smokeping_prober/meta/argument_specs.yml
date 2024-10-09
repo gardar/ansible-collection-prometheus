@@ -22,7 +22,8 @@ argument_specs:
           - "This overrides the I(smokeping_prober_version) parameter"
       smokeping_prober_binary_url:
         description: "URL of the Smokeping Prober binaries .tar.gz file"
-        default: "https://github.com/{{ _smokeping_prober_repo }}/releases/download/v{{ smokeping_prober_version }}/smokeping_prober-{{ smokeping_prober_version }}.linux-{{ go_arch }}.tar.gz"
+        default: "https://github.com/{{ _smokeping_prober_repo }}/releases/download/v{{ smokeping_prober_version }}/\
+                  smokeping_prober-{{ smokeping_prober_version }}.{{ ansible_system | lower }}-{{ _smokeping_prober_go_ansible_arch }}.tar.gz"
       smokeping_prober_checksums_url:
         description: "URL of the Smokeping Prober checksums file"
         default: "https://github.com/{{ _smokeping_prober_repo }}/releases/download/v{{ smokeping_prober_version }}/sha256sums.txt"

@@ -26,7 +26,8 @@ argument_specs:
           - "This overrides the I(nginx_exporter_version) parameter"
       nginx_exporter_binary_url:
         description: "URL of the nginx_exporter binaries .tar.gz file"
-        default: "https://github.com/{{ _nginx_exporter_repo }}/releases/download/v{{ nginx_exporter_version }}/nginx_exporter-{{ nginx_exporter_version }}.linux-{{ go_arch }}.tar.gz"
+        default: "https://github.com/{{ _nginx_exporter_repo }}/releases/download/v{{ nginx_exporter_version }}/\
+                  nginx-prometheus-exporter_{{ nginx_exporter_version }}_{{ ansible_system | lower }}_{{ _nginx_exporter_go_ansible_arch }}.tar.gz"
       nginx_exporter_checksums_url:
         description: "URL of the nginx_exporter checksums file"
         default: "https://github.com/{{ _nginx_exporter_repo }}/releases/download/v{{ nginx_exporter_version }}/nginx-prometheus-exporter_{{ nginx_exporter_version }}_checksums.txt"

@@ -29,6 +29,7 @@
     _common_checksums_url: "{{ fail2ban_exporter_checksums_url }}"
     _common_system_group:  "{{ fail2ban_exporter_system_group }}"
     _common_system_user:  "{{ fail2ban_exporter_system_user }}"
+    _common_config_dir: "{{ fail2ban_exporter_config_dir }}"
   tags:
     - fail2ban_exporter_install
 

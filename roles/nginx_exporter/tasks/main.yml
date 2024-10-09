@@ -22,6 +22,7 @@
         - nginx_exporter_install
   vars:
     _common_local_cache_path: "{{ nginx_exporter_local_cache_path }}"
+    _common_binary_name: "{{ _nginx_exporter_binaries | first }}"
     _common_binaries: "{{ _nginx_exporter_binaries }}"
     _common_skip_download: "{{ nginx_exporter_skip_download }}"
     _common_binary_install_dir: "{{ nginx_exporter_binary_install_dir }}"
@@ -29,7 +30,7 @@
     _common_checksums_url: "{{ nginx_exporter_checksums_url }}"
     _common_system_group:  "{{ nginx_exporter_system_group }}"
     _common_system_user:  "{{ nginx_exporter_system_user }}"
-    _common_binary_unarchive_opts: ['--strip-components=1']
+    _common_config_dir: "{{ nginx_exporter_config_dir }}"
   tags:
     - nginx_exporter_install
 

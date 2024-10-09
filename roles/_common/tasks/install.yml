@@ -12,7 +12,8 @@
     system: true
     shell: "/usr/sbin/nologin"
     group: "{{ _common_system_group }}"
-    createhome: false
+    home: "{{ _common_config_dir | default('/') }}"
+    create_home: false
   when: _common_system_user != "root"
 
 - name: "Create localhost binary cache path"
@@ -69,9 +70,10 @@
 - name: "List binaries dir"
   ansible.builtin.find:
     paths: "{{ _common_local_cache_path }}"
+  delegate_to: localhost
   register: __cached_files
 
-- name: "Debug cached files"
+- name: "Print binaries dir cached files"
   ansible.builtin.debug:
     var: __cached_files
 

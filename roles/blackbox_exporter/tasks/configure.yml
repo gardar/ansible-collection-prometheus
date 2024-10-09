@@ -3,6 +3,13 @@
   ansible.builtin.include_role:
     name: prometheus.prometheus._common
     tasks_from: configure.yml
+    apply:
+      tags:
+        - blackbox_exporter_configure
+    vars:
+      _common_config_dir: "{{ blackbox_exporter_config_dir }}"
+  tags:
+    - blackbox_exporter_configure
 
 - name: Ensure blackbox exporter binary has cap_net_raw capability
   community.general.capabilities:
@@ -17,14 +24,6 @@
   ansible.builtin.debug:
     msg: "The capabilities module is skipped during check mode, as the file may not exist, causing execution to fail."
   when: ansible_check_mode
-
-- name: Create blackbox_exporter config directory
-  ansible.builtin.file:
-    path: "{{ blackbox_exporter_config_dir }}"
-    state: directory
-    owner: root
-    group: root
-    mode: u+rwX,g+rwX,o=rX
 
 - name: Configure blackbox exporter
   ansible.builtin.template:

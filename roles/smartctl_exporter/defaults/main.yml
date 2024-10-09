@@ -27,6 +27,7 @@ smartctl_exporter_log_format: "logfmt"
 smartctl_exporter_binary_install_dir: "/usr/local/bin"
 smartctl_exporter_system_group: "smartctl-exp"
 smartctl_exporter_system_user: "{{ smartctl_exporter_system_group }}"
+smartctl_exporter_config_dir: "/etc/smartctl_exporter"
 
 # Local path to stash the archive and its extraction
 smartctl_exporter_local_cache_path: "/tmp/smartctl_exporter-{{ ansible_system | lower }}-{{ _smartctl_exporter_go_ansible_arch }}/{{ smartctl_exporter_version }}"

@@ -1,37 +1,28 @@
 ---
-- name: Copy the ipmi_exporter systemd service file
-  ansible.builtin.template:
-    src: ipmi_exporter.service.j2
-    dest: /etc/systemd/system/ipmi_exporter.service
-    owner: root
-    group: root
-    mode: 0644
-  notify: restart ipmi_exporter
-
-- name: Create ipmi_exporter config directory
-  ansible.builtin.file:
-    path: "/etc/ipmi_exporter"
-    state: directory
-    owner: root
-    group: root
-    mode: u+rwX,g+rwX,o=rX
-
-- name: Copy the ipmi_exporter web config file
-  ansible.builtin.template:
-    src: web_config.yaml.j2
-    dest: /etc/ipmi_exporter/web_config.yaml
-    owner: root
-    group: root
-    mode: 0644
-  notify: restart ipmi_exporter
+- name: "Common configure"
+  ansible.builtin.include_role:
+    name: prometheus.prometheus._common
+    tasks_from: configure.yml
+    apply:
+      tags:
+        - ipmi_exporter_configure
+  vars:
+    _common_system_user: "{{ ipmi_exporter_system_user }}"
+    _common_system_group: "{{ ipmi_exporter_system_group }}"
+    _common_config_dir: "{{ ipmi_exporter_config_dir }}"
+  tags:
+    - ipmi_exporter_configure
 
 - name: Copy the ipmi_exporter config file
   ansible.builtin.template:
     src: config.yaml.j2
     dest: /etc/ipmi_exporter/config.yaml
-    owner: root
+    owner: "{{ ipmi_exporter_system_user }}"
     group: "{{ ipmi_exporter_system_group }}"
     mode: 0640
+  become: true
   no_log: "{{ false if (lookup('env', 'CI')) or (lookup('env', 'MOLECULE_PROVISIONER_NAME')) else true }}"
   notify:
     - restart ipmi_exporter
+  tags:
+    - ipmi_exporter_configure

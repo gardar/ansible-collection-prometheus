@@ -49,10 +49,6 @@
 - name: Configure
   ansible.builtin.include_tasks:
     file: configure.yml
-    apply:
-      become: true
-      tags:
-        - ipmi_exporter_configure
   tags:
     - ipmi_exporter_configure
 

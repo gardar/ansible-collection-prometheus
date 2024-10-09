@@ -23,5 +23,7 @@ nginx_exporter_binary_install_dir: "/usr/local/bin"
 nginx_exporter_system_group: "nginx-exp"
 nginx_exporter_system_user: "{{ nginx_exporter_system_group }}"
 
+nginx_exporter_config_dir: "/etc/nginx_exporter"
+
 # Local path to stash the archive and its extraction
 nginx_exporter_local_cache_path: "/tmp/nginx_exporter-{{ ansible_system | lower }}-{{ _nginx_exporter_go_ansible_arch }}/{{ nginx_exporter_version }}"

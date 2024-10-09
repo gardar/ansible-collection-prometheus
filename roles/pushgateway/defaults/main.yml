@@ -17,6 +17,7 @@ pushgateway_basic_auth_users: {}
 pushgateway_binary_install_dir: "/usr/local/bin"
 pushgateway_system_group: "pushgateway"
 pushgateway_system_user: "{{ pushgateway_system_group }}"
+pushgateway_config_dir: "/etc/pushgateway"
 
 # Local path to stash the archive and its extraction
 pushgateway_local_cache_path: "/tmp/pushgateway-{{ ansible_system | lower }}-{{ _pushgateway_go_ansible_arch }}/{{ pushgateway_version }}"

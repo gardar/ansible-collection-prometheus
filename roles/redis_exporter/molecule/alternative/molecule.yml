@@ -5,7 +5,7 @@ provisioner:
   inventory:
     group_vars:
       all:
-        redis_exporter_binary_local_dir: "/tmp/redis_exporter-linux-amd64"
+        redis_exporter_local_cache_path: "/tmp/redis_exporter-linux-amd64"
         redis_exporter_web_listen_address: "127.0.0.1:8080"
         redis_exporter_tls_server_config:
           cert_file: /etc/redis_exporter/tls.cert

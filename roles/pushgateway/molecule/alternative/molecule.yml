@@ -5,7 +5,7 @@ provisioner:
   inventory:
     group_vars:
       all:
-        pushgateway_binary_local_dir: "/tmp/pushgateway-linux-amd64"
+        pushgateway_local_cache_path: "/tmp/pushgateway-linux-amd64"
         pushgateway_web_listen_address:
           - '127.0.0.1:8080'
           - '127.0.1.1:8080'

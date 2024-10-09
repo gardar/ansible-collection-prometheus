@@ -5,7 +5,7 @@ provisioner:
   inventory:
     group_vars:
       all:
-        memcached_exporter_binary_local_dir: "/tmp/memcached_exporter-linux-amd64"
+        memcached_exporter_local_cache_path: "/tmp/memcached_exporter-linux-amd64"
         memcached_exporter_web_listen_address: "127.0.0.1:8080"
         memcached_exporter_tls_server_config:
           cert_file: /etc/memcached_exporter/tls.cert

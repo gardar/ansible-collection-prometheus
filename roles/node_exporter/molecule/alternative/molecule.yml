@@ -5,7 +5,7 @@ provisioner:
   inventory:
     group_vars:
       all:
-        node_exporter_binary_local_dir: "/tmp/node_exporter-linux-amd64"
+        node_exporter_local_cache_path: "/tmp/node_exporter-linux-amd64"
         node_exporter_web_listen_address:
           - '127.0.0.1:8080'
           - '127.0.1.1:8080'

@@ -5,7 +5,7 @@ provisioner:
   inventory:
     group_vars:
       all:
-        smartctl_exporter_binary_local_dir: "/tmp/smartctl_exporter-linux-amd64"
+        smartctl_exporter_local_cache_path: "/tmp/smartctl_exporter-linux-amd64"
         smartctl_exporter_web_listen_address: "127.0.0.1:8080"
         smartctl_exporter_smartctl_interval: "30s"
         smartctl_exporter_smartctl_rescan: "5m"

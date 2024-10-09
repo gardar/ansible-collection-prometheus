@@ -5,7 +5,7 @@ provisioner:
   inventory:
     group_vars:
       all:
-        postgres_exporter_binary_local_dir: "/tmp/postgres_exporter-linux-amd64"
+        postgres_exporter_local_cache_path: "/tmp/postgres_exporter-linux-amd64"
         postgres_exporter_web_listen_address:
           - '127.0.0.1:8080'
           - '127.0.1.1:8080'

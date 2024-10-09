@@ -5,7 +5,7 @@ provisioner:
   inventory:
     group_vars:
       all:
-        process_exporter_binary_local_dir: "/tmp/process_exporter-linux-amd64"
+        process_exporter_local_cache_path: "/tmp/process_exporter-linux-amd64"
         process_exporter_web_listen_address: "127.0.0.1:8080"
         process_exporter_tls_server_config:
           cert_file: /etc/process_exporter/tls.cert

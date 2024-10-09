@@ -35,13 +35,3 @@
   no_log: "{{ false if (lookup('env', 'CI')) or (lookup('env', 'MOLECULE_PROVISIONER_NAME')) else true }}"
   notify:
     - restart ipmi_exporter
-
-- name: Allow ipmi_exporter port in SELinux on RedHat OS family
-  community.general.seport:
-    ports: "{{ ipmi_exporter_web_listen_address.split(':')[-1] }}"
-    proto: tcp
-    setype: http_port_t
-    state: present
-  when:
-    - ansible_version.full is version_compare('2.4', '>=')
-    - ansible_selinux.status == "enabled"

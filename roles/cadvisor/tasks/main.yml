@@ -52,6 +52,10 @@
     apply:
       tags:
         - cadvisor_configure
+  vars:
+    _common_system_user: "{{ cadvisor_system_user }}"
+    _common_system_group: "{{ cadvisor_system_group }}"
+    _common_config_dir: "{{ cadvisor_config_dir }}"
   tags:
     - cadvisor_configure
 

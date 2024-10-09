@@ -55,6 +55,8 @@
       tags:
         - bind_exporter_configure
   vars:
+    _common_system_user: "{{ bind_exporter_system_user }}"
+    _common_system_group: "{{ bind_exporter_system_group }}"
     _common_config_dir: "{{ bind_exporter_config_dir }}"
     _common_tls_server_config: "{{ bind_exporter_tls_server_config }}"
     _common_http_server_config: "{{ bind_exporter_http_server_config }}"

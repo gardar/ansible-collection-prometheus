@@ -52,10 +52,6 @@
     apply:
       tags:
         - fail2ban_exporter_configure
-  vars:
-    _common_system_user: "{{ fail2ban_exporter_system_user }}"
-    _common_system_group: "{{ fail2ban_exporter_system_group }}"
-    _common_config_dir: "{{ fail2ban_exporter_config_dir }}"
   tags:
     - fail2ban_exporter_configure
 

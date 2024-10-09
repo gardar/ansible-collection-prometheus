@@ -13,23 +13,6 @@
     - memcached_exporter_run
 
 - name: Install
-  ansible.builtin.include_tasks:
-    file: install.yml
-    apply:
-      become: true
-      tags:
-        - memcached_exporter_install
-  when:
-    ( not __memcached_exporter_is_installed.stat.exists ) or
-    ( (__memcached_exporter_current_version_output.stderr_lines | length > 0)
-      and (__memcached_exporter_current_version_output.stderr_lines[0].split(" ")[2] != memcached_exporter_version) ) or
-    ( (__memcached_exporter_current_version_output.stdout_lines | length > 0)
-      and (__memcached_exporter_current_version_output.stdout_lines[0].split(" ")[2] != memcached_exporter_version) ) or
-    ( memcached_exporter_binary_local_dir | length > 0 )
-  tags:
-    - memcached_exporter_install
-
-- name: Install
   ansible.builtin.include_role:
     name: prometheus.prometheus._common
     tasks_from: install.yml

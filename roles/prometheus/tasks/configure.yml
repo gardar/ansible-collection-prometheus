@@ -71,7 +71,7 @@
     group: "{{ prometheus_system_group }}"
     mode: 0640
     validate: "{{ _prometheus_binary_install_dir }}/promtool check rules %s"
-  loop: "{{ query('ansible.builtin.fileglob', prometheus_alert_rules_files) }}"
+  loop: "{{ prometheus_alert_rules_files | map('ansible.builtin.fileglob') | flatten }}"
   when:
     - not prometheus_agent_mode
   notify:
@@ -119,7 +119,7 @@
     owner: "{{ prometheus_system_user }}"
     group: "{{ prometheus_system_group }}"
     mode: 0640
-  loop: "{{ query(ansible.builtin.fileglob, prometheus_static_targets_files) }}"
+  loop: "{{ prometheus_static_targets_files | map('ansible.builtin.fileglob') | flatten }}"
 
 - name: Copy prometheus scrape config files
   ansible.builtin.copy:
@@ -129,4 +129,4 @@
     owner: "{{ prometheus_system_user }}"
     group: "{{ prometheus_system_group }}"
     mode: 0640
-  loop: "{{ query(ansible.builtin.fileglob, prometheus_scrape_config_files) }}"
+  loop: "{{ prometheus_scrape_config_files | map('ansible.builtin.fileglob') | flatten }}"

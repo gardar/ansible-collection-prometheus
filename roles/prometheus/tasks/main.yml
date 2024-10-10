@@ -64,59 +64,12 @@
     name: prometheus
     state: started
     enabled: true
-  register: __prometheus_systemctl_start
   tags:
     - prometheus_run
 
-- name: Check service facts after start
-  ansible.builtin.service_facts:
-  register: __prometheus_service_facts_1
-
-- name: Print service fact after start
-  ansible.builtin.debug:
-    msg: "{{ __prometheus_service_facts_1.ansible_facts.services['prometheus.service'] }}"
-
-- name: Wait a minute before checking service status
-  ansible.builtin.pause:
-    minutes: 1
-
-- name: Check service facts after pause
-  ansible.builtin.service_facts:
-  register: __prometheus_service_facts_2
-
-- name: Print service fact after pause
-  ansible.builtin.debug:
-    msg: "{{ __prometheus_service_facts_2.ansible_facts.services['prometheus.service'] }}"
-
-- name: "Debug - check prometheus service status"
-  ansible.builtin.command:
-    cmd: "systemctl status prometheus"
-  changed_when: false
-  failed_when: false
-  register: __prometheus_systemctl_status
-
-- name: "Debug - print service start"
-  ansible.builtin.debug:
-    var: __prometheus_systemctl_start
-
-- name: "Debug - print service status"
-  ansible.builtin.debug:
-    var: __prometheus_systemctl_status
-
-- name: "Check prometheus config"
-  ansible.builtin.slurp:
-    src: "{{ prometheus_config_dir }}/prometheus.yml"
-  register: __prometheus_yml
-
-- name: "Check prometheus service config"
-  ansible.builtin.slurp:
-    src: "/etc/systemd/system/prometheus.service"
-  register: __prometheus_service_conf
-
-- name: "Debug - print prometheus config"
-  ansible.builtin.debug:
-    msg: "{{ __prometheus_yml['content'] | to_nice_yaml }}"
-
-- name: "Debug - print prometheus service"
-  ansible.builtin.debug:
-    msg: "{{ __prometheus_service_conf['content'] }}"
+- name: Make sure prometheus service is running
+  ansible.builtin.service_facts: {}
+  register: __service_status
+  until: "__service_status.ansible_facts.services['prometheus.service'].state == 'running'"
+  retries: 10
+  delay: 5

@@ -79,4 +79,4 @@
     group: root
   loop: "{{ _common_binaries }}"
   notify:
-    - restart_service
+    - "Restart {{ _common_service_name }}"

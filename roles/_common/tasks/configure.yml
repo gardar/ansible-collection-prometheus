@@ -15,7 +15,7 @@
     mode: 0644
   become: true
   notify:
-    - restart_service
+    - "Restart {{ _common_service_name }}"
 
 - name: "Create config dir {{ _common_config_dir }}"
   ansible.builtin.file:
@@ -26,7 +26,7 @@
     mode: u+rwX,g+rwX,o=rX
   become: true
   notify:
-    - restart_service
+    - "Restart {{ _common_service_name }}"
   when: (_common_config_dir)
 
 - name: "Install web config for {{ _common_service_name }}"
@@ -38,7 +38,7 @@
     mode: 0644
   become: true
   notify:
-    - restart_service
+    - "Restart {{ _common_service_name }}"
   when: "[_common_tls_server_config, _common_http_server_config, _common_basic_auth_users] | map('length') | select('>', 0) | list is any"
 
 # - name: "Install web config for {{ _common_service_name }}"
@@ -50,7 +50,7 @@
 #     mode: 0644
 #   become: true
 #   notify:
-#     - restart_service
+#     - "Restart {{ _common_service_name }}"
 #   when: (__common_web_config_template)
 #   vars:
 #     __common_web_config_template: "{{ lookup('ansible.builtin.fileglob', 'templates/web_config.*.j2') }}"
@@ -64,7 +64,7 @@
 #     mode: 0644
 #   become: true
 #   notify:
-#     - restart_service
+#     - "Restart {{ _common_service_name }}"
 #   when: (__common_web_config_template)
 #   vars:
 #     __common_web_config_template: "{{ lookup('ansible.builtin.fileglob', 'templates/web_config.*.j2') }}"
@@ -79,7 +79,7 @@
 #     group: root
 #     mode: 0644
 #   notify:
-#     - restart_service
+#     - "Restart {{ _common_service_name }}"
 #
 # - name: "Configure {{ _common_service_name }}"
 #   ansible.builtin.template:

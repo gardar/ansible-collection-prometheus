@@ -24,15 +24,14 @@
     group: "{{ prometheus_system_group }}"
     mode: 0755
 
-- name: Create prometheus configuration directories
+- name: Create additional prometheus configuration directories
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    owner: root
+    owner: "{{ prometheus_system_user }}"
     group: "{{ prometheus_system_group }}"
-    mode: 0770
+    mode: 0775
   loop:
-    - "{{ prometheus_config_dir }}"
     - "{{ prometheus_config_dir }}/rules"
     - "{{ prometheus_config_dir }}/file_sd"
     - "{{ prometheus_config_dir }}/scrapes"
@@ -42,8 +41,8 @@
     src: "{{ prometheus_local_cache_path }}/{{ item }}"
     dest: "{{ prometheus_config_dir }}"
     mode: 0644
-    owner: root
-    group: root
+    owner: "{{ prometheus_system_user }}"
+    group: "{{ prometheus_system_group }}"
   loop:
     - console_libraries
     - consoles
@@ -54,7 +53,7 @@
   ansible.builtin.template:
     src: "alert.rules.j2"
     dest: "{{ prometheus_config_dir }}/rules/ansible_managed.rules"
-    owner: root
+    owner: "{{ prometheus_system_user }}"
     group: "{{ prometheus_system_group }}"
     mode: 0640
     validate: "{{ _prometheus_binary_install_dir }}/promtool check rules %s"
@@ -68,11 +67,11 @@
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ prometheus_config_dir }}/rules/"
-    owner: root
+    owner: "{{ prometheus_system_user }}"
     group: "{{ prometheus_system_group }}"
     mode: 0640
     validate: "{{ _prometheus_binary_install_dir }}/promtool check rules %s"
-  with_fileglob: "{{ prometheus_alert_rules_files }}"
+  loop: "{{ query('ansible.builtin.fileglob', prometheus_alert_rules_files) }}"
   when:
     - not prometheus_agent_mode
   notify:
@@ -83,7 +82,7 @@
     src: "{{ prometheus_config_file }}"
     dest: "{{ prometheus_config_dir }}/prometheus.yml"
     force: true
-    owner: root
+    owner: "{{ prometheus_system_user }}"
     group: "{{ prometheus_system_group }}"
     mode: 0640
     validate: "{{ _prometheus_binary_install_dir }}/promtool check config %s"
@@ -96,7 +95,7 @@
     content: "{{ prometheus_web_config | to_nice_yaml(indent=2, sort_keys=False) }}"
     dest: "{{ prometheus_config_dir }}/web_config.yml"
     force: true
-    owner: root
+    owner: "{{ prometheus_system_user }}"
     group: "{{ prometheus_system_group }}"
     mode: 0640
 
@@ -106,10 +105,10 @@
       {{ item.value | to_nice_yaml(indent=2, sort_keys=False) }}
     dest: "{{ prometheus_config_dir }}/file_sd/{{ item.key }}.yml"
     force: true
-    owner: root
+    owner: "{{ prometheus_system_user }}"
     group: "{{ prometheus_system_group }}"
     mode: 0640
-  with_dict: "{{ prometheus_targets }}"
+  loop: "{{ prometheus_targets | dict2items }}"
   when: prometheus_targets != {}
 
 - name: Copy prometheus custom static targets
@@ -117,17 +116,17 @@
     src: "{{ item }}"
     dest: "{{ prometheus_config_dir }}/file_sd/"
     force: true
-    owner: root
+    owner: "{{ prometheus_system_user }}"
     group: "{{ prometheus_system_group }}"
     mode: 0640
-  with_fileglob: "{{ prometheus_static_targets_files }}"
+  loop: "{{ query(ansible.builtin.fileglob, prometheus_static_targets_files) }}"
 
 - name: Copy prometheus scrape config files
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ prometheus_config_dir }}/scrapes/"
     force: true
-    owner: root
+    owner: "{{ prometheus_system_user }}"
     group: "{{ prometheus_system_group }}"
     mode: 0640
-  with_fileglob: "{{ prometheus_scrape_config_files }}"
+  loop: "{{ query(ansible.builtin.fileglob, prometheus_scrape_config_files) }}"

@@ -68,6 +68,10 @@
   tags:
     - prometheus_run
 
+- name: Wait a minute before checking service status
+  ansible.builtin.pause:
+    minutes: 1
+
 - name: "Debug - check prometheus service status"
   ansible.builtin.command:
     cmd: "systemctl status prometheus"

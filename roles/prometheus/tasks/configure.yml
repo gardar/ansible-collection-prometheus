@@ -90,15 +90,6 @@
   notify:
     - reload prometheus
 
-- name: Configure Prometheus web
-  ansible.builtin.copy:
-    content: "{{ prometheus_web_config | to_nice_yaml(indent=2, sort_keys=False) }}"
-    dest: "{{ prometheus_config_dir }}/web_config.yml"
-    force: true
-    owner: "{{ prometheus_system_user }}"
-    group: "{{ prometheus_system_group }}"
-    mode: 0640
-
 - name: Configure prometheus static targets
   ansible.builtin.copy:
     content: |

@@ -22,7 +22,8 @@ argument_specs:
           - "This overrides the I(fail2ban_exporter_version) parameter"
       fail2ban_exporter_binary_url:
         description: "URL of the fail2ban_exporter binaries .tar.gz file"
-        default: "https://gitlab.com/hectorjsmith/fail2ban-prometheus-exporter/-/releases/v{{ fail2ban_exporter_version }}/downloads/fail2ban_exporter_{{ fail2ban_exporter_version }}_linux_{{ go_arch }}.tar.gz"
+        default: "https://gitlab.com/hectorjsmith/fail2ban-prometheus-exporter/-/releases/v{{ fail2ban_exporter_version }}/downloads/\
+                  fail2ban_exporter_{{ fail2ban_exporter_version }}_{{ ansible_system | lower }}_{{ _fail2ban_exporter_go_ansible_arch }}.tar.gz"
       fail2ban_exporter_checksums_url:
         description: "URL of the fail2ban_exporter checksums file"
         default: "https://gitlab.com/hectorjsmith/fail2ban-prometheus-exporter/-/releases/v{{ fail2ban_exporter_version }}/downloads/fail2ban_exporter_{{ fail2ban_exporter_version }}_checksums.txt"
@@ -46,6 +47,6 @@ argument_specs:
         description:
           - "I(Advanced)"
           - "Password to use to protect endpoints with basic auth"
-      fail2ban_exporter_archive_path:
+      fail2ban_exporter_local_cache_path:
         description: 'Local path to stash the archive and its extraction'
         default: "/tmp"

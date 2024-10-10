@@ -1,0 +1,10 @@
+---
+argument_specs:
+  selinux:
+    short_description: "Internal only - selinux requirements"
+    description: "Internal only - selinux requirements"
+    author:
+      - "Prometheus Community"
+    options:
+      _common_selinux_port:
+        description: "Port to allow in SELinux"

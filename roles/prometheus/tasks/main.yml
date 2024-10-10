@@ -68,9 +68,25 @@
   tags:
     - prometheus_run
 
+- name: Check service facts after start
+  ansible.builtin.service_facts:
+  register: __prometheus_service_facts_1
+
+- name: Print service fact after start
+  ansible.builtin.debug:
+    msg: "{{ __prometheus_service_facts_1.ansible_facts.services['prometheus.service'] }}"
+
 - name: Wait a minute before checking service status
   ansible.builtin.pause:
     minutes: 1
+
+- name: Check service facts after pause
+  ansible.builtin.service_facts:
+  register: __prometheus_service_facts_2
+
+- name: Print service fact after pause
+  ansible.builtin.debug:
+    msg: "{{ __prometheus_service_facts_2.ansible_facts.services['prometheus.service'] }}"
 
 - name: "Debug - check prometheus service status"
   ansible.builtin.command:
@@ -94,7 +110,7 @@
 
 - name: "Check prometheus service config"
   ansible.builtin.slurp:
-    src: "/etc/systemd/system/{{ _common_service_name }}.service"
+    src: "/etc/systemd/system/prometheus.service"
   register: __prometheus_service_conf
 
 - name: "Debug - print prometheus config"

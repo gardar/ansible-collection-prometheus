@@ -57,10 +57,6 @@
       delegate_to: localhost
       check_mode: false
 
-    - name: "Debug download"
-      ansible.builtin.debug:
-        var: __common_download
-
     - name: "Unpack binary archive {{ _common_binary_basename }}"
       become: false
       ansible.builtin.unarchive:
@@ -74,20 +70,8 @@
       check_mode: false
       when: _common_binary_basename is search('\.zip$|\.tar\.gz$')
 
-- name: "List binaries dir"
-  ansible.builtin.find:
-    paths: "{{ _common_local_cache_path }}"
-  delegate_to: localhost
-  register: __cached_files
-
-- name: "Print binaries dir cached files"
-  ansible.builtin.debug:
-    var: __cached_files
-
 - name: "Propagate binaries"
   ansible.builtin.copy:
-    # src: "{{ (_common_binary_local_dir) | ternary((_common_binary_local_dir ~ '/' ~ item),
-    #       (__common_archive_content | select('search', item + '$') | first)) }}"
     src: "{{ _common_local_cache_path }}/{{ item }}"
     dest: "{{ _common_binary_install_dir }}/{{ item }}"
     mode: 0755
@@ -96,5 +80,3 @@
   loop: "{{ _common_binaries }}"
   notify:
     - restart_service
-# vars:
-#  __common_archive_content: "{{ [_common_local_cache_path ~ '/' ] | product(__common_unpack.files | default([])) | map('join') | list }}"

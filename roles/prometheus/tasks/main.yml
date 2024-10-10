@@ -79,8 +79,28 @@
   failed_when: false
   register: __prometheus_systemctl_status
 
+- name: "Debug - print service start"
+  ansible.builtin.debug:
+    var: __prometheus_systemctl_start
+
 - name: "Debug - print service status"
   ansible.builtin.debug:
-    msg:
-      - "systemctl start {{ __prometheus_systemctl_start }}"
-      - "systemctl status {{ __prometheus_systemctl_status }}"
+    var: __prometheus_systemctl_status
+
+- name: "Check prometheus config"
+  ansible.builtin.slurp:
+    src: "{{ prometheus_config_dir }}/prometheus.yml"
+  register: __prometheus_yml
+
+- name: "Check prometheus service config"
+  ansible.builtin.slurp:
+    src: "/etc/systemd/system/{{ _common_service_name }}.service"
+  register: __prometheus_service_conf
+
+- name: "Debug - print prometheus config"
+  ansible.builtin.debug:
+    msg: "{{ __prometheus_yml['content'] | to_nice_yaml }}"
+
+- name: "Debug - print prometheus service"
+  ansible.builtin.debug:
+    msg: "{{ __prometheus_service_conf['content'] }}"

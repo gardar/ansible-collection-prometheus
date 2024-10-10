@@ -1,4 +1,11 @@
 ---
+- name: "Validate invocation of _common role"
+  ansible.builtin.assert:
+    that:
+      - "ansible_parent_role_names is defined"
+      - "ansible_parent_role_names | default() | length > 0"
+    fail_msg: "Error: The '_common' role is a internal role and cannot be invoked directly."
+
 - name: Install selinux python packages [RedHat]
   ansible.builtin.package:
     name: "{{ ['libselinux-python', 'policycoreutils-python']

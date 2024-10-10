@@ -64,5 +64,19 @@
     name: prometheus
     state: started
     enabled: true
+  register: __prometheus_systemctl_start
   tags:
     - prometheus_run
+
+- name: "Debug - check prometheus service status"
+  ansible.builtin.command:
+    cmd: "systemctl status prometheus"
+  changed_when: false
+  failed_when: false
+  register: __prometheus_systemctl_status
+
+- name: "Debug - print service status"
+  ansible.builtin.debug:
+    msg:
+      - "systemctl start {{ __prometheus_systemctl_start }}"
+      - "systemctl status {{ __prometheus_systemctl_status }}"

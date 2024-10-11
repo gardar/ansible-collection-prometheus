@@ -3,14 +3,13 @@
   ansible.builtin.include_role:
     name: prometheus.prometheus._common
     tasks_from: configure.yml
-    apply:
-      tags:
-        - alertmanager_configure
   vars:
     _common_system_user: "{{ alertmanager_system_user }}"
     _common_system_group: "{{ alertmanager_system_group }}"
     _common_config_dir: "{{ alertmanager_config_dir }}"
   tags:
+    - alertmanager
+    - configure
     - alertmanager_configure
 
 - name: Create alertmanager directories
@@ -24,6 +23,11 @@
     - "{{ alertmanager_config_dir }}/templates"
     - "{{ alertmanager_db_dir }}"
     - "{{ _alertmanager_amtool_config_dir }}"
+  become: true
+  tags:
+    - alertmanager
+    - configure
+    - alertmanager_configure
 
 - name: Copy amtool config
   ansible.builtin.template:
@@ -33,6 +37,11 @@
     owner: "{{ alertmanager_system_user }}"
     group: "{{ alertmanager_system_group }}"
     mode: 0644
+  become: true
+  tags:
+    - alertmanager
+    - configure
+    - alertmanager_configure
 
 - name: Copy alertmanager config
   ansible.builtin.template:
@@ -44,8 +53,13 @@
     mode: 0644
     validate: "{{ alertmanager_binary_install_dir }}/amtool check-config %s"
   no_log: "{{ false if (lookup('env', 'CI')) or (lookup('env', 'MOLECULE_PROVISIONER_NAME')) else true }}"
+  become: true
   notify:
     - restart alertmanager
+  tags:
+    - alertmanager
+    - configure
+    - alertmanager_configure
 
 - name: Copy alertmanager template files
   ansible.builtin.copy:
@@ -56,5 +70,10 @@
     group: "{{ alertmanager_system_group }}"
     mode: 0644
   with_fileglob: "{{ alertmanager_template_files }}"
+  become: true
   notify:
     - restart alertmanager
+  tags:
+    - alertmanager
+    - configure
+    - alertmanager_configure

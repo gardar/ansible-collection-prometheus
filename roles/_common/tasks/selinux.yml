@@ -5,6 +5,8 @@
       - "ansible_parent_role_names is defined"
       - "ansible_parent_role_names | default() | length > 0"
     fail_msg: "Error: The '_common' role is a internal role and cannot be invoked directly."
+  tags:
+    - always
 
 - name: Install selinux python packages [RedHat]
   ansible.builtin.package:
@@ -18,6 +20,10 @@
   delay: 2
   become: true
   when: ansible_os_family | lower == "redhat"
+  tags:
+    - "{{ __common_ansible_parent_role_short_name }}"
+    - configure
+    - "{{ __common_ansible_parent_role_short_name }}_configure"
 
 - name: Install selinux python packages [clearlinux]
   ansible.builtin.package:
@@ -30,6 +36,10 @@
   become: true
   when:
     - ansible_distribution | lower == "clearlinux"
+  tags:
+    - "{{ __common_ansible_parent_role_short_name }}"
+    - configure
+    - "{{ __common_ansible_parent_role_short_name }}_configure"
 
 - name: Allow port in SELinux
   community.general.seport:
@@ -42,3 +52,7 @@
     - ansible_version.full is version_compare('2.4', '>=')
     - ansible_selinux.status == "enabled"
     - (_common_selinux_port)
+  tags:
+    - "{{ __common_ansible_parent_role_short_name }}"
+    - configure
+    - "{{ __common_ansible_parent_role_short_name }}_configure"

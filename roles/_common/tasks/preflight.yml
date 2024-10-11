@@ -5,11 +5,19 @@
       - "ansible_parent_role_names is defined"
       - "ansible_parent_role_names | default() | length > 0"
     fail_msg: "Error: The '_common' role is a internal role and cannot be invoked directly."
+  tags:
+    - always
 
 - name: Assert usage of systemd as an init system
   ansible.builtin.assert:
     that: ansible_service_mgr == 'systemd'
     msg: "This module only works with systemd"
+  tags:
+    - "{{ __common_ansible_parent_role_short_name }}"
+    - install
+    - "{{ __common_ansible_parent_role_short_name }}_install"
+    - configure
+    - "{{ __common_ansible_parent_role_short_name }}_configure"
 
 - name: Install dependencies
   become: true
@@ -17,7 +25,19 @@
     name: "{{ _common_dependencies }}"
     state: present
   when: (_common_dependencies)
+  tags:
+    - "{{ __common_ansible_parent_role_short_name }}"
+    - install
+    - "{{ __common_ansible_parent_role_short_name }}_install"
+    - configure
+    - "{{ __common_ansible_parent_role_short_name }}_configure"
 
 - name: Gather package facts
   ansible.builtin.package_facts:
   when: "not 'packages' in ansible_facts"
+  tags:
+    - "{{ __common_ansible_parent_role_short_name }}"
+    - install
+    - "{{ __common_ansible_parent_role_short_name }}_install"
+    - configure
+    - "{{ __common_ansible_parent_role_short_name }}_configure"

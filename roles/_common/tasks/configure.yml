@@ -5,6 +5,8 @@
       - "ansible_parent_role_names is defined"
       - "ansible_parent_role_names | default() | length > 0"
     fail_msg: "Error: The '_common' role is a internal role and cannot be invoked directly."
+  tags:
+    - always
 
 - name: "Create systemd service unit {{ _common_service_name }}"
   ansible.builtin.template:
@@ -16,6 +18,10 @@
   become: true
   notify:
     - "{{ ansible_parent_role_names | first }} : Restart {{ _common_service_name }}"
+  tags:
+    - "{{ __common_ansible_parent_role_short_name }}"
+    - configure
+    - "{{ __common_ansible_parent_role_short_name }}_configure"
 
 - name: "Create config dir {{ _common_config_dir }}"
   ansible.builtin.file:
@@ -28,6 +34,10 @@
   notify:
     - "{{ ansible_parent_role_names | first }} : Restart {{ _common_service_name }}"
   when: (_common_config_dir)
+  tags:
+    - "{{ __common_ansible_parent_role_short_name }}"
+    - configure
+    - "{{ __common_ansible_parent_role_short_name }}_configure"
 
 - name: "Install web config for {{ _common_service_name }}"
   ansible.builtin.template:
@@ -40,46 +50,11 @@
   notify:
     - "{{ ansible_parent_role_names | first }} : Restart {{ _common_service_name }}"
   when: "[_common_tls_server_config, _common_http_server_config, _common_basic_auth_users] | map('length') | select('>', 0) | list is any"
+  tags:
+    - "{{ __common_ansible_parent_role_short_name }}"
+    - configure
+    - "{{ __common_ansible_parent_role_short_name }}_configure"
 
-# - name: "Install web config for {{ _common_service_name }}"
-#   ansible.builtin.template:
-#     src: "{{ __common_web_config_template | splitext | first }}"
-#     dest: "{{ _common_config_dir }}/{{ __common_web_config_template }}"
-#     owner: "{{ _common_system_user }}"
-#     group: "{{ _common_system_group }}"
-#     mode: 0644
-#   become: true
-#   notify:
-#     - "{{ ansible_parent_role_names | first }} : Restart {{ _common_service_name }}"
-#   when: (__common_web_config_template)
-#   vars:
-#     __common_web_config_template: "{{ lookup('ansible.builtin.fileglob', 'templates/web_config.*.j2') }}"
-
-# - name: "Install web config for {{ _common_service_name }}"
-#   ansible.builtin.template:
-#     src: "{{ __common_web_config_template | splitext | first }}"
-#     dest: "{{ _common_config_dir }}/{{ __common_web_config_template }}"
-#     owner: "{{ _common_system_user }}"
-#     group: "{{ _common_system_group }}"
-#     mode: 0644
-#   become: true
-#   notify:
-#     - "{{ ansible_parent_role_names | first }} : Restart {{ _common_service_name }}"
-#   when: (__common_web_config_template)
-#   vars:
-#     __common_web_config_template: "{{ lookup('ansible.builtin.fileglob', 'templates/web_config.*.j2') }}"
-
-
-# - name: "Create systemd service unit {{ _common_service_name }}"
-#   ansible.builtin.template:
-#     # src: "{{ ansible_parent_role_paths | first }}/templates/{{ _common_service_name }}.service.j2"
-#     src: "{{ _service_template | default(ansible_parent_role_paths | first ~ '/templates/' ~ _common_service_name ~ '.service.j2') }}"
-#     dest: "/etc/systemd/system/{{ _common_service_name }}.service"
-#     owner: root
-#     group: root
-#     mode: 0644
-#   notify:
-#     - "{{ ansible_parent_role_names | first }} : Restart {{ _common_service_name }}"
 #
 # - name: "Configure {{ _common_service_name }}"
 #   ansible.builtin.template:

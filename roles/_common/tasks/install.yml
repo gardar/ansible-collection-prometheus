@@ -5,13 +5,20 @@
       - "ansible_parent_role_names is defined"
       - "ansible_parent_role_names | default() | length > 0"
     fail_msg: "Error: The '_common' role is a internal role and cannot be invoked directly."
+  tags:
+    - always
 
 - name: "Create system group {{ _common_system_group }}"
   ansible.builtin.group:
     name: "{{ _common_system_group }}"
     system: true
     state: present
+  become: true
   when: _common_system_group != "root"
+  tags:
+    - install
+    - "{{ __common_ansible_parent_role_short_name }}"
+    - "{{ __common_ansible_parent_role_short_name }}_install"
 
 - name: "Create system user {{ _common_system_user }}"
   ansible.builtin.user:
@@ -21,7 +28,12 @@
     group: "{{ _common_system_group }}"
     home: "{{ _common_config_dir | default('/') }}"
     create_home: false
+  become: true
   when: _common_system_user != "root"
+  tags:
+    - install
+    - "{{ __common_ansible_parent_role_short_name }}"
+    - "{{ __common_ansible_parent_role_short_name }}_install"
 
 - name: "Create localhost binary cache path"
   ansible.builtin.file:
@@ -29,11 +41,22 @@
     state: directory
     mode: 0755
   delegate_to: localhost
+  tags:
+    - "{{ __common_ansible_parent_role_short_name }}"
+    - install
+    - "{{ __common_ansible_parent_role_short_name }}_install"
+    - download
+    - "{{ __common_ansible_parent_role_short_name }}_download"
 
-- name: "Download and install from binary {{ _common_binary_basename }}"
-  when: "not (_common_skip_download)"
+- name: "Download binary {{ __common_binary_basename }}"
+  tags:
+    - "{{ __common_ansible_parent_role_short_name }}"
+    - install
+    - "{{ __common_ansible_parent_role_short_name }}_install"
+    - download
+    - "{{ __common_ansible_parent_role_short_name }}_download"
   block:
-    - name: "Get checksum list for {{ _common_binary_basename }}"
+    - name: "Get checksum list for {{ __common_binary_basename }}"
       ansible.builtin.set_fact:
         __common_binary_checksums: "{{ dict(lookup('url', _common_checksums_url, headers=_common_github_api_headers, wantlist=True)
                                     | map('regex_replace', '^([a-fA-F0-9]+)\\s+', 'sha256:\\1 ')
@@ -41,13 +64,12 @@
       run_once: true
       when: (_common_checksums_url)
 
-    - name: "Download {{ _common_binary_basename }}"
-      become: false
+    - name: "Download {{ __common_binary_basename }}"
       ansible.builtin.get_url:
         url: "{{ _common_binary_url }}"
-        dest: "{{ _common_local_cache_path }}/{{ _common_binary_name | default(_common_binary_basename) }}"
+        dest: "{{ _common_local_cache_path }}/{{ _common_binary_name | default(__common_binary_basename) }}"
         headers: "{{ _common_github_api_headers }}"
-        checksum: "{{ __common_binary_checksums[_common_binary_basename] | default(omit) }}"
+        checksum: "{{ __common_binary_checksums[__common_binary_basename] | default(omit) }}"
         mode: 0644
       register: __common_download
       until: __common_download is succeeded
@@ -57,10 +79,9 @@
       delegate_to: localhost
       check_mode: false
 
-    - name: "Unpack binary archive {{ _common_binary_basename }}"
-      become: false
+    - name: "Unpack binary archive {{ __common_binary_basename }}"
       ansible.builtin.unarchive:
-        src: "{{ _common_local_cache_path }}/{{ _common_binary_basename }}"
+        src: "{{ _common_local_cache_path }}/{{ __common_binary_basename }}"
         dest: "{{ _common_local_cache_path }}"
         mode: 0755
         list_files: true
@@ -68,7 +89,7 @@
       register: __common_unpack
       delegate_to: localhost
       check_mode: false
-      when: _common_binary_basename is search('\.zip$|\.tar\.gz$')
+      when: __common_binary_basename is search('\.zip$|\.tar\.gz$')
 
 - name: "Propagate binaries"
   ansible.builtin.copy:
@@ -78,5 +99,10 @@
     owner: root
     group: root
   loop: "{{ _common_binaries }}"
+  become: true
   notify:
     - "{{ ansible_parent_role_names | first }} : Restart {{ _common_service_name }}"
+  tags:
+    - "{{ __common_ansible_parent_role_short_name }}"
+    - install
+    - "{{ __common_ansible_parent_role_short_name }}_install"

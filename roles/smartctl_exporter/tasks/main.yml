@@ -23,7 +23,6 @@
   vars:
     _common_local_cache_path: "{{ smartctl_exporter_local_cache_path }}"
     _common_binaries: "{{ _smartctl_exporter_binaries }}"
-    _common_skip_download: "{{ smartctl_exporter_skip_download }}"
     _common_binary_install_dir: "{{ smartctl_exporter_binary_install_dir }}"
     _common_binary_url: "{{ smartctl_exporter_binary_url }}"
     _common_checksums_url: "{{ smartctl_exporter_checksums_url }}"

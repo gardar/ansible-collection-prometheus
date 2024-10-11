@@ -7,7 +7,6 @@ provisioner:
       all:
         chrony_exporter_version: 0.6.0
         chrony_exporter_local_cache_path: "/tmp/chrony_exporter-linux-amd64/{{ chrony_exporter_version }}"
-        chrony_exporter_skip_download: true
         chrony_exporter_web_listen_address:
           - '127.0.0.1:8080'
           - '127.0.1.1:8080'

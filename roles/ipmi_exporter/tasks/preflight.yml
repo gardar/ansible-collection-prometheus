@@ -73,6 +73,5 @@
   retries: 10
   when:
     - ipmi_exporter_version == "latest"
-    - not ipmi_exporter_skip_download
   tags:
     - ipmi_exporter_install

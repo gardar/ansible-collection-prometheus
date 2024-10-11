@@ -82,6 +82,5 @@
   retries: 10
   when:
     - mysqld_exporter_version == "latest"
-    - not mysqld_exporter_skip_download
   tags:
     - mysqld_exporter_install

@@ -36,6 +36,5 @@
   retries: 10
   when:
     - blackbox_exporter_version == "latest"
-    - not blackbox_exporter_skip_download
   tags:
     - blackbox_exporter_install

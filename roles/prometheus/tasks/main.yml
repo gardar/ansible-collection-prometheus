@@ -23,7 +23,6 @@
   vars:
     _common_local_cache_path: "{{ prometheus_local_cache_path }}"
     _common_binaries: "{{ _prometheus_binaries }}"
-    _common_skip_download: "{{ prometheus_skip_download }}"
     _common_binary_install_dir: "{{ prometheus_binary_install_dir }}"
     _common_binary_url: "{{ prometheus_binary_url }}"
     _common_checksums_url: "{{ prometheus_checksums_url }}"

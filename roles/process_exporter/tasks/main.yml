@@ -23,7 +23,6 @@
   vars:
     _common_local_cache_path: "{{ process_exporter_local_cache_path }}"
     _common_binaries: "{{ _process_exporter_binaries }}"
-    _common_skip_download: "{{ process_exporter_skip_download }}"
     _common_binary_install_dir: "{{ process_exporter_binary_install_dir }}"
     _common_binary_url: "{{ process_exporter_binary_url }}"
     _common_checksums_url: "{{ process_exporter_checksums_url }}"

@@ -7,7 +7,6 @@ provisioner:
       all:
         bind_exporter_version: 0.7.0
         bind_exporter_local_cache_path: "/tmp/bind_exporter-linux-amd64/{{ bind_exporter_version }}"
-        bind_exporter_skip_download: true
         bind_exporter_web_listen_address:
           - '127.0.0.1:8080'
           - '127.0.1.1:8080'

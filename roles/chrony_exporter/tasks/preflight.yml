@@ -82,6 +82,5 @@
   retries: 10
   when:
     - chrony_exporter_version == "latest"
-    - not chrony_exporter_skip_download
   tags:
     - chrony_exporter_install

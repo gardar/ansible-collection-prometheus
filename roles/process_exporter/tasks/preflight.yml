@@ -35,6 +35,5 @@
   retries: 10
   when:
     - process_exporter_version == "latest"
-    - not process_exporter_skip_download
   tags:
     - process_exporter_install

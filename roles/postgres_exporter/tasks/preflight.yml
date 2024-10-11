@@ -82,6 +82,5 @@
   retries: 10
   when:
     - postgres_exporter_version == "latest"
-    - not postgres_exporter_skip_download
   tags:
     - postgres_exporter_install

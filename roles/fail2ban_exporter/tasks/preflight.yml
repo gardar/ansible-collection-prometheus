@@ -46,6 +46,5 @@
   retries: 10
   when:
     - fail2ban_exporter_version == "latest"
-    - not fail2ban_exporter_skip_download
   tags:
     - fail2ban_exporter_install

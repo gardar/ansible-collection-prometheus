@@ -71,6 +71,5 @@
   retries: 10
   when:
     - nginx_exporter_version == "latest"
-    - not nginx_exporter_skip_download
   tags:
     - nginx_exporter_install

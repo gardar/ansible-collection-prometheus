@@ -30,6 +30,5 @@
   retries: 10
   when:
     - cadvisor_version == "latest"
-    - not cadvisor_skip_download
   tags:
     - cadvisor_install

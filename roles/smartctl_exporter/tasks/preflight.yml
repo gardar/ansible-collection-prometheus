@@ -71,6 +71,5 @@
   retries: 10
   when:
     - smartctl_exporter_version == "latest"
-    - not smartctl_exporter_skip_download
   tags:
     - smartctl_exporter_install

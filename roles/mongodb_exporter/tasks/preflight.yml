@@ -71,6 +71,5 @@
   retries: 10
   when:
     - mongodb_exporter_version == "latest"
-    - not mongodb_exporter_skip_download
   tags:
     - mongodb_exporter_install

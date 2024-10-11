@@ -71,6 +71,5 @@
   retries: 10
   when:
     - memcached_exporter_version == "latest"
-    - not memcached_exporter_skip_download
   tags:
     - memcached_exporter_install

@@ -76,6 +76,5 @@
   retries: 10
   when:
     - smokeping_prober_version == "latest"
-    - not smokeping_prober_skip_download
   tags:
     - smokeping_prober_install

@@ -65,6 +65,5 @@
   retries: 10
   when:
     - bind_exporter_version == "latest"
-    - not bind_exporter_skip_download
   tags:
     - bind_exporter_install

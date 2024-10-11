@@ -76,6 +76,5 @@
   retries: 10
   when:
     - pushgateway_version == "latest"
-    - not pushgateway_skip_download
   tags:
     - pushgateway_install

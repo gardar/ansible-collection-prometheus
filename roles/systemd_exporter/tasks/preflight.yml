@@ -89,6 +89,5 @@
   retries: 10
   when:
     - systemd_exporter_version == "latest"
-    - not systemd_exporter_skip_download
   tags:
     - systemd_exporter_install

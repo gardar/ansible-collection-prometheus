@@ -82,6 +82,5 @@
   retries: 10
   when:
     - prometheus_version == "latest"
-    - not prometheus_skip_download
   tags:
     - prometheus_install

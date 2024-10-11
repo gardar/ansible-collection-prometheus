@@ -17,8 +17,8 @@
   when: _common_system_group != "root"
   tags:
     - install
-    - "{{ __common_ansible_parent_role_short_name }}"
-    - "{{ __common_ansible_parent_role_short_name }}_install"
+    - "{{ __common_parent_role_short_name }}"
+    - "{{ __common_parent_role_short_name }}_install"
 
 - name: "Create system user {{ _common_system_user }}"
   ansible.builtin.user:
@@ -32,8 +32,8 @@
   when: _common_system_user != "root"
   tags:
     - install
-    - "{{ __common_ansible_parent_role_short_name }}"
-    - "{{ __common_ansible_parent_role_short_name }}_install"
+    - "{{ __common_parent_role_short_name }}"
+    - "{{ __common_parent_role_short_name }}_install"
 
 - name: "Create localhost binary cache path"
   ansible.builtin.file:
@@ -42,19 +42,19 @@
     mode: 0755
   delegate_to: localhost
   tags:
-    - "{{ __common_ansible_parent_role_short_name }}"
+    - "{{ __common_parent_role_short_name }}"
     - install
-    - "{{ __common_ansible_parent_role_short_name }}_install"
+    - "{{ __common_parent_role_short_name }}_install"
     - download
-    - "{{ __common_ansible_parent_role_short_name }}_download"
+    - "{{ __common_parent_role_short_name }}_download"
 
 - name: "Download binary {{ __common_binary_basename }}"
   tags:
-    - "{{ __common_ansible_parent_role_short_name }}"
+    - "{{ __common_parent_role_short_name }}"
     - install
-    - "{{ __common_ansible_parent_role_short_name }}_install"
+    - "{{ __common_parent_role_short_name }}_install"
     - download
-    - "{{ __common_ansible_parent_role_short_name }}_download"
+    - "{{ __common_parent_role_short_name }}_download"
   block:
     - name: "Get checksum list for {{ __common_binary_basename }}"
       ansible.builtin.set_fact:
@@ -103,6 +103,6 @@
   notify:
     - "{{ ansible_parent_role_names | first }} : Restart {{ _common_service_name }}"
   tags:
-    - "{{ __common_ansible_parent_role_short_name }}"
+    - "{{ __common_parent_role_short_name }}"
     - install
-    - "{{ __common_ansible_parent_role_short_name }}_install"
+    - "{{ __common_parent_role_short_name }}_install"

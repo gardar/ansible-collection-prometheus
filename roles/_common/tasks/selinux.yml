@@ -21,9 +21,9 @@
   become: true
   when: ansible_os_family | lower == "redhat"
   tags:
-    - "{{ __common_ansible_parent_role_short_name }}"
+    - "{{ __common_parent_role_short_name }}"
     - configure
-    - "{{ __common_ansible_parent_role_short_name }}_configure"
+    - "{{ __common_parent_role_short_name }}_configure"
 
 - name: Install selinux python packages [clearlinux]
   ansible.builtin.package:
@@ -37,9 +37,9 @@
   when:
     - ansible_distribution | lower == "clearlinux"
   tags:
-    - "{{ __common_ansible_parent_role_short_name }}"
+    - "{{ __common_parent_role_short_name }}"
     - configure
-    - "{{ __common_ansible_parent_role_short_name }}_configure"
+    - "{{ __common_parent_role_short_name }}_configure"
 
 - name: Allow port in SELinux
   community.general.seport:
@@ -53,6 +53,6 @@
     - ansible_selinux.status == "enabled"
     - (_common_selinux_port)
   tags:
-    - "{{ __common_ansible_parent_role_short_name }}"
+    - "{{ __common_parent_role_short_name }}"
     - configure
-    - "{{ __common_ansible_parent_role_short_name }}_configure"
+    - "{{ __common_parent_role_short_name }}_configure"

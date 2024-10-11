@@ -11,15 +11,6 @@ argument_specs:
       postgres_exporter_version:
         description: "PostgreSQL exporter package version. Also accepts latest as parameter."
         default: "0.15.0"
-      postgres_exporter_skip_install:
-        description: "PostgreSQL installation tasks gets skipped when set to true."
-        type: bool
-        default: false
-      postgres_exporter_binary_local_dir:
-        description:
-          - "Enables the use of local packages instead of those distributed on github."
-          - "The parameter may be set to a directory where the C(postgres_exporter) binary is stored on the host where ansible is run."
-          - "This overrides the I(postgres_exporter_version) parameter"
       postgres_exporter_binary_url:
         description: "URL of the postgres_exporter binaries .tar.gz file"
         default: "https://github.com/{{ _postgres_exporter_repo }}/releases/download/v{{ postgres_exporter_version }}/\

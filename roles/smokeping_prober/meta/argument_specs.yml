@@ -11,15 +11,6 @@ argument_specs:
       smokeping_prober_version:
         description: "Smokeping Prober package version. Also accepts latest as parameter."
         default: "0.8.1"
-      smokeping_prober_skip_install:
-        description: "Smokeping Prober installation tasks gets skipped when set to true."
-        type: bool
-        default: false
-      smokeping_prober_binary_local_dir:
-        description:
-          - "Enables the use of local packages instead of those distributed on github."
-          - "The parameter may be set to a directory where the C(smokeping_prober) binary is stored on the host where ansible is run."
-          - "This overrides the I(smokeping_prober_version) parameter"
       smokeping_prober_binary_url:
         description: "URL of the Smokeping Prober binaries .tar.gz file"
         default: "https://github.com/{{ _smokeping_prober_repo }}/releases/download/v{{ smokeping_prober_version }}/\

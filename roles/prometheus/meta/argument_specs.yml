@@ -13,15 +13,6 @@ argument_specs:
           - "Prometheus package version. Also accepts C(latest) as parameter."
           - "Only prometheus 2.x is supported"
         default: "2.54.1"
-      prometheus_skip_install:
-        description: "Prometheus installation tasks gets skipped when set to true."
-        type: bool
-        default: false
-      prometheus_binary_local_dir:
-        description:
-          - "Allows to use local packages instead of ones distributed on github."
-          - "As parameter it takes a directory where I(prometheus) AND I(promtool) binaries are stored on host on which ansible is ran."
-          - "This overrides I(prometheus_version) parameter"
       prometheus_binary_url:
         description: "URL of the prometheus binaries .tar.gz file"
         default: "https://github.com/{{ _prometheus_repo }}/releases/download/v{{ prometheus_version }}/\

@@ -13,11 +13,11 @@
     that: ansible_service_mgr == 'systemd'
     msg: "This module only works with systemd"
   tags:
-    - "{{ __common_ansible_parent_role_short_name }}"
+    - "{{ __common_parent_role_short_name }}"
     - install
-    - "{{ __common_ansible_parent_role_short_name }}_install"
+    - "{{ __common_parent_role_short_name }}_install"
     - configure
-    - "{{ __common_ansible_parent_role_short_name }}_configure"
+    - "{{ __common_parent_role_short_name }}_configure"
 
 - name: Install dependencies
   become: true
@@ -26,18 +26,18 @@
     state: present
   when: (_common_dependencies)
   tags:
-    - "{{ __common_ansible_parent_role_short_name }}"
+    - "{{ __common_parent_role_short_name }}"
     - install
-    - "{{ __common_ansible_parent_role_short_name }}_install"
+    - "{{ __common_parent_role_short_name }}_install"
     - configure
-    - "{{ __common_ansible_parent_role_short_name }}_configure"
+    - "{{ __common_parent_role_short_name }}_configure"
 
 - name: Gather package facts
   ansible.builtin.package_facts:
   when: "not 'packages' in ansible_facts"
   tags:
-    - "{{ __common_ansible_parent_role_short_name }}"
+    - "{{ __common_parent_role_short_name }}"
     - install
-    - "{{ __common_ansible_parent_role_short_name }}_install"
+    - "{{ __common_parent_role_short_name }}_install"
     - configure
-    - "{{ __common_ansible_parent_role_short_name }}_configure"
+    - "{{ __common_parent_role_short_name }}_configure"

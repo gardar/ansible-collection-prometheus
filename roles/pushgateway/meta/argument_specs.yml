@@ -11,15 +11,6 @@ argument_specs:
       pushgateway_version:
         description: "Pushgateway package version. Also accepts latest as parameter."
         default: "1.10.0"
-      pushgateway_skip_install:
-        description: "Pushgateway installation tasks gets skipped when set to true."
-        type: bool
-        default: false
-      pushgateway_binary_local_dir:
-        description:
-          - "Enables the use of local packages instead of those distributed on github."
-          - "The parameter may be set to a directory where the C(pushgateway) binary is stored on the host where ansible is run."
-          - "This overrides the I(pushgateway_version) parameter"
       pushgateway_binary_url:
         description: "URL of the Pushgateway binaries .tar.gz file"
         default: "https://github.com/{{ _pushgateway_repo }}/releases/download/v{{ pushgateway_version }}/\

@@ -17,7 +17,5 @@ provisioner:
         smokeping_prober_basic_auth_users:
           randomuser: examplepassword
         smokeping_prober_version: 0.7.0
-        smokeping_prober_archive_path: /tmp
-        smokeping_archive_path: /tmp
         smokeping_prober_binary_url: "https://github.com/superq/smokeping_prober/releases/download/v{{ smokeping_prober_version\
                                       \ }}/smokeping_prober-{{ smokeping_prober_version }}.linux-amd64.tar.gz"

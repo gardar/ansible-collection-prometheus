@@ -22,6 +22,7 @@
     owner: "{{ prometheus_system_user }}"
     group: "{{ prometheus_system_group }}"
     mode: 0755
+  become: true
   tags:
     - prometheus
     - configure
@@ -38,6 +39,7 @@
     - "{{ prometheus_config_dir }}/rules"
     - "{{ prometheus_config_dir }}/file_sd"
     - "{{ prometheus_config_dir }}/scrapes"
+  become: true
   tags:
     - prometheus
     - configure
@@ -55,6 +57,7 @@
     - consoles
   notify:
     - restart prometheus
+  become: true
   tags:
     - prometheus
     - configure
@@ -73,6 +76,7 @@
     - not prometheus_agent_mode
   notify:
     - reload prometheus
+  become: true
   tags:
     - prometheus
     - configure
@@ -91,6 +95,7 @@
     - not prometheus_agent_mode
   notify:
     - reload prometheus
+  become: true
   tags:
     - prometheus
     - configure
@@ -108,6 +113,7 @@
   no_log: "{{ false if (lookup('env', 'CI')) or (lookup('env', 'MOLECULE_PROVISIONER_NAME')) else true }}"
   notify:
     - reload prometheus
+  become: true
   tags:
     - prometheus
     - configure
@@ -124,6 +130,7 @@
     mode: 0640
   loop: "{{ prometheus_targets | dict2items }}"
   when: prometheus_targets != {}
+  become: true
   tags:
     - prometheus
     - configure
@@ -138,6 +145,7 @@
     group: "{{ prometheus_system_group }}"
     mode: 0640
   loop: "{{ prometheus_static_targets_files | map('ansible.builtin.fileglob') | flatten }}"
+  become: true
   tags:
     - prometheus
     - configure
@@ -152,6 +160,7 @@
     group: "{{ prometheus_system_group }}"
     mode: 0640
   loop: "{{ prometheus_scrape_config_files | map('ansible.builtin.fileglob') | flatten }}"
+  become: true
   tags:
     - prometheus
     - configure

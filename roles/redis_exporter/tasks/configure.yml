@@ -21,6 +21,7 @@
     mode: 0644
   notify: restart redis_exporter
   when: redis_exporter_passwords | length > 0
+  become: true
   tags:
     - redis_exporter
     - configure

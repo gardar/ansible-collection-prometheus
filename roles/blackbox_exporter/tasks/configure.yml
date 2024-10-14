@@ -41,6 +41,7 @@
     owner: "{{ blackbox_exporter_system_user }}"
     group: "{{ blackbox_exporter_system_group }}"
     mode: '0644'
+  become: true
   notify:
     - reload blackbox_exporter
   tags:

@@ -1,9 +1,4 @@
 ---
-#  _common_go_ansible_arch: "{{ {'i386': '386',
-#                                'x86_64': 'amd64',
-#                                'aarch64': 'arm64',
-#                                'armv7l': 'armv7',
-#                                'armv6l': 'armv6'}.get(ansible_architecture, ansible_architecture) }}"
 _common_local_cache_path: ""
 _common_binaries: []
 _common_binary_name: "{{ __common_binary_basename }}"
@@ -25,5 +20,4 @@ _common_tls_server_config: {}
 _common_http_server_config: {}
 _common_basic_auth_users: {}
 # Variables that should not be overwritten
-# __common_parent_role_short_name: "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
 __common_binary_basename: "{{ _common_binary_url | urlsplit('path') | basename }}"

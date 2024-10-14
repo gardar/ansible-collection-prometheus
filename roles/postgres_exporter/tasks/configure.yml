@@ -24,6 +24,7 @@
     mode: '0640'
   no_log: "{{ false if (lookup('env', 'CI')) or (lookup('env', 'MOLECULE_PROVISIONER_NAME')) else true }}"
   notify: restart postgres_exporter
+  become: true
   tags:
     - postgres_exporter
     - configure
@@ -31,6 +32,7 @@
 
 - name: Configure via URI
   when: postgres_exporter_uri | length > 0
+  become: true
   tags:
     - postgres_exporter
     - configure

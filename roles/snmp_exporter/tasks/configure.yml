@@ -22,6 +22,7 @@
   no_log: "{{ false if (lookup('env', 'CI')) or (lookup('env', 'MOLECULE_PROVISIONER_NAME')) else true }}"
   notify:
     - reload snmp_exporter
+  become: true
   tags:
     - snmp_exporter
     - configure

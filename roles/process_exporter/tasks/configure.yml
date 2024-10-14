@@ -25,6 +25,7 @@
   when:
     - process_exporter_names != []
   notify: restart process_exporter
+  become: true
   tags:
     - process_exporter
     - configure

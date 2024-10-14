@@ -23,6 +23,7 @@
     group: '{{ mysqld_exporter_system_group }}'
     mode: '0640'
   no_log: "{{ false if (lookup('env', 'CI')) or (lookup('env', 'MOLECULE_PROVISIONER_NAME')) else true }}"
+  become: true
   notify: restart mysqld_exporter
   tags:
     - mysqld_exporter

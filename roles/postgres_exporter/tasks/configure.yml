@@ -3,9 +3,6 @@
   ansible.builtin.include_role:
     name: prometheus.prometheus._common
     tasks_from: configure.yml
-    apply:
-      tags:
-        - postgres_exporter_configure
   vars:
     _common_system_user: "{{ postgres_exporter_system_user }}"
     _common_system_group: "{{ postgres_exporter_system_group }}"
@@ -14,6 +11,8 @@
     _common_http_server_config: "{{ postgres_exporter_http_server_config }}"
     _common_basic_auth_users: "{{ postgres_exporter_basic_auth_users }}"
   tags:
+    - postgres_exporter
+    - configure
     - postgres_exporter_configure
 
 - name: Create postgres_exporter.yml
@@ -25,9 +24,17 @@
     mode: '0640'
   no_log: "{{ false if (lookup('env', 'CI')) or (lookup('env', 'MOLECULE_PROVISIONER_NAME')) else true }}"
   notify: restart postgres_exporter
+  tags:
+    - postgres_exporter
+    - configure
+    - postgres_exporter_configure
 
 - name: Configure via URI
   when: postgres_exporter_uri | length > 0
+  tags:
+    - postgres_exporter
+    - configure
+    - postgres_exporter_configure
   block:
     - name: Creating file postgres_exporter_uri
       ansible.builtin.copy:

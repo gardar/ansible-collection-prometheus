@@ -3,14 +3,13 @@
   ansible.builtin.include_role:
     name: prometheus.prometheus._common
     tasks_from: configure.yml
-    apply:
-      tags:
-        - redis_exporter_configure
   vars:
     _common_system_user: "{{ redis_exporter_system_user }}"
     _common_system_group: "{{ redis_exporter_system_group }}"
     _common_config_dir: "{{ redis_exporter_config_dir }}"
   tags:
+    - redis_exporter
+    - configure
     - redis_exporter_configure
 
 - name: Copy the passwords file
@@ -22,3 +21,7 @@
     mode: 0644
   notify: restart redis_exporter
   when: redis_exporter_passwords | length > 0
+  tags:
+    - redis_exporter
+    - configure
+    - redis_exporter_configure

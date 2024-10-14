@@ -3,9 +3,6 @@
   ansible.builtin.include_role:
     name: prometheus.prometheus._common
     tasks_from: configure.yml
-    apply:
-      tags:
-        - prometheus_configure
   vars:
     _common_system_user: "{{ prometheus_system_user }}"
     _common_system_group: "{{ prometheus_system_group }}"
@@ -14,6 +11,8 @@
     _common_http_server_config: "{{ prometheus_web_config.http_server_config }}"
     _common_basic_auth_users: "{{ prometheus_web_config.basic_auth_users }}"
   tags:
+    - prometheus
+    - configure
     - prometheus_configure
 
 - name: Create prometheus data directory
@@ -23,6 +22,10 @@
     owner: "{{ prometheus_system_user }}"
     group: "{{ prometheus_system_group }}"
     mode: 0755
+  tags:
+    - prometheus
+    - configure
+    - prometheus_configure
 
 - name: Create additional prometheus configuration directories
   ansible.builtin.file:
@@ -35,6 +38,10 @@
     - "{{ prometheus_config_dir }}/rules"
     - "{{ prometheus_config_dir }}/file_sd"
     - "{{ prometheus_config_dir }}/scrapes"
+  tags:
+    - prometheus
+    - configure
+    - prometheus_configure
 
 - name: Propagate official console templates
   ansible.builtin.copy:
@@ -48,6 +55,10 @@
     - consoles
   notify:
     - restart prometheus
+  tags:
+    - prometheus
+    - configure
+    - prometheus_configure
 
 - name: Alerting rules file
   ansible.builtin.template:
@@ -62,6 +73,10 @@
     - not prometheus_agent_mode
   notify:
     - reload prometheus
+  tags:
+    - prometheus
+    - configure
+    - prometheus_configure
 
 - name: Copy custom alerting rule files
   ansible.builtin.copy:
@@ -76,6 +91,10 @@
     - not prometheus_agent_mode
   notify:
     - reload prometheus
+  tags:
+    - prometheus
+    - configure
+    - prometheus_configure
 
 - name: Configure prometheus
   ansible.builtin.template:
@@ -89,6 +108,10 @@
   no_log: "{{ false if (lookup('env', 'CI')) or (lookup('env', 'MOLECULE_PROVISIONER_NAME')) else true }}"
   notify:
     - reload prometheus
+  tags:
+    - prometheus
+    - configure
+    - prometheus_configure
 
 - name: Configure prometheus static targets
   ansible.builtin.copy:
@@ -101,6 +124,10 @@
     mode: 0640
   loop: "{{ prometheus_targets | dict2items }}"
   when: prometheus_targets != {}
+  tags:
+    - prometheus
+    - configure
+    - prometheus_configure
 
 - name: Copy prometheus custom static targets
   ansible.builtin.copy:
@@ -111,6 +138,10 @@
     group: "{{ prometheus_system_group }}"
     mode: 0640
   loop: "{{ prometheus_static_targets_files | map('ansible.builtin.fileglob') | flatten }}"
+  tags:
+    - prometheus
+    - configure
+    - prometheus_configure
 
 - name: Copy prometheus scrape config files
   ansible.builtin.copy:
@@ -121,3 +152,7 @@
     group: "{{ prometheus_system_group }}"
     mode: 0640
   loop: "{{ prometheus_scrape_config_files | map('ansible.builtin.fileglob') | flatten }}"
+  tags:
+    - prometheus
+    - configure
+    - prometheus_configure

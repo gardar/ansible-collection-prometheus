@@ -19,9 +19,11 @@
   notify:
     - "{{ ansible_parent_role_names | first }} : Restart {{ _common_service_name }}"
   tags:
-    - "{{ __common_parent_role_short_name }}"
+    #    - "{{ __common_parent_role_short_name }}"
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     - configure
-    - "{{ __common_parent_role_short_name }}_configure"
+    #    - "{{ __common_parent_role_short_name }}_configure"
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_configure"
 
 - name: "Create config dir {{ _common_config_dir }}"
   ansible.builtin.file:
@@ -51,9 +53,11 @@
     - "{{ ansible_parent_role_names | first }} : Restart {{ _common_service_name }}"
   when: "[_common_tls_server_config, _common_http_server_config, _common_basic_auth_users] | map('length') | select('>', 0) | list is any"
   tags:
-    - "{{ __common_parent_role_short_name }}"
+    # - "{{ __common_parent_role_short_name }}"
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     - configure
-    - "{{ __common_parent_role_short_name }}_configure"
+    # - "{{ __common_parent_role_short_name }}_configure"
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_configure"
 
 #
 # - name: "Configure {{ _common_service_name }}"

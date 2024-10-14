@@ -4,7 +4,7 @@
     name: prometheus.prometheus._common
     tasks_from: configure.yml
   vars:
-    __common_parent_role_short_name: "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
+    # __common_parent_role_short_name: "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     _common_system_user: "{{ alertmanager_system_user }}"
     _common_system_group: "{{ alertmanager_system_group }}"
     _common_config_dir: "{{ alertmanager_config_dir }}"

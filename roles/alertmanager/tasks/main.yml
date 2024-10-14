@@ -17,8 +17,8 @@
         - configure
         - alertmanager_install
         - alertmanager_configure
-  vars:
-    __common_parent_role_short_name: "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
+        #  vars:
+        #    __common_parent_role_short_name: "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
   tags:
     - alertmanager
     - install
@@ -31,7 +31,7 @@
     name: prometheus.prometheus._common
     tasks_from: install.yml
   vars:
-    __common_parent_role_short_name: "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
+    #    __common_parent_role_short_name: "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     _common_local_cache_path: "{{ alertmanager_local_cache_path }}"
     _common_binaries: "{{ _alertmanager_binaries }}"
     _common_binary_install_dir: "{{ alertmanager_binary_install_dir }}"
@@ -51,7 +51,7 @@
     name: prometheus.prometheus._common
     tasks_from: selinux.yml
   vars:
-    __common_parent_role_short_name: "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
+    # __common_parent_role_short_name: "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     _common_selinux_port: "{{ alertmanager_web_listen_address | urlsplit('port') }}"
   when: ansible_selinux.status == "enabled"
   tags:

@@ -13,11 +13,16 @@
     that: ansible_service_mgr == 'systemd'
     msg: "This module only works with systemd"
   tags:
-    - "{{ __common_parent_role_short_name }}"
-    - install
-    - "{{ __common_parent_role_short_name }}_install"
+    # - "{{ __common_parent_role_short_name }}"
+    # - install
+    # - "{{ __common_parent_role_short_name }}_install"
+    # - configure
+    # - "{{ __common_parent_role_short_name }}_configure"
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     - configure
-    - "{{ __common_parent_role_short_name }}_configure"
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_configure"
+    - install
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_install"
 
 - name: Install dependencies
   become: true
@@ -26,18 +31,28 @@
     state: present
   when: (_common_dependencies)
   tags:
-    - "{{ __common_parent_role_short_name }}"
-    - install
-    - "{{ __common_parent_role_short_name }}_install"
+    # - "{{ __common_parent_role_short_name }}"
+    # - install
+    # - "{{ __common_parent_role_short_name }}_install"
+    # - configure
+    # - "{{ __common_parent_role_short_name }}_configure"
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     - configure
-    - "{{ __common_parent_role_short_name }}_configure"
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_configure"
+    - install
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_install"
 
 - name: Gather package facts
   ansible.builtin.package_facts:
   when: "not 'packages' in ansible_facts"
   tags:
-    - "{{ __common_parent_role_short_name }}"
-    - install
-    - "{{ __common_parent_role_short_name }}_install"
+    # - "{{ __common_parent_role_short_name }}"
+    # - install
+    # - "{{ __common_parent_role_short_name }}_install"
+    # - configure
+    # - "{{ __common_parent_role_short_name }}_configure"
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     - configure
-    - "{{ __common_parent_role_short_name }}_configure"
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_configure"
+    - install
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_install"

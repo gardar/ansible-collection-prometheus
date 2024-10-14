@@ -2,11 +2,6 @@
 - name: Preflight
   ansible.builtin.include_tasks:
     file: preflight.yml
-    apply:
-      tags:
-        - mongodb_exporter_install
-        - mongodb_exporter_configure
-        - mongodb_exporter_run
   tags:
     - mongodb_exporter_install
     - mongodb_exporter_configure
@@ -16,18 +11,14 @@
   ansible.builtin.include_role:
     name: prometheus.prometheus._common
     tasks_from: install.yml
-    apply:
-      become: true
-      tags:
-        - mongodb_exporter_install
   vars:
     _common_local_cache_path: "{{ mongodb_exporter_local_cache_path }}"
     _common_binaries: "{{ _mongodb_exporter_binaries }}"
     _common_binary_install_dir: "{{ mongodb_exporter_binary_install_dir }}"
     _common_binary_url: "{{ mongodb_exporter_binary_url }}"
     _common_checksums_url: "{{ mongodb_exporter_checksums_url }}"
-    _common_system_group:  "{{ mongodb_exporter_system_group }}"
-    _common_system_user:  "{{ mongodb_exporter_system_user }}"
+    _common_system_group: "{{ mongodb_exporter_system_group }}"
+    _common_system_user: "{{ mongodb_exporter_system_user }}"
     _common_config_dir: "{{ mongodb_exporter_config_dir }}"
     _common_binary_unarchive_opts: ['--strip-components=1']
   tags:
@@ -37,9 +28,6 @@
   ansible.builtin.include_role:
     name: prometheus.prometheus._common
     tasks_from: selinux.yml
-    apply:
-      tags:
-        - mongodb_exporter_configure
   vars:
     _common_selinux_port: "{{ mongodb_exporter_web_listen_address | urlsplit('port') }}"
   when: ansible_selinux.status == "enabled"
@@ -50,9 +38,6 @@
   ansible.builtin.include_role:
     name: prometheus.prometheus._common
     tasks_from: configure.yml
-    apply:
-      tags:
-        - mongodb_exporter_configure
   vars:
     _common_system_user: "{{ mongodb_exporter_system_user }}"
     _common_system_group: "{{ mongodb_exporter_system_group }}"

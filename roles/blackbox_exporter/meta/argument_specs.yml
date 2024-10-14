@@ -34,8 +34,8 @@ argument_specs:
               method: GET
               valid_status_codes: []
       blackbox_exporter_config_dir:
-        description: "Directory where the blackbox exporter configuration file is placed"
-        default: "/etc"
+        description: "Path to directory with blackbox_exporter configuration"
+        default: "/etc/blackbox_exporter"
       blackbox_exporter_binary_install_dir:
         description:
           - "I(Advanced)"

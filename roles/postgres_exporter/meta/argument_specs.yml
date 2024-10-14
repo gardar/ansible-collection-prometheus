@@ -24,7 +24,7 @@ argument_specs:
         description: "Path under which to expose metrics"
         default: "/metrics"
       postgres_exporter_config_dir:
-        description: "The path where exporter configuration is stored"
+        description: "Path to directory with postgres_exporter configuration"
         default: "/etc/postgres_exporter"
       postgres_exporter_config_file:
         description: "The filename of the postgres exporter config file"

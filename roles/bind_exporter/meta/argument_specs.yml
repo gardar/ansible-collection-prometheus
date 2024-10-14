@@ -24,7 +24,7 @@ argument_specs:
         description: "Path under which to expose metrics"
         default: "/metrics"
       bind_exporter_config_dir:
-        description: "The path where exporter configuration is stored"
+        description: "Path to directory with bind_exporter configuration"
         default: "/etc/bind_exporter"
       bind_exporter_stats_url:
         description: "HTTP XML API address of BIND server"

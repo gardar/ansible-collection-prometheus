@@ -21,7 +21,7 @@ argument_specs:
         description: "Address on which Smokeping Prober will listen"
         default: "0.0.0.0:9374"
       smokeping_prober_config_dir:
-        description: "The directory of the smokeping_prober probes config files"
+        description: "Path to directory with smokeping_prober configuration"
         default: "/etc/smokeping_prober"
       smokeping_prober_config_file:
         description: "The filename of the smokeping_prober probes config file"

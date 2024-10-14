@@ -5,6 +5,7 @@
       - "ansible role name {{ ansible_role_name }}"
       - "ansible role names {{ ansible_role_names }}"
       - "ansible collection name {{ ansible_collection_name }}"
+      - "__common_parent_role_short_name {{ ansible_role_name | regex_replace(ansible_collection_name ~ '.', '') }}"
 
 - name: Preflight
   ansible.builtin.include_tasks:

@@ -41,3 +41,13 @@ argument_specs:
       fail2ban_exporter_local_cache_path:
         description: 'Local path to stash the archive and its extraction'
         default: "/tmp"
+      fail2ban_exporter_system_user:
+        description:
+          - "I(Advanced)"
+          - "fail2ban exporter system user"
+        default: root
+      fail2ban_exporter_system_group:
+        description:
+          - "I(Advanced)"
+          - "System group for fail2ban exporter"
+        default: root

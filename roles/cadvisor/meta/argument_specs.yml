@@ -82,6 +82,11 @@ argument_specs:
           - "I(Advanced)"
           - "cAdvisor user"
         default: "root"
+      cadvisor_binary_install_dir:
+        description:
+          - "I(Advanced)"
+          - "Directory to install binaries"
+        default: "/usr/local/bin"
       cadvisor_local_cache_path:
         description: 'Local path to stash the archive and its extraction'
         default: "/tmp"

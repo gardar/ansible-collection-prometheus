@@ -60,6 +60,11 @@ argument_specs:
           - "I(Advanced)"
           - "Chrony exporter user"
         default: "chrony-exp"
+      chrony_exporter_binary_install_dir:
+        description:
+          - "I(Advanced)"
+          - "Directory to install binaries"
+        default: "/usr/local/bin"
       chrony_exporter_local_cache_path:
         description: 'Local path to stash the archive and its extraction'
         default: "/tmp"

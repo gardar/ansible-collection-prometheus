@@ -30,6 +30,11 @@ argument_specs:
         description: "Additional paths that Prometheus is allowed to read (useful for SSL certs outside of the config directory)"
         type: "list"
         elements: "str"
+      prometheus_binary_install_dir:
+        description:
+          - "I(Advanced)"
+          - "Directory to install binaries"
+        default: "/usr/local/bin"
       prometheus_web_listen_address:
         description: "Address on which prometheus will be listening"
         default: "0.0.0.0:9090"

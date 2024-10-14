@@ -24,6 +24,11 @@ argument_specs:
       alertmanager_web_external_url:
         description: "External address on which alertmanager is available. Useful when behind reverse proxy. Ex. example.org/alertmanager"
         default: "http://localhost:9093/"
+      alertmanager_binary_install_dir:
+        description:
+          - "I(Advanced)"
+          - "Directory to install binaries"
+        default: "/usr/local/bin"
       alertmanager_config_dir:
         description: "Path to directory with alertmanager configuration"
         default: "/etc/alertmanager"
@@ -105,3 +110,13 @@ argument_specs:
       alertmanager_local_cache_path:
         description: 'Local path to stash the archive and its extraction'
         default: "/tmp"
+      alertmanager_system_user:
+        description:
+          - "I(Advanced)"
+          - "alertmanager system user"
+        default: alertmanager
+      alertmanager_system_group:
+        description:
+          - "I(Advanced)"
+          - "System group for alertmanager"
+        default: alertmanager

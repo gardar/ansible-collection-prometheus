@@ -9,23 +9,6 @@
     that:
       - "':' in process_exporter_web_listen_address"
 
-- name: Check if process_exporter is installed
-  ansible.builtin.stat:
-    path: "{{ process_exporter_binary_install_dir }}/process-exporter"
-  register: __process_exporter_is_installed
-  check_mode: false
-  tags:
-    - process_exporter_install
-
-- name: Gather currently installed process_exporter version (if any)
-  ansible.builtin.command: "{{ process_exporter_binary_install_dir }}/process-exporter --version"
-  changed_when: false
-  register: __process_exporter_current_version_output
-  check_mode: false
-  when: __process_exporter_is_installed.stat.exists
-  tags:
-    - process_exporter_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     process_exporter_version: "{{ (lookup('url', 'https://api.github.com/repos/{{ _process_exporter_repo }}/releases/latest', headers=_github_api_headers,
@@ -36,4 +19,8 @@
   when:
     - process_exporter_version == "latest"
   tags:
+    - process_exporter
+    - install
     - process_exporter_install
+    - download
+    - process_exporter_download

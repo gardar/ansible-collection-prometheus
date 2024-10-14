@@ -45,23 +45,6 @@
           - "__memcached_exporter_cert_file.stat.exists"
           - "__memcached_exporter_key_file.stat.exists"
 
-- name: Check if memcached_exporter is installed
-  ansible.builtin.stat:
-    path: "{{ memcached_exporter_binary_install_dir }}/memcached_exporter"
-  register: __memcached_exporter_is_installed
-  check_mode: false
-  tags:
-    - memcached_exporter_install
-
-- name: Gather currently installed memcached_exporter version (if any)
-  ansible.builtin.command: "{{ memcached_exporter_binary_install_dir }}/memcached_exporter --version"
-  changed_when: false
-  register: __memcached_exporter_current_version_output
-  check_mode: false
-  when: __memcached_exporter_is_installed.stat.exists
-  tags:
-    - memcached_exporter_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     memcached_exporter_version: "{{ (lookup('url', 'https://api.github.com/repos/{{ _memcached_exporter_repo }}/releases/latest', headers=_github_api_headers,
@@ -72,4 +55,8 @@
   when:
     - memcached_exporter_version == "latest"
   tags:
+    - memcached_exporter
+    - install
     - memcached_exporter_install
+    - download
+    - memcached_exporter_download

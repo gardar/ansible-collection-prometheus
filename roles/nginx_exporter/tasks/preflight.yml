@@ -45,23 +45,6 @@
           - "__nginx_exporter_cert_file.stat.exists"
           - "__nginx_exporter_key_file.stat.exists"
 
-- name: Check if nginx_exporter is installed
-  ansible.builtin.stat:
-    path: "{{ nginx_exporter_binary_install_dir }}/nginx_exporter"
-  register: __nginx_exporter_is_installed
-  check_mode: false
-  tags:
-    - nginx_exporter_install
-
-- name: Gather currently installed nginx_exporter version (if any)
-  ansible.builtin.command: "{{ nginx_exporter_binary_install_dir }}/nginx_exporter --version"
-  changed_when: false
-  register: __nginx_exporter_current_version_output
-  check_mode: false
-  when: __nginx_exporter_is_installed.stat.exists
-  tags:
-    - nginx_exporter_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     nginx_exporter_version: "{{ (lookup('url', 'https://api.github.com/repos/{{ _nginx_exporter_repo }}/releases/latest', headers=_github_api_headers,
@@ -72,4 +55,8 @@
   when:
     - nginx_exporter_version == "latest"
   tags:
+    - nginx_exporter
+    - install
     - nginx_exporter_install
+    - download
+    - nginx_exporter_download

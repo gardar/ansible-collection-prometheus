@@ -56,23 +56,6 @@
           - "__chrony_exporter_cert_file.stat.exists"
           - "__chrony_exporter_key_file.stat.exists"
 
-- name: Check if chrony_exporter is installed
-  ansible.builtin.stat:
-    path: "{{ chrony_exporter_binary_install_dir }}/chrony_exporter"
-  register: __chrony_exporter_is_installed
-  check_mode: false
-  tags:
-    - chrony_exporter_install
-
-- name: Gather currently installed chrony_exporter version (if any)
-  ansible.builtin.command: "{{ chrony_exporter_binary_install_dir }}/chrony_exporter --version"
-  changed_when: false
-  register: __chrony_exporter_current_version_output
-  check_mode: false
-  when: __chrony_exporter_is_installed.stat.exists
-  tags:
-    - chrony_exporter_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     chrony_exporter_version: "{{ (lookup('url', 'https://api.github.com/repos/{{ _chrony_exporter_repo }}/releases/latest', headers=_github_api_headers,
@@ -83,4 +66,8 @@
   when:
     - chrony_exporter_version == "latest"
   tags:
+    - chrony_exporter
+    - install
     - chrony_exporter_install
+    - download
+    - chrony_exporter_download

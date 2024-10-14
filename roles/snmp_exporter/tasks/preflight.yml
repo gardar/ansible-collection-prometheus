@@ -35,4 +35,8 @@
   when:
     - snmp_exporter_version == "latest"
   tags:
+    - snmp_exporter
+    - install
     - snmp_exporter_install
+    - download
+    - snmp_exporter_download

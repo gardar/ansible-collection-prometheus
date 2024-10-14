@@ -45,23 +45,6 @@
           - "__mongodb_exporter_cert_file.stat.exists"
           - "__mongodb_exporter_key_file.stat.exists"
 
-- name: Check if mongodb_exporter is installed
-  ansible.builtin.stat:
-    path: "{{ mongodb_exporter_binary_install_dir }}/mongodb_exporter"
-  register: __mongodb_exporter_is_installed
-  check_mode: false
-  tags:
-    - mongodb_exporter_install
-
-- name: Gather currently installed mongodb_exporter version (if any)
-  ansible.builtin.command: "{{ mongodb_exporter_binary_install_dir }}/mongodb_exporter --version"
-  changed_when: false
-  register: __mongodb_exporter_current_version_output
-  check_mode: false
-  when: __mongodb_exporter_is_installed.stat.exists
-  tags:
-    - mongodb_exporter_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     mongodb_exporter_version: "{{ (lookup('url', 'https://api.github.com/repos/{{ _mongodb_exporter_repo }}/releases/latest', headers=_github_api_headers,
@@ -72,4 +55,8 @@
   when:
     - mongodb_exporter_version == "latest"
   tags:
+    - mongodb_exporter
+    - install
     - mongodb_exporter_install
+    - download
+    - mongodb_exporter_download

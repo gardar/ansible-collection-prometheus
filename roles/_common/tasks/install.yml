@@ -16,10 +16,8 @@
   become: true
   when: _common_system_group != "root"
   tags:
-    #    - "{{ __common_parent_role_short_name }}"
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     - install
-    #    - "{{ __common_parent_role_short_name }}_install"
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_install"
 
 - name: "Create system user {{ _common_system_user }}"
@@ -33,10 +31,8 @@
   become: true
   when: _common_system_user != "root"
   tags:
-    #    - "{{ __common_parent_role_short_name }}"
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     - install
-    #    - "{{ __common_parent_role_short_name }}_install"
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_install"
 
 - name: "Create localhost binary cache path"
@@ -46,11 +42,6 @@
     mode: 0755
   delegate_to: localhost
   tags:
-    # - "{{ __common_parent_role_short_name }}"
-    # - install
-    # - "{{ __common_parent_role_short_name }}_install"
-    # - download
-    # - "{{ __common_parent_role_short_name }}_download"
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     - install
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_install"
@@ -59,11 +50,6 @@
 
 - name: "Download binary {{ __common_binary_basename }}"
   tags:
-    # - "{{ __common_parent_role_short_name }}"
-    # - install
-    # - "{{ __common_parent_role_short_name }}_install"
-    # - download
-    # - "{{ __common_parent_role_short_name }}_download"
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     - install
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_install"
@@ -117,9 +103,6 @@
   notify:
     - "{{ ansible_parent_role_names | first }} : Restart {{ _common_service_name }}"
   tags:
-    # - "{{ __common_parent_role_short_name }}"
-    # - install
-    # - "{{ __common_parent_role_short_name }}_install"
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     - install
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_install"

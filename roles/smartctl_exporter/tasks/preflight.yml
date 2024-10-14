@@ -45,23 +45,6 @@
           - "__smartctl_exporter_cert_file.stat.exists"
           - "__smartctl_exporter_key_file.stat.exists"
 
-- name: Check if smartctl_exporter is installed
-  ansible.builtin.stat:
-    path: "{{ smartctl_exporter_binary_install_dir }}/smartctl_exporter"
-  register: __smartctl_exporter_is_installed
-  check_mode: false
-  tags:
-    - smartctl_exporter_install
-
-- name: Gather currently installed smartctl_exporter version (if any)
-  ansible.builtin.command: "{{ smartctl_exporter_binary_install_dir }}/smartctl_exporter --version"
-  changed_when: false
-  register: __smartctl_exporter_current_version_output
-  check_mode: false
-  when: __smartctl_exporter_is_installed.stat.exists
-  tags:
-    - smartctl_exporter_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     smartctl_exporter_version: "{{ (lookup('url', 'https://api.github.com/repos/{{ _smartctl_exporter_repo }}/releases/latest', headers=_github_api_headers,
@@ -72,4 +55,8 @@
   when:
     - smartctl_exporter_version == "latest"
   tags:
+    - smartctl_exporter
+    - install
     - smartctl_exporter_install
+    - download
+    - smartctl_exporter_download

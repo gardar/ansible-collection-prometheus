@@ -50,23 +50,6 @@
           - "__smokeping_prober_cert_file.stat.exists"
           - "__smokeping_prober_key_file.stat.exists"
 
-- name: Check if smokeping_prober is installed
-  ansible.builtin.stat:
-    path: "{{ smokeping_prober_binary_install_dir }}/smokeping_prober"
-  register: __smokeping_prober_is_installed
-  check_mode: false
-  tags:
-    - smokeping_prober_install
-
-- name: Gather currently installed smokeping_prober version (if any)
-  ansible.builtin.command: "{{ smokeping_prober_binary_install_dir }}/smokeping_prober --version"
-  changed_when: false
-  register: __smokeping_prober_current_version_output
-  check_mode: false
-  when: __smokeping_prober_is_installed.stat.exists
-  tags:
-    - smokeping_prober_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     smokeping_prober_version: "{{ (lookup('url', 'https://api.github.com/repos/{{ _smokeping_prober_repo }}/releases/latest', headers=_github_api_headers,
@@ -77,4 +60,8 @@
   when:
     - smokeping_prober_version == "latest"
   tags:
+    - smokeping_prober
+    - install
     - smokeping_prober_install
+    - download
+    - smokeping_prober_download

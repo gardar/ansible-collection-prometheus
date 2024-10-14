@@ -56,23 +56,6 @@
           - "__node_exporter_cert_file.stat.exists"
           - "__node_exporter_key_file.stat.exists"
 
-- name: Check if node_exporter is installed
-  ansible.builtin.stat:
-    path: "{{ node_exporter_binary_install_dir }}/node_exporter"
-  register: __node_exporter_is_installed
-  check_mode: false
-  tags:
-    - node_exporter_install
-
-- name: Gather currently installed node_exporter version (if any)
-  ansible.builtin.command: "{{ node_exporter_binary_install_dir }}/node_exporter --version"
-  changed_when: false
-  register: __node_exporter_current_version_output
-  check_mode: false
-  when: __node_exporter_is_installed.stat.exists
-  tags:
-    - node_exporter_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     node_exporter_version: "{{ (lookup('url', 'https://api.github.com/repos/{{ _node_exporter_repo }}/releases/latest', headers=_github_api_headers,
@@ -83,4 +66,8 @@
   when:
     - node_exporter_version == "latest"
   tags:
+    - node_exporter
+    - install
     - node_exporter_install
+    - download
+    - node_exporter_download

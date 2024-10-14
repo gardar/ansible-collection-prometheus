@@ -56,23 +56,6 @@
           - "__postgres_exporter_cert_file.stat.exists"
           - "__postgres_exporter_key_file.stat.exists"
 
-- name: Check if postgres_exporter is installed
-  ansible.builtin.stat:
-    path: "{{ postgres_exporter_binary_install_dir }}/postgres_exporter"
-  register: __postgres_exporter_is_installed
-  check_mode: false
-  tags:
-    - postgres_exporter_install
-
-- name: Gather currently installed postgres_exporter version (if any)
-  ansible.builtin.command: "{{ postgres_exporter_binary_install_dir }}/postgres_exporter --version"
-  changed_when: false
-  register: __postgres_exporter_current_version_output
-  check_mode: false
-  when: __postgres_exporter_is_installed.stat.exists
-  tags:
-    - postgres_exporter_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     postgres_exporter_version: "{{ (lookup('url', 'https://api.github.com/repos/{{ _postgres_exporter_repo }}/releases/latest', headers=_github_api_headers,
@@ -83,4 +66,8 @@
   when:
     - postgres_exporter_version == "latest"
   tags:
+    - postgres_exporter
+    - install
     - postgres_exporter_install
+    - download
+    - postgres_exporter_download

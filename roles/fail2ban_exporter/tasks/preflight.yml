@@ -20,23 +20,6 @@
           list |
           length == 0
 
-- name: Check if fail2ban_exporter is installed
-  ansible.builtin.stat:
-    path: "{{ fail2ban_exporter_binary_install_dir }}/fail2ban_exporter"
-  register: __fail2ban_exporter_is_installed
-  check_mode: false
-  tags:
-    - fail2ban_exporter_install
-
-- name: Gather currently installed fail2ban_exporter version (if any)
-  ansible.builtin.command: "{{ fail2ban_exporter_binary_install_dir }}/fail2ban_exporter --version"
-  changed_when: false
-  register: __fail2ban_exporter_current_version_output
-  check_mode: false
-  when: __fail2ban_exporter_is_installed.stat.exists
-  tags:
-    - fail2ban_exporter_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     fail2ban_exporter_version: "{{ (lookup('url', 'https://gitlab.com/api/v4/projects/{{ _fail2ban_exporter_repo }}/releases',
@@ -47,4 +30,8 @@
   when:
     - fail2ban_exporter_version == "latest"
   tags:
+    - fail2ban_exporter
+    - install
     - fail2ban_exporter_install
+    - download
+    - fail2ban_exporter_download

@@ -83,4 +83,8 @@
   when:
     - prometheus_version == "latest"
   tags:
+    - prometheus
+    - install
     - prometheus_install
+    - download
+    - prometheus_download

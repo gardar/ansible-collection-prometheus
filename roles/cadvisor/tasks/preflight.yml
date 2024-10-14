@@ -4,23 +4,6 @@
     name: prometheus.prometheus._common
     tasks_from: preflight.yml
 
-- name: Check if cadvisor is installed
-  ansible.builtin.stat:
-    path: "{{ cadvisor_binary_install_dir }}/cadvisor"
-  register: __cadvisor_is_installed
-  check_mode: false
-  tags:
-    - cadvisor_install
-
-- name: Gather currently installed cadvisor version (if any)
-  ansible.builtin.command: "{{ cadvisor_binary_install_dir }}/cadvisor --version"
-  changed_when: false
-  register: __cadvisor_current_version_output
-  check_mode: false
-  when: __cadvisor_is_installed.stat.exists
-  tags:
-    - cadvisor_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     cadvisor_version: "{{ (lookup('url', 'https://api.github.com/repos/{{ _cadvisor_repo }}/releases/latest', headers=_github_api_headers,
@@ -31,4 +14,8 @@
   when:
     - cadvisor_version == "latest"
   tags:
+    - cadvisor
+    - install
     - cadvisor_install
+    - download
+    - cadvisor_download

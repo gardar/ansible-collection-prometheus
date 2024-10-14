@@ -47,23 +47,6 @@
           - "__ipmi_exporter_cert_file.stat.exists"
           - "__ipmi_exporter_key_file.stat.exists"
 
-- name: Check if ipmi_exporter is installed
-  ansible.builtin.stat:
-    path: "{{ ipmi_exporter_binary_install_dir }}/ipmi_exporter"
-  register: __ipmi_exporter_is_installed
-  check_mode: false
-  tags:
-    - ipmi_exporter_install
-
-- name: Gather currently installed ipmi_exporter version (if any)
-  ansible.builtin.command: "{{ ipmi_exporter_binary_install_dir }}/ipmi_exporter --version"
-  changed_when: false
-  register: __ipmi_exporter_current_version_output
-  check_mode: false
-  when: __ipmi_exporter_is_installed.stat.exists
-  tags:
-    - ipmi_exporter_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     ipmi_exporter_version: "{{ (lookup('url', 'https://api.github.com/repos/{{ _ipmi_exporter_repo }}/releases/latest', headers=_github_api_headers,
@@ -74,4 +57,8 @@
   when:
     - ipmi_exporter_version == "latest"
   tags:
+    - ipmi_exporter
+    - install
     - ipmi_exporter_install
+    - download
+    - ipmi_exporter_download

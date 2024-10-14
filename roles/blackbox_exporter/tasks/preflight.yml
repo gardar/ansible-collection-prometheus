@@ -37,4 +37,8 @@
   when:
     - blackbox_exporter_version == "latest"
   tags:
+    - blackbox_exporter
+    - install
     - blackbox_exporter_install
+    - download
+    - blackbox_exporter_download

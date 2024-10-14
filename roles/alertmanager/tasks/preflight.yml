@@ -35,7 +35,11 @@
   when:
     - alertmanager_version == "latest"
   tags:
+    - alertmanager
+    - install
     - alertmanager_install
+    - download
+    - alertmanager_download
 
 - name: Fail when extra config flags are duplicating ansible variables
   ansible.builtin.fail:

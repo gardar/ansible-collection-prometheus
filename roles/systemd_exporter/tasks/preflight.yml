@@ -62,24 +62,6 @@
     systemd_exporter_system_user: "root"
   when: systemd_exporter_enable_file_descriptor_size
 
-- name: Check if systemd_exporter is installed
-  ansible.builtin.stat:
-    path: "{{ systemd_exporter_binary_install_dir }}/systemd_exporter"
-  register: __systemd_exporter_is_installed
-  check_mode: false
-  tags:
-    - systemd_exporter_install
-
-- name: Gather currently installed systemd_exporter version (if any)
-  ansible.builtin.command:
-    cmd: "{{ systemd_exporter_binary_install_dir }}/systemd_exporter --version"
-  changed_when: false
-  register: __systemd_exporter_current_version_output
-  check_mode: false
-  when: __systemd_exporter_is_installed.stat.exists
-  tags:
-    - systemd_exporter_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     systemd_exporter_version: "{{ (lookup('url', 'https://api.github.com/repos/{{ _systemd_exporter_repo }}/releases/latest',
@@ -90,4 +72,8 @@
   when:
     - systemd_exporter_version == "latest"
   tags:
+    - systemd_exporter
+    - install
     - systemd_exporter_install
+    - download
+    - systemd_exporter_download

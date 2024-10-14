@@ -50,23 +50,6 @@
           - "__pushgateway_cert_file.stat.exists"
           - "__pushgateway_key_file.stat.exists"
 
-- name: Check if pushgateway is installed
-  ansible.builtin.stat:
-    path: "{{ pushgateway_binary_install_dir }}/pushgateway"
-  register: __pushgateway_is_installed
-  check_mode: false
-  tags:
-    - pushgateway_install
-
-- name: Gather currently installed pushgateway version (if any)
-  ansible.builtin.command: "{{ pushgateway_binary_install_dir }}/pushgateway --version"
-  changed_when: false
-  register: __pushgateway_current_version_output
-  check_mode: false
-  when: __pushgateway_is_installed.stat.exists
-  tags:
-    - pushgateway_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     pushgateway_version: "{{ (lookup('url', 'https://api.github.com/repos/{{ _pushgateway_repo }}/releases/latest', headers=_github_api_headers,
@@ -77,4 +60,8 @@
   when:
     - pushgateway_version == "latest"
   tags:
+    - pushgateway
+    - install
     - pushgateway_install
+    - download
+    - pushgateway_download

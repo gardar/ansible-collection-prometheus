@@ -21,9 +21,6 @@
   become: true
   when: ansible_os_family | lower == "redhat"
   tags:
-    # - "{{ __common_parent_role_short_name }}"
-    # - configure
-    # - "{{ __common_parent_role_short_name }}_configure"
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     - configure
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_configure"
@@ -40,9 +37,6 @@
   when:
     - ansible_distribution | lower == "clearlinux"
   tags:
-    # - "{{ __common_parent_role_short_name }}"
-    # - configure
-    # - "{{ __common_parent_role_short_name }}_configure"
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     - configure
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_configure"
@@ -59,9 +53,6 @@
     - ansible_selinux.status == "enabled"
     - (_common_selinux_port)
   tags:
-    # - "{{ __common_parent_role_short_name }}"
-    # - configure
-    # - "{{ __common_parent_role_short_name }}_configure"
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
     - configure
     - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_configure"

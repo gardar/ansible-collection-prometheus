@@ -56,23 +56,6 @@
           - "__mysqld_exporter_cert_file.stat.exists"
           - "__mysqld_exporter_key_file.stat.exists"
 
-- name: Check if mysqld_exporter is installed
-  ansible.builtin.stat:
-    path: "{{ mysqld_exporter_binary_install_dir }}/mysqld_exporter"
-  register: __mysqld_exporter_is_installed
-  check_mode: false
-  tags:
-    - mysqld_exporter_install
-
-- name: Gather currently installed mysqld_exporter version (if any)
-  ansible.builtin.command: "{{ mysqld_exporter_binary_install_dir }}/mysqld_exporter --version"
-  changed_when: false
-  register: __mysqld_exporter_current_version_output
-  check_mode: false
-  when: __mysqld_exporter_is_installed.stat.exists
-  tags:
-    - mysqld_exporter_install
-
 - name: Discover latest version
   ansible.builtin.set_fact:
     mysqld_exporter_version: "{{ (lookup('url', 'https://api.github.com/repos/{{ _mysqld_exporter_repo }}/releases/latest', headers=_github_api_headers,
@@ -83,4 +66,8 @@
   when:
     - mysqld_exporter_version == "latest"
   tags:
+    - mysqld_exporter
+    - install
     - mysqld_exporter_install
+    - download
+    - mysqld_exporter_download

@@ -40,6 +40,9 @@
     - "{{ __common_parent_role_short_name }}"
     - configure
     - "{{ __common_parent_role_short_name }}_configure"
+    # - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
+    # - configure
+    # - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_configure"
 
 - name: "Install web config for {{ _common_service_name }}"
   ansible.builtin.template:

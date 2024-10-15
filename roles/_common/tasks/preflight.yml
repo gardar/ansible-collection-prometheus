@@ -8,6 +8,13 @@
   tags:
     - always
 
+- name: "Check for deprecated variable test"
+  ansible.builtin.assert:
+    that:
+      - __common_parent_role_short_name ~ '_skip_install' is not defined
+    fail_msg: "The variable {{ __common_parent_role_short_name ~ '_skip_install' }} is deprecated.
+               Please use `--skip-tags {{ __common_parent_role_short_name }}_install` instead to skip the installation."
+
 - name: "Check for deprecated variables"
   ansible.builtin.assert:
     that:

@@ -8,24 +8,38 @@
   tags:
     - always
 
-- name: "Check for deprecated variables"
+- name: "Check for deprecated skip_install variable"
   ansible.builtin.assert:
     that:
-      - "item.variable not in vars"
-    fail_msg: "{{ item.fail_msg }}"
-    quiet: true
-  loop_control:
-    label: "{{ item.variable }}"
-  loop:
-    - variable: "{{ __common_parent_role_short_name ~ '_skip_install' }}"
-      fail_msg: "The variable {{ __common_parent_role_short_name ~ '_skip_install' }} is deprecated.
-                 Please use `--skip-tags {{ __common_parent_role_short_name }}_install` instead to skip the installation."
-    - variable: "{{ __common_parent_role_short_name ~ '_binary_local_dir' }}"
-      fail_msg: "The variable {{ __common_parent_role_short_name ~ '_binary_local_dir' }} is deprecated.
-                 Please use the variable {{ __common_parent_role_short_name ~ '_local_cache_path' }} instead"
-    - variable: "{{ __common_parent_role_short_name ~ '_archive_path' }}"
-      fail_msg: "The variable {{ __common_parent_role_short_name ~ '_archive_path' }} is deprecated.
-                 Please use the variable {{ __common_parent_role_short_name ~ '_local_cache_path' }} instead"
+      - __common_parent_role_short_name ~ '_skip_install' is not defined
+    fail_msg: "The variable {{ __common_parent_role_short_name ~ '_skip_install' }} is deprecated.
+               Please use `--skip-tags {{ __common_parent_role_short_name }}_install` instead to skip the installation."
+  tags:
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
+    - configure
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_configure"
+
+- name: "Check for deprecated binary_local_dir variable"
+  ansible.builtin.assert:
+    that:
+      - __common_parent_role_short_name ~ '_binary_local_dir' is not defined
+    fail_msg: "The variable {{ __common_parent_role_short_name ~ '_binary_local_dir' }} is deprecated.
+               Please use the variable {{ __common_parent_role_short_name ~ '_local_cache_path' }} instead"
+  tags:
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
+    - configure
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_configure"
+
+- name: "Check for deprecated archive_path variable"
+  ansible.builtin.assert:
+    that:
+      - __common_parent_role_short_name ~ '_archive_path' is not defined
+    fail_msg: "The variable {{ __common_parent_role_short_name ~ '_archive_path' }} is deprecated.
+               Please use the variable {{ __common_parent_role_short_name ~ '_local_cache_path' }} instead"
+  tags:
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}"
+    - configure
+    - "{{ ansible_parent_role_names | first | regex_replace(ansible_collection_name ~ '.', '') }}_configure"
 
 - name: Assert usage of systemd as an init system
   ansible.builtin.assert:

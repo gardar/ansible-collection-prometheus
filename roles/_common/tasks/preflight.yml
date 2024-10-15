@@ -11,9 +11,9 @@
 - name: "Check for deprecated variables"
   ansible.builtin.assert:
     that:
-      # - lookup('ansible.builtin.vars', item.variable, default=None, errors=ignore) is not defined
       - "item.variable not in vars"
     fail_msg: "{{ item.fail_msg }}"
+    quiet: true
   loop:
     - variable: "{{ __common_parent_role_short_name ~ '_skip_install' }}"
       fail_msg: "The variable {{ __common_parent_role_short_name ~ '_skip_install' }} is deprecated.

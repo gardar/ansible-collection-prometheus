@@ -66,8 +66,8 @@ jobs:
 
   discover-ansible-tests:
     runs-on: ubuntu-latest
-    needs:
-      - ansible-lint
+    # needs:
+    #   - ansible-lint
     outputs:
       integration-tests: ${{ steps.set-integration-tests.outputs.tests }}
       ansible-roles: ${{ steps.set-ansible-roles.outputs.roles }}

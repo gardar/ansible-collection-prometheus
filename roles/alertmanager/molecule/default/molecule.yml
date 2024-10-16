@@ -15,8 +15,6 @@ provisioner:
           group_interval: 5m
           repeat_interval: 3h
           receiver: slack
-        alertmanager_skip_install: false
-        alertmanager_binary_local_dir: /tmp
         alertmanager_time_intervals:
           - name: offhours
             time_intervals:

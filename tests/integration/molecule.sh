@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -x
+
 collection_root=$(pwd | grep -oP ".+\/ansible_collections\/\w+?\/\w+")
 targetname=${PWD##*/}
 role=$(expr "$targetname" : '\w*-\(\w*\)-\w*')
@@ -47,6 +49,11 @@ else
                ansible-galaxy collection install "$req_dir/${req//./-}"-*.tar.gz
        done
 fi
+
+ansible-config dump | grep -i roles_path                                                                                                                                                                                             │
+ansible-config dump | grep -i ansible_home 
+ansible-config dump | grep -i collection
+
 
 # Define config locations within collection
 export MOLECULE_FILE=$collection_root/.config/molecule/config.yml
